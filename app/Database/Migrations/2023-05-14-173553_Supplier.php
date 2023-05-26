@@ -21,7 +21,8 @@ class Supplier extends Migration
             ],
 			'nama' => [
                 'type'              => 'varchar', 
-                'constraint'        => 255
+                'constraint'        => 255,
+                'null'              => true
             ],
             'alamat' => [
                 'type'              => 'text', 
@@ -29,7 +30,8 @@ class Supplier extends Migration
             ],
             'no_telepon' => [
                 'type'              => 'varchar', 
-                'constraint'        => 20
+                'constraint'        => 20,
+                'null'              => true
             ],
 			'created_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
 			'updated_at' => [
@@ -40,6 +42,7 @@ class Supplier extends Migration
 
 		$this->forge->addKey('id', true)
 			->addUniqueKey('kode_supplier')
+            ->addUniqueKey('nama')
             ->addUniqueKey('no_telepon');
 		$this->forge->createTable('tb_supplier', true);
     }

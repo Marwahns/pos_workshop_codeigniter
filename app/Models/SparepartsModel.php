@@ -75,6 +75,7 @@ class SparepartsModel extends Model
     function getJoinToSupplier()
     {
         return $this->db->table('tb_spareparts')
+            ->select('*')
             ->join('tb_supplier', 'tb_supplier.id=tb_spareparts.supplier_id')
             ->get()->getResultArray();
     }
@@ -82,12 +83,23 @@ class SparepartsModel extends Model
     function getJoinToKategori()
     {
         return $this->db->table('tb_spareparts')
+            ->select('*')
             ->join('tb_kategori', 'tb_kategori.id=tb_spareparts.kategori_id')
             ->get()->getResultArray();
     }
 
-    function search($keyword){
-        return $this->db->table('tb_spareparts')->like('spareparts', $keyword)->orderBy('spareparts', 'ASC')->limit(10)->get()->getResult();
+    function get_join()
+    {
+        $builder = $this->db->table('tb_spareparts');
+        $builder->select('*');
+        $builder->join('tb_supplier', 'tb_supplier.id=tb_spareparts.supplier_id');
+        $builder->join('tb_kategori', 'tb_kategori.id=tb_spareparts.kategori_id');
+        $query = $builder->get();
+        return $query;
     }
 
+    function search($keyword)
+    {
+        return $this->db->table('tb_spareparts')->like('spareparts', $keyword)->orderBy('spareparts', 'ASC')->limit(10)->get()->getResult();
+    }
 }

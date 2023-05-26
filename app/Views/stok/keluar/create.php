@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Add New Supplier</h1>
+                    <h1>Add New Stok Masuk Spare Parts</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -27,7 +27,7 @@
             <div class="card card-primary">
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form action="<?= base_url('stok/saveStokMasuk') ?>" method="POST" id="create-form" enctype="multipart/form-data">
+                <form action="<?= base_url('stok/saveStokKeluar') ?>" method="POST" id="create-form" enctype="multipart/form-data">
                     <div class="card-body">
                         <input type="hidden" name="id">
                         <!-- Date -->
@@ -40,7 +40,7 @@
                         <!-- Barcode -->
                         <div class="form-group">
                             <input type="hidden" id="spareparts_id" name="spareparts_id">
-                            <input type="hidden" name="tipe" value="masuk">
+                            <input type="hidden" name="tipe" value="keluar">
                             <label for="regular-form-1" class="control-label">Barcode</label><br>
                             <select class="form-control select2" name="spareparts_id" id="select2_spareparts_id" data-placeholder="Select a Produk" required>
                                 <option></option>
@@ -88,7 +88,7 @@
 
                     <div class="card-footer">
                         <button type="reset" form="create-form" class="btn btn-danger w-24">Reset</button>
-                        <a class="btn btn-primary w-24 mr-1" href="<?= base_url('stok/index/') ?>">Cancel</a>
+                        <a class="btn btn-primary w-24 mr-1" href="<?= base_url('stok/indexStokKeluar/') ?>">Cancel</a>
                         <button type="submit" class="btn btn-success">Save</button>
                     </div>
                 </form>

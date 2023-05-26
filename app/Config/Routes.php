@@ -56,6 +56,9 @@ $routes->post('/users/(:any)', 'Users::$1');
 $routes->get('/stok/(:any)', 'Stok::$1');
 $routes->post('/stok/(:any)', 'Stok::$1');
 
+// API
+$routes->resource('api/home', ['controller' => 'Api\Home']);
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing

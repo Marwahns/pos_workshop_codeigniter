@@ -5,12 +5,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Stok Masuk Details</h1>
+                    <h1 class="m-0">Stok Keluar Details</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Stok Masuk</a></li>
-                        <li class="breadcrumb-item active">Stok Masuk Details</li>
+                        <li class="breadcrumb-item"><a href="#">Stok Keluar</a></li>
+                        <li class="breadcrumb-item active">Stok Keluar Details</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -64,8 +64,8 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="<?= base_url('stok/deleteStokMasuk/' . (isset($data['id']) ? $data['id'] : '')) ?>" class="btn btn btn-danger btn-sm rounded-0" onclick="if(confirm('Are you sure to delete this contact details?') === false) event.preventDefault()"><i class="fa fa-trash mr-2"></i> Delete</a>
-                    <a href="<?= base_url('stok/index') ?>" class="btn btn btn-light bg-gradient-light border btn-sm rounded-0"><i class="fa fa-angle-left mr-2"></i> Back to List</a>
+                    <a href="<?= base_url('stok/deleteStokKeluar/' . (isset($data['id']) ? $data['id'] : '')) ?>" class="btn btn btn-danger btn-sm rounded-0" onclick="if(confirm('Are you sure to delete this contact details?') === false) event.preventDefault()"><i class="fa fa-trash mr-2"></i> Delete</a>
+                    <a href="<?= base_url('stok/indexStokKeluar') ?>" class="btn btn btn-light bg-gradient-light border btn-sm rounded-0"><i class="fa fa-angle-left mr-2"></i> Back to List</a>
                 </div>
             </div>
         </div>

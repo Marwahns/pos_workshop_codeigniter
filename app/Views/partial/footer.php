@@ -60,9 +60,6 @@
 <!-- InputMask -->
 <script src="<?= base_url('adminLTE/plugins/moment/moment.min.js') ?>"></script>
 <script src="<?= base_url('adminLTE/plugins/inputmask/jquery.inputmask.min.js') ?>"></script>
-<!-- date-range-picker -->
-<script src="<?= base_url('adminLTE/plugins/summernote/summernote-bs4.min.js') ?>"></script>
-<script src="../../plugins/daterangepicker/daterangepicker.js"></script>
 <!-- bootstrap color picker -->
 <script src="<?= base_url('adminLTE/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') ?>"></script>
 <!-- Tempusdominus Bootstrap 4 -->
@@ -71,6 +68,8 @@
 <script src="<?= base_url('adminLTE/plugins/bs-stepper/js/bs-stepper.min.js') ?>"></script>
 <!-- dropzonejs -->
 <script src="<?= base_url('adminLTE/plugins/dropzone/min/dropzone.min.js') ?>"></script>
+
+<script src="<?= base_url() ?>/js/jquery-3.6.0.min.js"></script>
 
 <!-- AdminLTE App -->
 <!-- <script src="<?= base_url('adminLTE/dist/js/adminlte.js') ?>"></script> -->
@@ -120,6 +119,48 @@
     $('#select2_spareparts_id').select2({
       theme: 'bootstrap4',
     })
+
+    // $('#select2_spareparts_id').on('change', (event) => {
+    //   getProduk(event.target.event).then(produk => {
+    //     $('#spareparts').val(produk.spareparts);
+    //   });
+    // });
+
+    async function getProduk(id) {
+      let response = await fetch('spareparts/home/' + id)
+      let data = await response.json();
+
+      return data;
+    }
+
+    //Date picker
+    $('#reservationdate').datetimepicker({
+      format: 'L'
+    });
+
+    $('#select2_spareparts_id').on('change', (event) => {
+      getBarang(event.target.value).then(spareparts_id => {
+        $('#spareparts').val(spareparts_id.spareparts);
+        $('#stok').val(spareparts_id.stok);
+        $('#kategori_id').val(spareparts_id.kategori_id);
+        $('#supplier_id').val(spareparts_id.supplier_id);
+      });
+      
+    });
+
+    async function getBarang(id) {
+      let response = await fetch('/api/home/' + id)
+      let data = await response.json();
+
+      return data;
+    }
+
+    async function getSupplier(id) {
+      let response = await fetch('/api/home/' + id)
+      let data = await response.json();
+
+      return data;
+    }
 
   });
 </script>

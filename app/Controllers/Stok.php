@@ -53,12 +53,35 @@ class Stok extends BaseController
         //     echo view('partial/footer');
         // }
 
+        // $this->data['page_title'] =  "List Stock";
+        // $this->data['tb_stok'] =  $this->stok_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        // echo view('partial/header', $this->data);
+        // echo view('partial/top_menu');
+        // echo view('partial/side_menu');
+        // echo view('stok/masuk/list');
+        // echo view('partial/footer');
+
         $this->data['page_title'] =  "List Stock";
-        $this->data['tb_stok'] =  $this->stok_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        $this->data['tb_stok'] =  $this->stok_model->orderBy('date(created_at)ASC')->select('*')->where('tipe', 'masuk')->get()->getResult();
+        $this->data['tb_produk'] =  $this->SpareParts_model->findAll();
+        // $this->data['produk'] =  $this->stok_model->getAll();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
         echo view('stok/masuk/list');
+        echo view('partial/footer');
+    }
+
+    public function indexStokKeluar()
+    {
+        $this->data['page_title'] =  "List Stock";
+        $this->data['tb_stok'] =  $this->stok_model->orderBy('date(created_at)ASC')->select('*')->where('tipe', 'keluar')->get()->getResult();
+        $this->data['tb_produk'] =  $this->SpareParts_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();;
+        $this->data['tb_spareparts'] =  $this->SpareParts_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();;
+        echo view('partial/header', $this->data);
+        echo view('partial/top_menu');
+        echo view('partial/side_menu');
+        echo view('stok/keluar/list');
         echo view('partial/footer');
     }
 
@@ -69,10 +92,26 @@ class Stok extends BaseController
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['spareparts_id'] =  $this->SpareParts_model->orderBy('id ASC')->select('*')->get()->getResult();
+        // $this->data['spareparts_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
+        // $this->data['produk'] =  $this->stok_model->getAll();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
         echo view('stok/masuk/create');
+        echo view('partial/footer');
+    }
+
+    // Create Form Page
+    public function createStokKeluar()
+    {
+        $this->data['page_title'] =  "Add New";
+        $this->data['request'] =  $this->request;
+        $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
+        $this->data['spareparts_id'] =  $this->SpareParts_model->orderBy('id ASC')->select('*')->get()->getResult();
+        echo view('partial/header', $this->data);
+        echo view('partial/top_menu');
+        echo view('partial/side_menu');
+        echo view('stok/keluar/create');
         echo view('partial/footer');
     }
 
@@ -81,10 +120,11 @@ class Stok extends BaseController
     {
         $this->data['request'] = $this->request;
         $post = [
-            'supplier_id' => $this->request->getPost('supplier_id'),
+            'supplier_id'   => $this->request->getPost('supplier_id'),
             'spareparts_id' => $this->request->getPost('spareparts_id'),
-            'jumlah' => $this->request->getPost('jumlah'),
-            'keterangan' => $this->request->getPost('keterangan')
+            'jumlah'        => $this->request->getPost('jumlah'),
+            'keterangan'    => $this->request->getPost('keterangan'),
+            'tipe'          => $this->request->getPost('tipe'),
         ];
         if (!empty($this->request->getPost('id')))
             $save = $this->stok_model->where(['id' => $this->request->getPost('id')])->set($post)->update();
@@ -93,33 +133,48 @@ class Stok extends BaseController
         if ($save) {
             if (!empty($this->request->getPost('id')))
                 $this->session->setFlashdata('success_message', 'Data has been updated successfully');
-            else
-                $this->session->setFlashdata('success_message', 'Data has been added successfully');
+            else{
+                $this->stok_model->stok_berkurang($post);
+                $data['hasil']=$this->session->setFlashdata('success_message', 'Data has been added successfully');
+            }
             $id = !empty($this->request->getPost('id')) ? $this->request->getPost('id') : $save;
+
             return redirect()->to('/stok/view_detailStokMasuk/' . $id);
+
         } else {
             return view('stok/create', $this->data);
         }
     }
 
     // Edit Form Page
-    public function editStokMasuk($id = '')
+    public function saveStokKeluar()
     {
-        if (empty($id)) {
-            $this->session->setFlashdata('error_message', 'Unknown Data ID.');
-            return redirect()->to('/stok/create');
+        $this->data['request'] = $this->request;
+        $post = [
+            'supplier_id'   => $this->request->getPost('supplier_id'),
+            'spareparts_id' => $this->request->getPost('spareparts_id'),
+            'jumlah'        => $this->request->getPost('jumlah'),
+            'keterangan'    => $this->request->getPost('keterangan'),
+            'tipe'          => $this->request->getPost('tipe'),
+        ];
+        if (!empty($this->request->getPost('id')))
+            $save = $this->stok_model->where(['id' => $this->request->getPost('id')])->set($post)->update();
+        else
+            $save = $this->stok_model->insert($post);
+        if ($save) {
+            if (!empty($this->request->getPost('id')))
+                $this->session->setFlashdata('success_message', 'Data has been updated successfully');
+            else{
+                $this->stok_model->stok_berkurang($post);
+                $data['hasil']=$this->session->setFlashdata('success_message', 'Data has been added successfully');
+            }
+            $id = !empty($this->request->getPost('id')) ? $this->request->getPost('id') : $save;
+
+            return redirect()->to('/stok/view_detailStokKeluar/' . $id);
+
+        } else {
+            return view('stok/create', $this->data);
         }
-        $this->data['page_title'] = "Edit Stok Details";
-        $this->data['request'] =  $this->request;
-        $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
-        $this->data['spareparts_id'] =  $this->SpareParts_model->orderBy('id ASC')->select('*')->get()->getResult();
-        $qry = $this->stok_model->select('*')->where(['id' => $id]);
-        $this->data['data'] = $qry->first();
-        echo view('partial/header', $this->data);
-        echo view('partial/top_menu');
-        echo view('partial/side_menu');
-        echo view('stok/masuk/edit');
-        echo view('partial/footer');
     }
 
     // Delete Data
@@ -136,22 +191,55 @@ class Stok extends BaseController
         }
     }
 
+    // Delete Data
+    public function deleteStokKeluar($id = '')
+    {
+        if (empty($id)) {
+            $this->session->setFlashdata('error_message', 'Unknown Data ID.');
+            return redirect()->to('/stok/indexStokKeluar');
+        }
+        $delete = $this->stok_model->delete($id);
+        if ($delete) {
+            $this->session->setFlashdata('success_message', 'Contact Details has been deleted successfully.');
+            return redirect()->to('/stok/indexStokKeluar');
+        }
+    }
+
     // View Data
     public function view_detailStokMasuk($id = '')
     {
         if (empty($id)) {
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
-            return redirect()->to('/stokMasuk/index');
+            return redirect()->to('/stok/index');
         }
         $this->data['page_title'] = "View Contact Details";
         $qry = $this->stok_model->select('*')->where(['id' => $id]);
         $this->data['data'] = $qry->first();
         $this->data['join_supplier'] = $this->stok_model->getJoinToSupplier();
-        $this->data['join_spareparts'] = $this->stok_model->getJoinToKategori();
+        $this->data['join_spareparts'] = $this->stok_model->getJoinToSpareparts();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
         echo view('stok/masuk/view');
+        echo view('partial/footer');
+    }
+
+    // View Data
+    public function view_detailStokKeluar($id = '')
+    {
+        if (empty($id)) {
+            $this->session->setFlashdata('error_message', 'Unknown Data ID.');
+            return redirect()->to('/stok/index');
+        }
+        $this->data['page_title'] = "View Contact Details";
+        $qry = $this->stok_model->select('*')->where(['id' => $id]);
+        $this->data['data'] = $qry->first();
+        $this->data['join_supplier'] = $this->stok_model->getJoinToSupplier();
+        $this->data['join_spareparts'] = $this->stok_model->getJoinToSpareparts();
+        echo view('partial/header', $this->data);
+        echo view('partial/top_menu');
+        echo view('partial/side_menu');
+        echo view('stok/keluar/view');
         echo view('partial/footer');
     }
 
