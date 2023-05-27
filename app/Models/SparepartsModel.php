@@ -60,14 +60,14 @@ class SparepartsModel extends Model
     ######################################## Detail Produk ########################################
     public function detailProduk($id = null)
     {
-        $builder = $this->builder($this->table)->select('tb_spareparts.id AS id, kode_spareparts, spareparts AS spareparts, harga, stok, supplier_id, kategori_id AS kategori_id')
+        $builder = $this->builder($this->table)->select('tb_spareparts.id, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_spareparts.supplier_id, tb_spareparts.kategori_id, tb_supplier.nama, tb_kategori.kategori')
             ->join('tb_supplier', 'tb_supplier.id=tb_spareparts.supplier_id')
             ->join('tb_kategori', 'tb_kategori.id=tb_spareparts.kategori_id');
         if (empty($id)) {
             return $builder->get()->getResult(); // tampilkan semua data
         } else {
             // tampilkan data sesuai id/barcode
-            return $builder->where('tb_spareparts.id', $id)->orWhere('kode_spareparts', $id)->get(1)->getRow();
+            return $builder->where('tb_spareparts.id', $id)->orWhere('tb_spareparts.kode_spareparts', $id)->get(1)->getRow();
         }
     }
 

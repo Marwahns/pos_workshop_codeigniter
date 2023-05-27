@@ -113,6 +113,64 @@ class Supplier extends BaseController
     }
 
     ######################################## Edit Form Page ########################################
+    public function saveEditSupplier()
+    {
+        // validasi input
+        if (!$this->validate([
+            'nama' => [
+                'rules' => 'required|min_length[2]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi',
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required|min_length[2]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'no_telepon' => [
+                'rules' => 'required|min_length[2]|max_length[20]|',
+                'error' => [
+                    'required' => '{field} harus diisi',
+                ]
+            ],
+        ])) {
+            $respon = [
+                'validasi' => false,
+                'error'    => $this->validator->getErrors(),
+            ];
+            $validation = \Config\Services::validation();
+            $this->data['validation'] = \Config\Services::validation();
+            return redirect()->to('/supplier/createSupplier')->withInput()->with('validation', $validation);
+            // return $this->response->setJSON($respon);
+            // return redirect()->back()->with('error', $this->validator->getErrors());
+        }
+
+        $this->data['request'] = $this->request;
+        $post = [
+            'nama' => $this->request->getPost('nama'),
+            'alamat' => $this->request->getPost('alamat'),
+            'no_telepon' => $this->request->getPost('no_telepon'),
+            'kode_supplier' => $this->request->getPost('kode_supplier')
+        ];
+        if (!empty($this->request->getPost('id')))
+            $save = $this->supplier_model->where(['id' => $this->request->getPost('id')])->set($post)->update();
+        else
+            $save = $this->supplier_model->insert($post);
+        if ($save) {
+            if (!empty($this->request->getPost('id')))
+                $this->session->setFlashdata('success_message', 'Data has been updated successfully');
+            else
+                $this->session->setFlashdata('success_message', 'Data has been added successfully');
+            $id = !empty($this->request->getPost('id')) ? $this->request->getPost('id') : $save;
+            return redirect()->to('/supplier/view_detailSupplier/' . $id);
+        } else {
+            return view('supplier/create', $this->data);
+        }
+    }
+
+    ######################################## Edit Form Page ########################################
     public function editSupplier($id = '')
     {
         if (empty($id)) {

@@ -126,6 +126,8 @@ class Kategori extends BaseController
         }
     }
 
+    
+
     ######################################## View Data ########################################
     public function view_detailKategori($id = '')
     {

@@ -44,7 +44,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <!-- <th>Barcode</th> -->
+                                        <th>Barcode</th>
                                         <th>Spare parts</th>
                                         <th>Jumlah</th>
                                         <th>Tanggal</th>
@@ -57,7 +57,7 @@
                                         <?php foreach ($tb_stok as $row) : ?>
                                             <tr>
                                                 <th><?= $i++; ?></th>
-                                                <!-- <td><?= $row->barcode ?></td> -->
+                                                <td><?= $row->kode_spareparts ?></td>
                                                 <td><?= $row->spareparts_id ?></td>
                                                 <td><?= $row->jumlah ?></td>
                                                 <td><?= $row->created_at ?></td>

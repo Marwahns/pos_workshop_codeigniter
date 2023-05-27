@@ -35,16 +35,12 @@
 
                     <div class="mt-3"><b>KATEGORI</b></div>
                     <div class="mt-1.5 flex items-center">
-                        <?php foreach ($join_kategori as $key => $value) { ?>
-                            <?= isset($data['kategori_id']) && $data['kategori_id'] == $value['kategori_id'] ? $value['kategori'] : ''; ?>
-                        <?php } ?>
+                        <div class="text-base"><?= isset($data['kategori']) ? $data['kategori'] : '' ?></div>
                     </div>
 
                     <div class="mt-3"><b>SUPPLIER</b></div>
                     <div class="mt-1.5 flex items-center">
-                        <?php foreach ($join_supplier as $key => $value) { ?>
-                            <?= isset($data['supplier_id']) && $data['supplier_id'] == $value['supplier_id'] ? $value['nama'] : ''; ?>
-                        <?php } ?>
+                        <div class="text-base"><?= isset($data['nama']) ? $data['nama'] : '' ?></div>
                     </div>
                     <div class="mt-3"><b>HARGA</b></div>
                     <div class="mt-1.5 flex items-center">

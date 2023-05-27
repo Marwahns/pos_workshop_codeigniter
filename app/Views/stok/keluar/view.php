@@ -25,16 +25,12 @@
                 <div class="card-body">
                     <div><b>BARCODE</b></div>
                     <div class="mt-1.5 flex items-center">
-                        <?php foreach ($join_spareparts as $key => $value) { ?>
-                            <?= isset($data['spareparts_id']) && $data['spareparts_id'] == $value['spareparts_id'] ? $value['kode_spareparts'] : ''; ?>
-                        <?php } ?>
+                        <div class="text-base"><?= isset($data['kode_spareparts']) ? $data['kode_spareparts'] : '' ?></div>
                     </div>
 
                     <div class="mt-3"><b>PRODUK</b></div>
                     <div class="mt-1.5 flex items-center">
-                        <?php foreach ($join_spareparts as $key => $value) { ?>
-                            <?= isset($data['spareparts_id']) && $data['spareparts_id'] == $value['spareparts_id'] ? $value['spareparts'] : ''; ?>
-                        <?php } ?>
+                        <div class="text-base"><?= isset($data['spareparts']) ? $data['spareparts'] : '' ?></div>
                     </div>
 
                     <div class="mt-3"><b>JUMLAH</b></div>
@@ -43,9 +39,7 @@
                     </div>
                     <div class="mt-3"><b>SUPPLIER</b></div>
                     <div class="mt-1.5 flex items-center">
-                        <?php foreach ($join_supplier as $key => $value) { ?>
-                            <?= isset($data['supplier_id']) && $data['supplier_id'] == $value['supplier_id'] ? $value['nama'] : ''; ?>
-                        <?php } ?>
+                        <div class="text-base"><?= isset($data['nama']) ? $data['nama'] : '' ?></div>
                     </div>
 
                     <div class="mt-3"><b>KETERANGAN</b></div>

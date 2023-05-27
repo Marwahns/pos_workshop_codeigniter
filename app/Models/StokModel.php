@@ -8,32 +8,53 @@ class StokModel extends Model
 {
     protected $table      = 'tb_stok';
     protected $primaryKey = 'id';
-    // protected $useSoftDeletes = true;
-    protected $allowedFields = ['tipe', 'spareparts_id', 'supplier_id', 'jumlah', 'keterangan', 'ip_address'];
+    protected $useAutoIncrement = true;
+    protected $allowedFields = [
+        'tipe',
+        'spareparts_id',
+        'supplier_id',
+        'jumlah',
+        'keterangan',
+        'ip_address'
+    ];
     protected $useTimestamps = true;
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
 
-    // join table
-    function getJoinToSupplier()
+    ######################################## Detail Stok Masuk ########################################
+    public function detailStokMasuk($id = null)
     {
-        return $this->db->table('tb_stok')
-            ->join('tb_supplier', 'tb_supplier.id=tb_stok.supplier_id')
-            ->get()->getResultArray();
+        $builder = $this->builder($this->table)->select('tb_stok.id, tb_stok.supplier_id, tb_stok.jumlah, tb_stok.keterangan, tb_stok.tipe, tb_stok.ip_address, tb_stok.created_at, tb_spareparts.kode_spareparts As kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_supplier.nama, tb_kategori.kategori')
+            ->join('tb_spareparts', 'tb_spareparts.id = tb_stok.spareparts_id')
+            ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
+            ->join('tb_supplier', 'tb_supplier.id = tb_stok.supplier_id')
+            ->where('tipe', 'masuk');
+        if (empty($id)) {
+            return $builder->get()->getResult(); // tampilkan semua data
+        } else {
+            // tampilkan data sesuai id/barcode
+            return $builder->where('tb_stok.id', $id)->orWhere('tb_spareparts.kode_spareparts', $id)->get(1)->getRow();
+        }
     }
 
-    function getJoinToSpareparts()
+    ######################################## Detail Stok Keluar ########################################
+    public function detailStokKeluar($id = null)
     {
-        return $this->db->table('tb_stok')
-            ->join('tb_spareparts', 'tb_spareparts.id=tb_stok.spareparts_id')
-            ->get()->getResultArray();
+        $builder = $this->builder($this->table)->select('tb_stok.id, tb_stok.supplier_id, tb_stok.jumlah, tb_stok.keterangan, tb_stok.tipe, tb_stok.ip_address, tb_stok.spareparts_id, tb_stok.created_at, tb_spareparts.id As idSpareparts, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_supplier.nama, tb_kategori.kategori')
+            ->join('tb_spareparts', 'tb_spareparts.id = tb_stok.spareparts_id')
+            ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
+            ->join('tb_supplier', 'tb_supplier.id = tb_stok.supplier_id')
+            ->where('tipe', 'keluar');
+        if (empty($id)) {
+            return $builder->get()->getResult(); // tampilkan semua data
+        } else {
+            // tampilkan data sesuai id/barcode
+            return $builder->where('tb_stok.id', $id)->orWhere('tb_spareparts.kode_spareparts', $id)->get(1)->getRow();
+        }
     }
 
-    function getJoinToKategori()
-    {
-        return $this->db->table('tb_stok')
-            ->join('tb_kategori', 'tb_kategori.id=tb_stok.kategori_id')
-            ->get()->getResultArray();
-    }
-
+    ######################################## Simpan Transaksi ########################################
     public function simpanTransaksi(array $data)
     {
         $db = \Config\Database::connect();
@@ -55,6 +76,7 @@ class StokModel extends Model
         }
     }
 
+    ######################################## Get All Stok ########################################
     function getAll()
     {
         $builder = $this->db->table('tb_stok')->select('*');
@@ -62,14 +84,15 @@ class StokModel extends Model
         $query = $builder->get();
         return $query->getResult();
     }
-    
-    function stok_bertambah($post=null)
+
+    ######################################## Update Otomatis Stok in Table Spareparts ########################################
+    function stok_bertambah($post = null)
     {
-        return $this->db->table('tb_spareparts')->set('stok', 'stok+'.$post['jumlah'], false)->where('id', $post['spareparts_id'])->update();
+        return $this->db->table('tb_spareparts')->set('stok', 'stok+' . $post['jumlah'], false)->where('id', $post['spareparts_id'])->update();
     }
 
-    function stok_berkurang($post=null)
+    function stok_berkurang($post = null)
     {
-        return $this->db->table('tb_spareparts')->set('stok', 'stok-'.$post['jumlah'], false)->where('id', $post['spareparts_id'])->update();
+        return $this->db->table('tb_spareparts')->set('stok', 'stok-' . $post['jumlah'], false)->where('id', $post['spareparts_id'])->update();
     }
 }

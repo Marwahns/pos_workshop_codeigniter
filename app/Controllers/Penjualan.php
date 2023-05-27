@@ -39,7 +39,7 @@ class Penjualan extends BaseController
         $data = [
             'title'     => 'Input Penjualan',
             'pelanggan' => $this->pelangganModel->detailPelanggan(),
-            'tb_spareparts' => $this->SpareParts_model->detailItem(),
+            'tb_spareparts' => $this->SpareParts_model->detailProduk(),
         ];
         echo view('partial/header', $data);
         echo view('partial/top_menu');

@@ -5,19 +5,19 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>List of Stok Masuk Spare Parts</h1>
+                    <h1>List of Stok Masuk</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">List of Stok Masuk Spare Parts</li>
+                        <li class="breadcrumb-item"><a href="#">Transaksi</a></li>
+                        <li class="breadcrumb-item active">List of Stok Masuk</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
 
-    <a class="btn btn-success" href="<?= base_url('stok/createStokMasuk') ?>" style="margin-bottom: 10px; margin-left: 15px;"><i class="fa fa-plus mr-2"></i> Add New Stok Masuk Spare Parts</a>
+    <a class="btn btn-success" href="<?= base_url('stok/createStokMasuk') ?>" style="margin-bottom: 10px; margin-left: 15px;"><i class="fa fa-plus mr-2"></i> Add New Stok Masuk</a>
 
     <!-- Main content -->
     <section class="content">
@@ -44,7 +44,7 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
-                                        <!-- <th>Barcode</th> -->
+                                        <th>Barcode</th>
                                         <th>Spare parts</th>
                                         <th>Jumlah</th>
                                         <th>Tanggal</th>
@@ -57,8 +57,8 @@
                                         <?php foreach ($tb_stok as $row) : ?>
                                             <tr>
                                                 <th><?= $i++; ?></th>
-                                                <!-- <td><?= $row->barcode ?></td> -->
-                                                <td><?= $row->spareparts_id ?></td>
+                                                <td><?= $row->kode_spareparts ?></td>
+                                                <td><?= $row->spareparts ?></td>
                                                 <td><?= $row->jumlah ?></td>
                                                 <td><?= $row->created_at ?></td>
                                                 <td>

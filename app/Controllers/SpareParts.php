@@ -39,7 +39,7 @@ class SpareParts extends BaseController
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('spareparts/list');
+        echo view('spareparts/list', $this->data);
         echo view('partial/footer');
     }
 
@@ -55,7 +55,7 @@ class SpareParts extends BaseController
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('spareparts/create');
+        echo view('spareparts/create', $this->data);
         echo view('partial/footer');
     }
 
@@ -106,7 +106,7 @@ class SpareParts extends BaseController
             $validation = \Config\Services::validation();
             $this->data['validation'] = \Config\Services::validation();
             return redirect()->to('/spareparts/createSpareParts')->withInput()->with('validation', $validation);
-            // return $this->response->setJSON($respon);
+            return $this->response->setJSON($respon);
             // return redirect()->back()->with('error', $this->validator->getErrors());
         }
 
@@ -151,7 +151,7 @@ class SpareParts extends BaseController
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('spareparts/edit');
+        echo view('spareparts/edit', $this->data);
         echo view('partial/footer');
     }
 
@@ -177,14 +177,17 @@ class SpareParts extends BaseController
             return redirect()->to('/spareparts/index');
         }
         $this->data['page_title'] = "View Contact Details";
-        $qry = $this->SpareParts_model->select('*')->where(['id' => $id]);
+        $qry = $this->SpareParts_model->select('tb_spareparts.id, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_spareparts.supplier_id, tb_spareparts.kategori_id, tb_supplier.nama, tb_kategori.kategori')
+        ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
+        ->join('tb_supplier', 'tb_supplier.id = tb_spareparts.supplier_id')
+        ->where(['tb_spareparts.id' => $id]);
         $this->data['data'] = $qry->first();
         $this->data['join_supplier'] = $this->SpareParts_model->getJoinToSupplier();
         $this->data['join_kategori'] = $this->SpareParts_model->getJoinToKategori();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('spareparts/view');
+        echo view('spareparts/view', $this->data);
         echo view('partial/footer');
     }
 
