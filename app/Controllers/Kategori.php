@@ -15,7 +15,7 @@ class Kategori extends BaseController
     protected $kategori_model;
     protected $user_model;
 
-    // Initialize Objects
+    ######################################## Initialize Objects ########################################
     public function __construct()
     {
         $this->kategori_model = new KategoriModel();
@@ -23,11 +23,12 @@ class Kategori extends BaseController
         $this->data['session'] = $this->session;
     }
 
-    // Home Page
+    ######################################## Home Page ########################################
     public function index()
     {
         $this->data['page_title'] =  "List Kategori";
-        $this->data['tb_kategori'] =  $this->kategori_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        // $this->data['tb_kategori'] =  $this->kategori_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        $this->data['tb_kategori'] =  $this->kategori_model->detailKategori();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -35,7 +36,7 @@ class Kategori extends BaseController
         echo view('partial/footer');
     }
 
-    // Create Form Page
+    ######################################## Create Form Page ########################################
     public function createKategori()
     {
         $this->data['page_title'] =  "Add New";
@@ -48,9 +49,30 @@ class Kategori extends BaseController
         echo view('partial/footer');
     }
 
-    // Edit Form Page
+    ######################################## Save Form Page ########################################
     public function saveKategori()
     {
+        // validasi input
+        if (!$this->validate([
+            'kategori' => [
+                'rules' => 'required|min_length[2]|max_length[255]|is_unique[tb_kategori.kategori]',
+                'error' => [
+                    'required' => '{field} harus diisi',
+                    'is_unique' => '{field} Kategori sudah ada'
+                ]
+            ],
+        ])) {
+            $respon = [
+                'validasi' => false,
+                'error'    => $this->validator->getErrors(),
+            ];
+            $validation = \Config\Services::validation();
+            $this->data['validation'] = \Config\Services::validation();
+            return redirect()->to('/kategori/createKategori')->withInput()->with('validation', $validation);
+            // return $this->response->setJSON($respon);
+            // return redirect()->back()->with('error', $this->validator->getErrors());
+        }
+
         $this->data['request'] = $this->request;
         $post = [
             'kode_kategori' => $this->request->getPost('kode_kategori'),
@@ -72,7 +94,7 @@ class Kategori extends BaseController
         }
     }
 
-    // Edit Form Page
+    ######################################## Edit Form Page ########################################
     public function editKategori($id = '')
     {
         if (empty($id)) {
@@ -90,8 +112,8 @@ class Kategori extends BaseController
         echo view('partial/footer');
     }
 
-    // Delete Data
-    public function deleteKategori($id = '')
+    ######################################## Delete Data ########################################
+    public function deleteKategori($id = '') 
     {
         if (empty($id)) {
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
@@ -104,7 +126,7 @@ class Kategori extends BaseController
         }
     }
 
-    // View Data
+    ######################################## View Data ########################################
     public function view_detailKategori($id = '')
     {
         if (empty($id)) {

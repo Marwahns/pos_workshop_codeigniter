@@ -25,16 +25,19 @@
                     <div class="card-body">
                         <input type="hidden" name="id" value="<?= isset($data['id']) ? $data['id'] : '' ?>">
 
+                        <!-- Barcode -->
                         <div class="form-group">
                             <label for="exampleInputEmail1">Kode Spare Parts</label>
                             <input type="text" class="form-control" id="kode_spareparts" name="kode_spareparts" readonly required="required" value="<?= isset($data['kode_spareparts']) ? $data['kode_spareparts'] : '' ?>">
                         </div>
 
+                        <!-- Spareparts -->
                         <div class="form-group">
                             <label for="exampleInputEmail1">Spare Parts</label>
                             <input type="text" class="form-control" id="spareparts" name="spareparts" required="required" value="<?= isset($data['spareparts']) ? $data['spareparts'] : '' ?>">
                         </div>
 
+                        <!-- Supplier -->
                         <div class="form-group">
                             <label for="regular-form-1" class="control-label">Supplier</label><br>
                             <select class="form-control select2" name="supplier_id" id="supplier_id" required>
@@ -45,6 +48,7 @@
                             </select>
                         </div>
 
+                        <!-- Kategori -->
                         <div class="form-group">
                             <label for="regular-form-1" class="control-label">Kategori</label><br>
                             <select class="form-control select2" name="kategori_id" id="kategori_id" required>
@@ -55,11 +59,13 @@
                             </select>
                         </div>
 
+                        <!-- Harga -->
                         <div class="form-group">
                             <label for="exampleInputEmail1">Harga</label>
                             <input type="text" class="form-control" id="harga" name="harga" required="required" value="<?= isset($data['harga']) ? $data['harga'] : '' ?>">
                         </div>
 
+                        <!-- Stok -->
                         <div class="form-group">
                             <label for="exampleInputPassword1">Stok</label>
                             <input type="text" class="form-control" id="stok" name="stok" required="required" value="<?= isset($data['stok']) ? $data['stok'] : '' ?>">

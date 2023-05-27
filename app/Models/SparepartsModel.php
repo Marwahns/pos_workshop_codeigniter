@@ -9,9 +9,21 @@ class SparepartsModel extends Model
     //Table
     protected $table = 'tb_spareparts';
     protected $primaryKey = 'id';
-    //allowed friends to manage
-    protected $allowedFields = ['supplier_id', 'kategori_id', 'kode_spareparts', 'spareparts', 'harga', 'stok'];
+    protected $useAutoIncrement = true;
+    protected $allowedFields = [
+        'supplier_id', 
+        'kategori_id', 
+        'kode_spareparts', 
+        'spareparts', 
+        'harga', 
+        'stok'
+    ];
+    protected $useTimestamps = true;
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
 
+    ######################################## Generate Barcode Spareparts ########################################
     function generateKodeSpareParts()
     {
         $builder = $this->db->table('tb_spareparts');
@@ -45,7 +57,8 @@ class SparepartsModel extends Model
         return $newKode;
     }
 
-    public function detailItem($id = null)
+    ######################################## Detail Produk ########################################
+    public function detailProduk($id = null)
     {
         $builder = $this->builder($this->table)->select('tb_spareparts.id AS id, kode_spareparts, spareparts AS spareparts, harga, stok, supplier_id, kategori_id AS kategori_id')
             ->join('tb_supplier', 'tb_supplier.id=tb_spareparts.supplier_id')
@@ -58,7 +71,7 @@ class SparepartsModel extends Model
         }
     }
 
-    // Search produk
+    ######################################## Search produk ########################################
     public function cariProduk($keyword)
     {
         $builder = $this->builder($this->table);
@@ -71,7 +84,7 @@ class SparepartsModel extends Model
         return $data;
     }
 
-    // join table
+    ######################################## Join Table ########################################
     function getJoinToSupplier()
     {
         return $this->db->table('tb_spareparts')
@@ -98,8 +111,19 @@ class SparepartsModel extends Model
         return $query;
     }
 
+    ######################################## Serach ########################################
     function search($keyword)
     {
         return $this->db->table('tb_spareparts')->like('spareparts', $keyword)->orderBy('spareparts', 'ASC')->limit(10)->get()->getResult();
     }
+
+    ######################################## Search Barcode ########################################
+    public function barcodeModel($keyword)
+    {
+        return $this->builder($this->table)->select('kode_spareparts, spareparts')
+        ->like('kode_spareparts', $keyword)
+        ->orLike('spareparts', $keyword)
+        ->get()->getResult();
+    }
+    
 }

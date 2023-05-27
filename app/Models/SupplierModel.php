@@ -7,9 +7,20 @@ use CodeIgniter\Model;
 class SupplierModel extends Model{
     //Table
     protected $table = 'tb_supplier';
-    //allowed friends to manage
-    protected $allowedFields = ['kode_supplier', 'nama', 'alamat', 'no_telepon'];
+    protected $primaryKey = 'id';
+    protected $useAutoIncrement = true;
+    protected $allowedFields = [
+        'kode_supplier', 
+        'nama',
+        'alamat', 
+        'no_telepon'
+    ];
+    protected $useTimestamps = true;
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
 
+    ######################################## Generate Barcode Supplier ########################################
     function generateKodeSupplier() {
 		$builder = $this->db->table('tb_supplier');
 		$query = $builder->get();  
@@ -43,8 +54,22 @@ class SupplierModel extends Model{
 
    }
 
+   ######################################## Search Supplier ########################################
    public function search($keyword)
    {
     return $this->table('tb_supplier')->like('nama', $keyword);
    }
+
+   ######################################## Detail Supplier ########################################
+   public function detailSupplier($id = null)
+   {
+       $builder = $this->builder($this->table)->select('*');
+       if (empty($id)) {
+           return $builder->get()->getResult(); // tampilkan semua data
+       } else {
+           // tampilkan data sesuai id/barcode
+           return $builder->where('tb_kategori.id', $id)->orWhere('kode_kategori', $id)->get(1)->getRow();
+       }
+   }
+
 }

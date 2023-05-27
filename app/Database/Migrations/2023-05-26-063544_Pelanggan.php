@@ -4,40 +4,43 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class Kategori extends Migration
+class Pelanggan extends Migration
 {
     public function up()
     {
         $this->forge->addField([
 			'id' => [
                 'type'              => 'int', 
-                'constraint'	    => 11, 
-                'unsigned'          => true, 
-                'auto_increment'    => true
+                'constraint'        => 11, 
+                'auto_increment'    => true, 
+                'unsigned'          => true
             ],
-            'kode_kategori' => [
+			'nama' => [
                 'type'              => 'varchar', 
-                'constraint'        => 255
+                'constraint'        => 50
             ],
-			'kategori' => [
+			'no_telepon' => [
                 'type'              => 'varchar', 
-                'constraint'        => 255
+                'constraint'        => 50
+            ],
+            'tipe' => [
+                'type'              => 'enum', 
+                'constraint'        => ['Umum', 'Membership'], 
+                'default'           => 'Umum'
             ],
 			'created_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
 			'updated_at' => [
                 'type'              => 'datetime', 
                 'null'              => true
             ],
-        ]);
-
+		]);
 		$this->forge->addKey('id', true)
-			->addUniqueKey('kode_kategori')
-            ->addUniqueKey('kategori');
-		$this->forge->createTable('tb_kategori', true);
+                    ->addKey(['no_telepon']);
+		$this->forge->createTable('tb_pelanggan', true);
     }
 
     public function down()
     {
-        $this->forge->dropTable('tb_kategori', true);
+        $this->forge->dropTable('tb_pelanggan', true);
     }
 }

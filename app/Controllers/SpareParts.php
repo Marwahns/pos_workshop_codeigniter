@@ -20,8 +20,7 @@ class SpareParts extends BaseController
     protected $supplier_model;
     protected $kategori_model;
 
-
-    // Initialize Objects
+    ######################################## Initialize Objects ########################################
     public function __construct()
     {
         $this->SpareParts_model = new SparepartsModel();
@@ -32,11 +31,11 @@ class SpareParts extends BaseController
         helper(['fungsi_helper']);
     }
 
-    // Home Page
+    ######################################## Home Page ########################################
     public function index()
     {
         $this->data['page_title'] =  "List Spare Parts";
-        $this->data['tb_spareparts'] =  $this->SpareParts_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        $this->data['tb_spareparts'] =  $this->SpareParts_model->detailProduk();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -44,7 +43,7 @@ class SpareParts extends BaseController
         echo view('partial/footer');
     }
 
-    // Create Form Page
+    ######################################## Create Form Page ########################################
     public function createSpareParts()
     {
         $this->data['page_title'] =  "Add New";
@@ -52,6 +51,7 @@ class SpareParts extends BaseController
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['kategori_id'] =  $this->kategori_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['kode_spareparts'] = $this->SpareParts_model->generateKodeSpareParts();
+        $this->data['validation'] =  \Config\Services::validation();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -59,9 +59,57 @@ class SpareParts extends BaseController
         echo view('partial/footer');
     }
 
-    // Edit Form Page
+    ######################################## Save Form Page ########################################
     public function saveSpareParts()
     {
+        // validasi input
+        if (!$this->validate([
+            'kategori_id' => [
+                'rules' => 'required|min_length[1]|max_length[11]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'supplier_id' => [
+                'rules' => 'required|min_length[1]|max_length[11]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'spareparts' => [
+                'rules' => 'required|min_length[2]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'harga' => [
+                'rules' => 'required|min_length[1]|max_length[11]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'stok' => [
+                'rules' => 'required|min_length[1]|max_length[11]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+        ])) {
+            $respon = [
+                'validasi' => false,
+                'error'    => $this->validator->getErrors(),
+            ];
+            $validation = \Config\Services::validation();
+            $this->data['validation'] = \Config\Services::validation();
+            return redirect()->to('/spareparts/createSpareParts')->withInput()->with('validation', $validation);
+            // return $this->response->setJSON($respon);
+            // return redirect()->back()->with('error', $this->validator->getErrors());
+        }
+
         $this->data['request'] = $this->request;
         $post = [
             'supplier_id' => $this->request->getPost('supplier_id'),
@@ -87,7 +135,7 @@ class SpareParts extends BaseController
         }
     }
 
-    // Edit Form Page
+    ######################################## Edit Form Page ########################################
     public function editSpareParts($id = '')
     {
         if (empty($id)) {
@@ -107,7 +155,7 @@ class SpareParts extends BaseController
         echo view('partial/footer');
     }
 
-    // Delete Data
+    ######################################## Delete Data ########################################
     public function deleteSpareParts($id = '')
     {
         if (empty($id)) {
@@ -121,7 +169,7 @@ class SpareParts extends BaseController
         }
     }
 
-    // View Data
+    ######################################## View Data ########################################
     public function view_detailSpareParts($id = '')
     {
         if (empty($id)) {
@@ -140,7 +188,9 @@ class SpareParts extends BaseController
         echo view('partial/footer');
     }
 
-    public function cariProduk() {
+    ######################################## Cari Produk ########################################
+    public function cariProduk()
+    {
         $keyword = $this->request->getGet('search', FILTER_SANITIZE_SPECIAL_CHARS);
         $cek     = $this->SpareParts_model->cariProduk($keyword);
         $data    = [];
@@ -157,7 +207,9 @@ class SpareParts extends BaseController
         ]);
     }
 
-    public function download() {
+    ######################################## Download Spreadhsheet ########################################
+    public function download()
+    {
         // Instansiasi Spreadsheet
         $spreadsheet = new Spreadsheet();
         // styling
@@ -187,7 +239,7 @@ class SpareParts extends BaseController
             ->setCellValue('F1', 'Stok');
         $row = 2;
         // looping data item
-        foreach ($this->SpareParts_model->detailItem() as $key => $data) {
+        foreach ($this->SpareParts_model->detailProduk() as $key => $data) {
             $spreadsheet->getActiveSheet()
                 ->setCellValue('A' . $row, $key + 1)
                 ->setCellValue('B' . $row, $data->kode_spareparts)
@@ -207,11 +259,36 @@ class SpareParts extends BaseController
         exit;
     }
 
-    public function detail() {
+    ######################################## Detail Produk ########################################
+    public function detail()
+    {
         $data    = $this->SpareParts_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
         if (!empty($data)) {
             return $this->response->setJSON($data);
         }
     }
-    
+
+    ######################################## Search Barcode ########################################
+    public function barcode()
+    {
+        $keyword = $this->request->getGet('term', FILTER_SANITIZE_SPECIAL_CHARS);
+        $data    = $this->SpareParts_model->barcodeModel($keyword);
+        $barcode = [];
+        foreach ($data as $item) {
+            array_push($barcode, [
+                'label' => "{$item->kode_spareparts} - {$item->nama_item}",
+                'value' => $item->kode_spareparts,
+            ]);
+        }
+
+        return $this->response->setJSON($barcode);
+    }
+
+    ######################################## Search Produk ########################################
+    function search()
+    {
+        $keyword = $this->request->getPost('keyword');
+        $this->data['search_produk'] = $this->SpareParts_model->barcodeModel($keyword);
+        echo json_encode($this->SpareParts_model->barcodeModel($keyword));
+    }
 }

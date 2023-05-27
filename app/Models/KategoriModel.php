@@ -7,9 +7,18 @@ use CodeIgniter\Model;
 class KategoriModel extends Model{
     //Table
     protected $table = 'tb_kategori';
-    //allowed friends to manage
-    protected $allowedFields = ['kode_kategori', 'kategori'];
+    protected $primaryKey = 'id';
+    protected $useAutoIncrement = true;
+    protected $allowedFields = [
+        'kode_kategori', 
+        'kategori'
+    ];
+    protected $useTimestamps = true;
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
 
+    ######################################## Generate Barcode Kategori ########################################
     function generateKodeKategori() {
 		$builder = $this->db->table('tb_kategori');
 		$query = $builder->get();  
@@ -40,6 +49,18 @@ class KategoriModel extends Model{
 		$newKode  = $supplier.$lastKode;
 
         return $newKode; 
+   }
+
+   ######################################## Detail Kategori ########################################
+   public function detailKategori($id = null)
+   {
+       $builder = $this->builder($this->table)->select('*');
+       if (empty($id)) {
+           return $builder->get()->getResult(); // tampilkan semua data
+       } else {
+           // tampilkan data sesuai id/barcode
+           return $builder->where('tb_kategori.id', $id)->orWhere('kode_kategori', $id)->get(1)->getRow();
+       }
    }
 
 }

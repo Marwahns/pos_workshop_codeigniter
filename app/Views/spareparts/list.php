@@ -17,7 +17,7 @@
         </div><!-- /.container-fluid -->
     </section>
 
-    <a class="btn btn-success" href="<?= base_url('spareparts/createSpareParts') ?>" style="margin-bottom: 10px; margin-left: 15px;"><i class="fa fa-plus mr-2"></i> Add New Spare Parts</a>
+    <a class="btn btn-success" href="<?= base_url('spareparts/createSpareParts') ?>" style="margin-bottom: 10px; margin-left: 15px;"><i class="fa fa-plus mr-2"></i> Add New</a>
     <a class="btn btn-success" href="<?= base_url('spareparts/download') ?>" style="margin-bottom: 10px; margin-left: 15px;"><i class="fas fa-file-excel"></i> Export</a>
     <!-- Main content -->
     <section class="content">
@@ -83,3 +83,5 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
+</div>
+</body>

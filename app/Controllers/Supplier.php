@@ -25,11 +25,12 @@ class Supplier extends BaseController
         $this->data['session'] = $this->session;
     }
 
-    // Home Page
+    ######################################## Initialize Objects ########################################
     public function index()
     {
         $this->data['page_title'] =  "List Supplier";
-        $this->data['tb_supplier'] =  $this->supplier_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        // $this->data['tb_supplier'] =  $this->supplier_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        $this->data['tb_supplier'] =  $this->supplier_model->detailSupplier();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -37,7 +38,7 @@ class Supplier extends BaseController
         echo view('partial/footer');
     }
 
-    // Create Form Page
+    ######################################## Home Page ########################################
     public function createSupplier()
     {
         $this->data['page_title'] =  "Add New";
@@ -51,9 +52,43 @@ class Supplier extends BaseController
         echo view('partial/footer');
     }
 
-    // Edit Form Page
+    ######################################## Edit Form Page ########################################
     public function saveSupplier()
     {
+        // validasi input
+        if (!$this->validate([
+            'nama' => [
+                'rules' => 'required|min_length[2]|max_length[255]|is_unique[tb_supplier.nama]',
+                'error' => [
+                    'required' => '{field} harus diisi',
+                    'is_unique' => '{field} Nama supplier sudah ada'
+                ]
+            ],
+            'alamat' => [
+                'rules' => 'required|min_length[2]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+            'no_telepon' => [
+                'rules' => 'required|min_length[2]|max_length[20]|is_unique[tb_supplier.no_telepon]',
+                'error' => [
+                    'required' => '{field} harus diisi',
+                    'is_unique' => '{field} Nomor telepon sudah ada'
+                ]
+            ],
+        ])) {
+            $respon = [
+                'validasi' => false,
+                'error'    => $this->validator->getErrors(),
+            ];
+            $validation = \Config\Services::validation();
+            $this->data['validation'] = \Config\Services::validation();
+            return redirect()->to('/supplier/createSupplier')->withInput()->with('validation', $validation);
+            // return $this->response->setJSON($respon);
+            // return redirect()->back()->with('error', $this->validator->getErrors());
+        }
+
         $this->data['request'] = $this->request;
         $post = [
             'nama' => $this->request->getPost('nama'),
@@ -77,7 +112,7 @@ class Supplier extends BaseController
         }
     }
 
-    // Edit Form Page
+    ######################################## Edit Form Page ########################################
     public function editSupplier($id = '')
     {
         if (empty($id)) {
@@ -95,7 +130,7 @@ class Supplier extends BaseController
         echo view('partial/footer');
     }
 
-    // Delete Data
+    ######################################## Delete Data ########################################
     public function deleteSupplier($id = '')
     {
         if (empty($id)) {
@@ -109,7 +144,7 @@ class Supplier extends BaseController
         }
     }
 
-    // View Data
+    ######################################## View Data ########################################
     public function view_detailSupplier($id = '')
     {
         if (empty($id)) {

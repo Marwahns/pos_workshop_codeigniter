@@ -56,6 +56,12 @@ $routes->post('/users/(:any)', 'Users::$1');
 $routes->get('/stok/(:any)', 'Stok::$1');
 $routes->post('/stok/(:any)', 'Stok::$1');
 
+$routes->get('/penjualan/(:any)', 'Penjualan::$1');
+$routes->post('/penjualan/(:any)', 'Penjualan::$1');
+
+$routes->get('/transaksi/(:any)', 'Transaksi::$1');
+$routes->post('/transaksi/(:any)', 'Transaksi::$1');
+
 // API
 $routes->resource('api/home', ['controller' => 'Api\Home']);
 
