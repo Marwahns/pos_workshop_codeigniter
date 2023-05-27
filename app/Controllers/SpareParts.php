@@ -182,8 +182,6 @@ class SpareParts extends BaseController
         ->join('tb_supplier', 'tb_supplier.id = tb_spareparts.supplier_id')
         ->where(['tb_spareparts.id' => $id]);
         $this->data['data'] = $qry->first();
-        $this->data['join_supplier'] = $this->SpareParts_model->getJoinToSupplier();
-        $this->data['join_kategori'] = $this->SpareParts_model->getJoinToKategori();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');

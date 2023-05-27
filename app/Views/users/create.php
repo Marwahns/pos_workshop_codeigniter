@@ -56,7 +56,7 @@
                         
                         <div class="form-group">
                             <label for="regular-form-1" class="control-label">Hak Akses</label><br>
-                            <select class="form-control select2" name="id_role" id="id_role" required>
+                            <select class="form-control select" name="id_role" id="id_role" required>
                                 <option value="" selected disabled>Pilih Role</option>
                                 <?php foreach ($id_role as $key => $value) { ?>
                                     <option <?= !empty($request->getPost('id_role')) && $request->getPost('id_role') == $value->id ? 'selected' : '' ?> value="<?= $value->id ?>"><?= $value->role ?></option>
@@ -66,7 +66,7 @@
 
                         <div class="form-group">
                             <label for="regular-form-1" class="control-label">Status Account</label><br>
-                            <select class="form-control select2" name="id_status" id="id_status" required>
+                            <select class="form-control select" name="id_status" id="id_status" required>
                                 <option value="" selected disabled>Pilih Status Account</option>
                                 <?php foreach ($id_status as $key => $value) { ?>
                                     <option <?= !empty($request->getPost('id_status')) && $request->getPost('id_status') == $value->id ? 'selected' : '' ?> value="<?= $value->id ?>"><?= $value->status ?></option>

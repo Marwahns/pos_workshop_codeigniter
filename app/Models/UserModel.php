@@ -8,8 +8,36 @@ class UserModel extends Model
 {
     protected $table      = 'tb_users';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['id_status', 'id_role', 'email', 'username', 'password', 'nama', 'alamat', 'token', 'ip_address'];
-    // protected $useTimestamps = true;
+    protected $useAutoIncrement = true;
+    protected $allowedFields = [
+        'id_status',
+        'id_role',
+        'email',
+        'username',
+        'password',
+        'nama',
+        'alamat',
+        'token',
+        'ip_address'
+    ];
+    protected $useTimestamps = true;
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+
+    ######################################## Detail User ########################################
+    public function detailUser($id = null)
+    {
+        $builder = $this->builder($this->table)->select('tb_users.id, tb_users.email, tb_users.username, tb_users.password, tb_users.nama, tb_users.alamat, tb_users.id_status, tb_users.id_role, tb_roles.role, tb_status_roles.status')
+            ->join('tb_roles', 'tb_roles.id=tb_users.id_role')
+            ->join('tb_status_roles', 'tb_status_roles.id=tb_users.id_status');
+        if (empty($id)) {
+            return $builder->get()->getResult(); // tampilkan semua data
+        } else {
+            // tampilkan data sesuai id/barcode
+            return $builder->where('tb_users.id', $id)->get(1)->getRow();
+        }
+    }
 
     public function getUsername($loginProcess)
     {
@@ -66,7 +94,4 @@ class UserModel extends Model
             ->select('tb_users.*, tb_roles.role, tb_status_roles.status')
             ->get()->getResult();
     }
-
-    // SELECT tb_users.id, tb_roles.role FROM tb_users JOIN tb_roles ON tb_users.id_role=tb_roles.id;
-
 }

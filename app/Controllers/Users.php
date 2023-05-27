@@ -18,7 +18,7 @@ class Users extends BaseController
     protected $statusRole_model;
 
 
-    // Initialize Objects
+    ######################################## Initialize Objects ########################################
     public function __construct()
     {
         $this->user_model = new UserModel();
@@ -29,19 +29,20 @@ class Users extends BaseController
         helper(['form', 'fungsi']);
     }
 
-    // Home Page
+    ######################################## Home Page ########################################
     public function index()
     {
         $this->data['page_title'] =  "List Users";
-        $this->data['tb_users'] =  $this->user_model->joinUser();
+        // $this->data['tb_users'] =  $this->user_model->joinUser();
+        $this->data['tb_users'] =  $this->user_model->detailUser();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('users/list');
+        echo view('users/list', $this->data);
         echo view('partial/footer');
     }
 
-    // Create Form Page
+    ######################################## Create Form Page ########################################
     public function createUsers()
     {
         $this->data['page_title'] =  "Add New";
@@ -51,13 +52,76 @@ class Users extends BaseController
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('users/create');
+        echo view('users/create', $this->data);
         echo view('partial/footer');
     }
 
-    // Edit Form Page
+    ######################################## Save Form Page ########################################
     public function saveAccount()
     {
+        // validasi input
+        if (!$this->validate([
+            'id_status' => [
+                'rules' => 'required|min_length[1]|max_length[11]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'id_role' => [
+                'rules' => 'required|min_length[1]|max_length[11]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'email' => [
+                'rules' => 'required|min_length[2]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'username' => [
+                'rules' => 'required|min_length[1]|max_length[30]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'password' => [
+                'rules' => 'required|min_length[1]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'nama' => [
+                'rules' => 'required|min_length[1]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'alamat' => [
+                'rules' => 'required|min_length[1]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+        ])) {
+            $respon = [
+                'validasi' => false,
+                'error'    => $this->validator->getErrors(),
+            ];
+            $validation = \Config\Services::validation();
+            $this->data['validation'] = \Config\Services::validation();
+            return redirect()->to('/users/createUsers')->withInput()->with('validation', $validation);
+            return $this->response->setJSON($respon);
+            // return redirect()->back()->with('error', $this->validator->getErrors());
+        }
+
         $this->data['request'] = $this->request;
         $getpost = $this->request->getPost();
         $post = [
@@ -85,7 +149,7 @@ class Users extends BaseController
         }
     }
 
-    // Edit Form Page
+    ######################################## Edit Form Page ########################################
     public function editUsers($id = '')
     {
         if (empty($id)) {
@@ -101,11 +165,11 @@ class Users extends BaseController
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('users/edit');
+        echo view('users/edit', $this->data);
         echo view('partial/footer');
     }
 
-    // Delete Data
+    ######################################## Delete Data ########################################
     public function deleteUsers($id = '')
     {
         if (empty($id)) {
@@ -119,7 +183,7 @@ class Users extends BaseController
         }
     }
 
-    // View Data
+    ######################################## View Data ########################################
     public function view_detailUsers($id = '')
     {
         if (empty($id)) {
@@ -127,25 +191,25 @@ class Users extends BaseController
             return redirect()->to('/users/index');
         }
         $this->data['page_title'] = "View Contact Details";
-        $qry = $this->user_model->select('*')->where(['id' => $id]);
+        $qry = $this->user_model->select('tb_users.id, tb_users.email, tb_users.username, tb_users.password, tb_users.nama, tb_users.alamat, tb_users.id_status, tb_users.id_role, tb_roles.role, tb_status_roles.status')
+            ->join('tb_roles', 'tb_roles.id=tb_users.id_role')
+            ->join('tb_status_roles', 'tb_status_roles.id=tb_users.id_status')
+            ->where(['tb_users.id' => $id]);
         $this->data['data'] = $qry->first();
-        $this->data['join_role'] = $this->user_model->getJoinToRole();
-        $this->data['join_status_role'] = $this->user_model->getJoinToStatusRole();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('users/view');
+        echo view('users/view', $this->data);
         echo view('partial/footer');
     }
-    
+
     public function profile()
     {
         $this->data['page_title'] =  "Edit Profile";
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('users/profile');
+        echo view('users/profile', $this->data);
         echo view('partial/footer');
     }
-
 }

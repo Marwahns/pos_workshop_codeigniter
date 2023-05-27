@@ -37,7 +37,7 @@
                     <div class="mt-1.5 flex items-center">
                         <div class="text-base"><?= isset($data['email']) ? $data['email'] : '' ?></div>
                     </div>
-                    
+
                     <!-- <div class="mt-3"><b>PASSWORD HASH</b></div>
                     <div class="mt-1.5 flex items-center">
                         <div class="text-base"><?= isset($data['password']) ? $data['password'] : '' ?></div>
@@ -45,16 +45,12 @@
 
                     <div class="mt-3"><b>ROLE</b></div>
                     <div class="mt-1.5 flex items-center">
-                        <?php foreach ($join_role as $key => $value) { ?>
-                            <?= isset($data['id_role']) && $data['id_role'] == $value['id_role'] ? $value['role'] : ''; ?>
-                        <?php } ?>
+                        <div class="text-base"><?= isset($data['role']) ? $data['role'] : '' ?></div>
                     </div>
 
                     <div class="mt-3"><b>STATUS</b></div>
                     <div class="mt-1.5 flex items-center">
-                        <?php foreach ($join_status_role as $key => $value) { ?>
-                            <?= isset($data['id_status']) && $data['id_status'] == $value['id_status'] ? $value['status'] : ''; ?>
-                        <?php } ?>
+                        <div class="text-base"><?= isset($data['status']) ? $data['status'] : '' ?></div>
                     </div>
 
                     <div class="mt-3"><b>ALAMAT</b></div>
