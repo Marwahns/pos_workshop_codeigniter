@@ -16,6 +16,7 @@
         </div><!-- /.container-fluid -->
     </section>
 
+    <a class="btn btn-success" href="<?= base_url('pembayaran/download') ?>" style="margin-bottom: 10px; margin-left: 15px;"><i class="fas fa-file-excel"></i> Export</a>
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -23,7 +24,7 @@
                 <div class="card-body">
                     <div class="pesan" data-pesan="<?= session('pesan') ?>"></div>
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped" id="tabel-invoice" width="100%">
+                        <table id="example1" class="table table-bordered table-striped" id="tabel-invoice" width="100%">
                             <thead>
                                 <tr>
                                     <th>#</th>

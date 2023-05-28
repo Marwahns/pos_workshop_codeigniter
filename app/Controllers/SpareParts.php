@@ -245,7 +245,7 @@ class SpareParts extends BaseController
                 ->setCellValue('A' . $row, $key + 1)
                 ->setCellValue('B' . $row, $data->kode_spareparts)
                 ->setCellValue('C' . $row, $data->spareparts)
-                ->setCellValue('D' . $row, $data->kategori_id)
+                ->setCellValue('D' . $row, $data->kategori)
                 ->setCellValue('E' . $row, $data->harga)
                 ->setCellValue('F' . $row, $data->stok);
             $row++;
