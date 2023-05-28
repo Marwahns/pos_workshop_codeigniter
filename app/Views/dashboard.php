@@ -34,7 +34,9 @@
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-            <a href="<?= base_url('spareparts/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+              <a href="<?= base_url('spareparts/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php } ?>
           </div>
         </div>
         <!-- ./col -->
@@ -49,7 +51,9 @@
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-            <a href="<?= base_url('kategori/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+              <a href="<?= base_url('kategori/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php } ?>
           </div>
         </div>
         <!-- ./col -->
@@ -64,7 +68,9 @@
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php if (get_user('id_role') == 1) { ?>
+              <a href="<?= base_url('users/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php } ?>
           </div>
         </div>
         <!-- ./col -->
@@ -79,7 +85,9 @@
             <div class="icon">
               <i class="ion ion-pie-graph"></i>
             </div>
-            <a href="<?= base_url('supplier/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+              <a href="<?= base_url('supplier/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php } ?>
           </div>
         </div>
         <!-- ./col -->
@@ -89,7 +97,7 @@
       <div class="row">
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-info">
+          <!-- <div class="small-box bg-info">
             <div class="inner">
               <h3><?= esc($spareParts) ?></h3>
 
@@ -98,12 +106,12 @@
             <div class="icon">
               <i class="ion ion-bag"></i>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- ./col -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-success">
+          <!-- <div class="small-box bg-success">
             <div class="inner">
               <h3><?= esc($kategori) ?></h3>
 
@@ -112,12 +120,12 @@
             <div class="icon">
               <i class="ion ion-stats-bars"></i>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- ./col -->
         <div class="col-lg-3 col-6">
           <!-- small box -->
-          <div class="small-box bg-warning">
+          <!-- <div class="small-box bg-warning">
             <div class="inner">
               <h3><?= esc($users) ?></h3>
 
@@ -126,7 +134,7 @@
             <div class="icon">
               <i class="ion ion-person-add"></i>
             </div>
-          </div>
+          </div> -->
         </div>
         <!-- ./col -->
       </div>
@@ -137,7 +145,7 @@
         <section class="col-lg-7 connectedSortable">
           <!-- Custom tabs (Charts with tabs)-->
           <div class="card">
-            <div class="card-header">
+            <!-- <div class="card-header">
               <h3 class="card-title">
                 <i class="fas fa-chart-pie mr-1"></i>
                 Sales
@@ -152,10 +160,10 @@
                   </li>
                 </ul>
               </div>
-            </div><!-- /.card-header -->
-            <div class="card-body">
+            </div> -->
+            <!-- /.card-header -->
+            <!-- <div class="card-body">
               <div class="tab-content p-0">
-                <!-- Morris chart - Sales -->
                 <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
                   <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
                 </div>
@@ -163,7 +171,8 @@
                   <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
                 </div>
               </div>
-            </div><!-- /.card-body -->
+            </div> -->
+            <!-- /.card-body -->
           </div>
           <!-- /.card -->
 

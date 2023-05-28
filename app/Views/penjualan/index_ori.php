@@ -219,7 +219,7 @@
                         <div class="form-group row">
                             <label for="tunai" class="col-sm-5 col-form-label">Cash</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control text-right" name="tendered" id="tendered" placeholder="0">
+                                <input type="text" class="form-control text-right" name="tendered" id="tendered" placeholder="0" disabled>
                             </div>
                         </div>
 
@@ -227,7 +227,7 @@
                         <div class="form-group row">
                             <label for="kembalian" class="col-sm-5 col-form-label">Change</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control text-right" name="kembalian" id="change" placeholder="0">
+                                <input type="text" class="form-control text-right" name="kembalian" id="change" placeholder="0" disabled>
                             </div>
                         </div>
                     </div>
@@ -249,8 +249,9 @@
                 <div class="card card-primary card-outline">
                     <!-- Button -->
                     <div class="card-body">
-                        <p><a href="<?= base_url('pembayaran/index') ?>" class="btn btn-warning"><i class="fa fa-refresh"></i> Cancel</a></p>
-                        <p><button class="btn btn-success" id="save_transaction"><i class="fa fa-paper-plane"></i> Process Payment</button></p>
+                        <!-- ## class="btn btn-warning disabled" -->
+                        <p><a href="<?= base_url('pembayaran/index') ?>" class="btn btn-warning" id="cancel_payment"><i class="fa fa-refresh"></i> Cancel</a></p>
+                        <p><button class="btn btn-success" id="save_transaction" disabled><i class="fa fa-paper-plane" ></i> Process Payment</button></p>
                     </div>
                 </div>
             </div>

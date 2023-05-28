@@ -123,6 +123,15 @@
       minimumFractionDigits: 2
     }))
     $('[name="total_amount"]').val(total)
+
+    if($('#tampilkan_total' > 0)){
+      $('#tendered').prop('disabled', false)
+    } 
+
+    if($('#tendered' > 0)){
+      $('#save_transaction').prop('disabled', false)
+    } 
+
   }
 
   $(function() {
@@ -180,7 +189,11 @@
       tr.find('[name="quantity[]"]').on('change input', function() {
         calculate_total()
       })
+      $('#select2_pelanggan_id').prop('disabled', true)
+
+      $('#cancel_payment').prop('disabled', false)
     })
+
     $('[name="tendered"]').on('input change', function() {
       var tendered = $(this).val()
       var amount = $('[name="total_amount"]').val()
@@ -208,6 +221,7 @@
         return false;
       }
       $('#transaction-form').submit()
+      
     })
 
     // Search in dropdown

@@ -73,4 +73,9 @@ class TransactionItem extends Model
     //         return $builder->where('transaction_id.', $id)->orWhere('transactions.code', $id)->get(1)->getRow();
     //     }
     // }
+
+    public function get_quantity(){
+        $builder = $this->builder($this->table)->select('SUM(transaction_items.quantity)')->get();
+        return $builder;
+    }
 }
