@@ -20,8 +20,8 @@ class Home extends ResourceController
     {
         $SpareParts_model = new SparepartsModel();
         $Pelanggan_model = new PelangganModel();
-        $data['spareParts'] = $SpareParts_model->find($id);
-        $data['pelanggan'] = $Pelanggan_model->find($id);
+        $data = $SpareParts_model->find($id);
+        // $data = $Pelanggan_model->find($id);
 
         return $this->respond($data);
     }

@@ -249,7 +249,7 @@
                 <div class="card card-primary card-outline">
                     <!-- Button -->
                     <div class="card-body">
-                        <p><a href="<?= base_url('pembaua/index') ?>" class="btn btn-warning"><i class="fa fa-refresh"></i> Cancel</a></p>
+                        <p><a href="<?= base_url('pembayaran/index') ?>" class="btn btn-warning"><i class="fa fa-refresh"></i> Cancel</a></p>
                         <p><button class="btn btn-success" id="save_transaction"><i class="fa fa-paper-plane"></i> Process Payment</button></p>
                     </div>
                 </div>
@@ -261,6 +261,7 @@
         <!-- <div class="card-footer text-center">
             <button class="btn btn-primary rounded-0" id="save_transaction" type="button"><i class="fa fa-save"></i> Save Transaction</button>
         </div> -->
+    </section>
 </div><!-- /.container-fluid -->
 
 <noscript id="item-clone">
@@ -278,12 +279,7 @@
         <td class="py-1 px-2 align-middle total_price text-end">0.00</td>
     </tr>
 </noscript>
-</section>
-<!-- /.content -->
 
-</div>
-</div>
-</body>
 
 <!-- <script type="text/javascript">
     // Cari item berdasarkan barcode

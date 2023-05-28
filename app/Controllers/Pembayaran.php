@@ -42,7 +42,7 @@ class Pembayaran extends BaseController
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('penjualan/index_ori', $this->data);
+        echo view('penjualan/index_ori');
         echo view('partial/footer');
     }
 
@@ -154,4 +154,41 @@ class Pembayaran extends BaseController
         echo view('pos/view', $this->data);
         echo view('partial/footer');
     }
+
+    public function cetak($id='')
+    {
+        if(empty($id)){
+            $this->session->setFlashdata('main_error',"Transaction Details failed to load due to unknown ID.");
+            return redirect()->to('pembayaran/transactions');
+        }
+        $this->data['page_title']="Transactions";
+        $this->data['details'] = $this->tran_model->where('id', $id)->first();
+        if(!$this->data['details']){
+            $this->session->setFlashdata('main_error',"Transaction Details failed to load due to unknown ID.");
+            return redirect()->to('pembayaran/transactions');
+        }
+        $this->data['items'] = $this->tran_item_model
+                                // ->select("transaction_items.*, CONCAT(tb_spareparts.kode_spareparts,'-',tb_spareparts.spareparts) as product")
+                                ->select('transaction_items.price, transaction_items.quantity, 
+                                transactions.code, transactions.customer, transactions.total_amount, transactions.tendered, transactions.created_at, 
+                                tb_spareparts.spareparts')
+                                ->join('tb_spareparts', " transaction_items.product_id = tb_spareparts.id ", 'inner')
+                                ->join('transactions', 'transactions.id=transaction_items.transaction_id')
+                                ->where('transaction_id', $id)
+                                ->findAll();
+        // echo view('partial/header', $this->data);
+        // echo view('partial/top_menu');
+        // echo view('partial/side_menu');
+        echo view('penjualan/cetak_termal', $this->data);
+        // echo view('pos/generatereceipt', $this->data);
+        // echo view('partial/footer');
+        
+        // $transaksi = $this->tran_item_model->where('id', $id)->first();
+        // // jika id penjualan tidak ditemukan redirect ke halaman invoice dan tampilkan error
+        // if (empty($transaksi)) {
+        //     return redirect()->to('/pembayaran/invoice')->with('pesan', 'Invoice tidak ditemukan');
+        // }
+        // echo view('penjualan/daftar_invoice');
+    }
+
 }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>nama toko | Cetak Struk</title>
+    <title>Toko Haha Hihi | Cetak Struk</title>
     <style>
         html {
             font-family: "Verdana, Arial";
@@ -69,62 +69,62 @@
 <body onload="print()">
     <div class="container">
         <div class="title">
-            <h2>nama toko</h2>
-            <p>alamat</p>
-            <p>telepon</p>
+            <h2>Toko Haha Hihi</h2>
+            <p>Depok, Jawa Barat</p>
+            <p>0213456789</p>
         </div>
         <div class="head">
             <table class="table">
                 <tr>
-                    <td class="kiri"><?= date("d F Y H:i", strtotime(esc($items[0]['created_at']))) ?></td>
-                    <!-- <td class="kanan"> Kasir :</td> -->
-                    <!-- <td class="kanan"><?= esc($items[0]['kasir']); ?></td> -->
+                    <td class="kiri"><?=date("d F Y H:i", strtotime(esc($transaksi[0]['tanggal'])))?></td>
+                    <td class="kanan"> Kasir :</td>
+                    <td class="kanan"><?=esc($transaksi[0]['kasir']);?></td>
                 </tr>
                 <tr>
-                    <td class="kiri"><?= esc($items[0]['code']); ?></td>
+                    <td class="kiri"><?=esc($transaksi[0]['invoice']);?></td>
                     <td class="kanan">Pelanggan :</td>
-                    <td class="kanan"><?= esc($items[0]['customer']); ?></td>
+                    <td class="kanan"><?=esc($transaksi[0]['pelanggan']);?></td>
                 </tr>
 
             </table>
         </div>
-        <div class="items">
+        <div class="transaksi">
             <table class="table">
-                <?php $diskon = 0; ?>
-                <?php foreach (esc($items) as $data) : ?>
-                    <!-- <?php $diskon = esc($data['diskon']); ?> -->
+                <?php $diskon = 0;?>
+                <?php foreach (esc($transaksi) as $data): ?>
+                    <?php $diskon = esc($data['diskon']);?>
                     <tr>
-                        <td class="kiri"><?= esc($data['spareparts']); ?></td>
-                        <td class="kanan"><?= esc($data['quantity']); ?> x </td>
-                        <td class="kanan"><?= rupiah(esc($data['price'])); ?></td>
-                        <?php if (esc($data['diskon_item']) != 0) : ?>
-                            <td class="kanan">Dis item <?= esc($data['diskon_item']); ?> %</td>
-                        <?php else : ?>
+                        <td class="kiri"><?=esc($data['item']);?></td>
+                        <td class="kanan"><?=esc($data['jumlah']);?> x </td>
+                        <td class="kanan"><?=rupiah(esc($data['harga']));?></td>
+                        <?php if (esc($data['diskon_item']) != 0): ?>
+                            <td class="kanan">Dis item <?=esc($data['diskon_item']);?> %</td>
+                        <?php else: ?>
                             <td class="kanan"></td>
-                        <?php endif; ?>
-                        <td class="kanan"><?= rupiah(esc($data['price'] * $data['quantity'])); ?></td>
+                        <?php endif;?>
+                        <td class="kanan"><?=rupiah(esc($data['subtotal']));?></td>
                     </tr>
-                <?php endforeach; ?>
+                <?php endforeach;?>
                 <tr>
                     <td colspan="5" style="border-bottom:1px solid; "></td>
                 </tr>
                 <tr>
-                    <!-- <td colspan="4" class="kanan">Sub Total</td>
-                    <td class="kanan"><?= rupiah(esc($items[0]['total_harga'])); ?></td> -->
+                    <td colspan="4" class="kanan">Sub Total</td>
+                    <td class="kanan"><?=rupiah(esc($transaksi[0]['total_harga']));?></td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
                     <td colspan="3" style="border-bottom: 1px dashed;"></td>
                 </tr>
-                <?php if (esc($diskon) != 0) : ?>
+                <?php if (esc($diskon) != 0): ?>
                     <tr>
                         <td colspan="4" class="kanan">Diskon Pembelian</td>
-                        <td class="kanan"><?= esc($diskon); ?> %</td>
+                        <td class="kanan"><?=esc($diskon);?> %</td>
                     </tr>
-                <?php endif; ?>
+                <?php endif;?>
                 <tr>
                     <td colspan="4" class="kanan">Total Akhir</td>
-                    <td class="kanan"><?= rupiah(esc($items[0]['total_amount'])); ?></td>
+                    <td class="kanan"><?=rupiah(esc($transaksi[0]['total_akhir']));?></td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
@@ -132,16 +132,16 @@
                 </tr>
                 <tr>
                     <td colspan="4" class="kanan">Tunai</td>
-                    <td class="kanan"><?= rupiah(esc($items[0]['tendered'])); ?></td>
+                    <td class="kanan"><?=rupiah(esc($transaksi[0]['tunai']));?></td>
                 </tr>
                 <tr>
                     <td colspan="4" class="kanan">Kembalian</td>
-                    <td class="kanan"><?= rupiah(esc($items[0]['tendered'] - $items[0]['total_amount'])); ?></td>
+                    <td class="kanan"><?=rupiah(esc($transaksi[0]['kembalian']));?></td>
                 </tr>
-                <!-- <tr>
+                <tr>
                     <td colspan="4" class="kanan">Catatan</td>
-                    <td class="kanan"><?= esc($items[0]['catatan']); ?></td>
-                </tr> -->
+                    <td class="kanan"><?=esc($transaksi[0]['catatan']);?></td>
+                </tr>
             </table>
         </div>
 
@@ -152,13 +152,3 @@
 </body>
 
 </html>
-
-<script>
-    function printContent(el) {
-        var restorepage = $('body').html();
-        var printcontent = $('#' + el).clone();
-        $('body').empty().html(printcontent);
-        window.print();
-        $('body').html(restorepage);
-    }
-</script>

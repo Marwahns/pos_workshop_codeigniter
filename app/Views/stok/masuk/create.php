@@ -40,7 +40,7 @@
                             <input type="hidden" id="spareparts_id" name="spareparts_id">
                             <input type="hidden" name="tipe" value="masuk">
                             <label for="regular-form-1" class="control-label">Barcode</label><br>
-                            <select class="form-control select2" name="spareparts_id" id="select2_spareparts_id" data-placeholder="Select a Produk" required>
+                            <select class="form-control select2" name="spareparts_id" id="select2_spareparts_stok_masuk" data-placeholder="Select a Produk" required>
                                 <option></option>
                                 <!-- <option value="" selected disabled>Cari produk</option> -->
                                 <?php foreach ($spareparts_id as $key => $value) { ?>
@@ -97,5 +97,3 @@
     </section>
     <!-- /.content -->
 </div>
-</div>
-</body>

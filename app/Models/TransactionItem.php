@@ -6,9 +6,9 @@ use CodeIgniter\Model;
 
 class TransactionItem extends Model
 {
-    protected $DBGroup          = 'default';
+    // protected $DBGroup          = 'default';
     protected $table            = 'transaction_items';
-    // protected $primaryKey       = 'id';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $insertID         = 0;
     protected $returnType       = 'array';
@@ -39,4 +39,23 @@ class TransactionItem extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    ######################################## Detail Produk ########################################
+    public function detailTransaksi($id = null)
+    {
+        $builder = $this->builder($this->table)->select(
+            'transaction_items.price, transaction_items.quantity, 
+            transactions.code, transactions.customer, transactions.total_amount, transactions.tendered, 
+            tb_spareparts.spareparts'
+        )
+
+            ->join('tb_spareparts', 'tb_spareparts.id=transaction_items.product_id')
+            ->join('transactions', 'transactions.id=transaction_items.transaction_id');
+        if (empty($id)) {
+            return $builder->get()->getResult(); // tampilkan semua data
+        } else {
+            // tampilkan data sesuai id/barcode
+            return $builder->where('transaction_id', $id)->orWhere('transactions.code', $id)->get(1)->getRow();
+        }
+    }
 }

@@ -83,5 +83,3 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-</div>
-</body>

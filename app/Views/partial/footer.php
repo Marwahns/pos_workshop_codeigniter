@@ -222,11 +222,11 @@
       theme: 'bootstrap4',
     })
 
-    // $('#select2_spareparts_id').on('change', (event) => {
-    //   getProduk(event.target.event).then(produk => {
-    //     $('#spareparts').val(produk.spareparts);
-    //   });
-    // });
+    $('#select2_spareparts_id').on('change', (event) => {
+      getProduk(event.target.event).then(produk => {
+        $('#spareparts_stok_masuk').val(produk.spareparts);
+      });
+    });
 
     async function getProduk(id) {
       let response = await fetch('spareparts/home/' + id)
@@ -241,6 +241,16 @@
     });
 
     $('#select2_spareparts_id').on('change', (event) => {
+      getBarang(event.target.value).then(spareparts_id => {
+        $('#spareparts').val(spareparts_id.spareparts);
+        $('#stok').val(spareparts_id.stok);
+        $('#kategori_id').val(spareparts_id.kategori_id);
+        $('#supplier_id').val(spareparts_id.supplier_id);
+      });
+
+    });
+
+    $('#select2_spareparts_stok_masuk').on('change', (event) => {
       getBarang(event.target.value).then(spareparts_id => {
         $('#spareparts').val(spareparts_id.spareparts);
         $('#stok').val(spareparts_id.stok);

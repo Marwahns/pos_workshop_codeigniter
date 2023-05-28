@@ -39,7 +39,7 @@ class SpareParts extends BaseController
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('spareparts/list', $this->data);
+        echo view('spareparts/list');
         echo view('partial/footer');
     }
 

@@ -79,7 +79,7 @@
 </div>
 <!-- /.content-wrapper -->
 
-<script>
+<!-- <script>
     $(function() {
         $("#example1").DataTable({
             "responsive": true,
@@ -97,4 +97,4 @@
             "responsive": true,
         });
     });
-</script>
+</script> -->
