@@ -263,7 +263,8 @@ class SpareParts extends BaseController
     ######################################## Detail Produk ########################################
     public function detail()
     {
-        $data    = $this->SpareParts_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        $barcode = $this->request->getGet('kode_spareparts', FILTER_SANITIZE_SPECIAL_CHARS);
+        $data    = $this->SpareParts_model->detailProduk($barcode);
         if (!empty($data)) {
             return $this->response->setJSON($data);
         }
@@ -277,7 +278,7 @@ class SpareParts extends BaseController
         $barcode = [];
         foreach ($data as $item) {
             array_push($barcode, [
-                'label' => "{$item->kode_spareparts} - {$item->nama_item}",
+                'label' => "{$item->kode_spareparts} - {$item->spareparts}",
                 'value' => $item->kode_spareparts,
             ]);
         }
@@ -290,6 +291,13 @@ class SpareParts extends BaseController
     {
         $keyword = $this->request->getPost('keyword');
         $this->data['search_produk'] = $this->SpareParts_model->barcodeModel($keyword);
+        echo json_encode($this->SpareParts_model->barcodeModel($keyword));
+    }
+
+    ######################################## Search Produk ########################################
+    function searchProduk()
+    {
+        $keyword = $this->request->getPost('keyword');
         echo json_encode($this->SpareParts_model->barcodeModel($keyword));
     }
 }

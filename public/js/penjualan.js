@@ -70,11 +70,11 @@ $(function () {
 
   // Cari item berdasarkan barcode
   $('#barcode').autocomplete({
-    source: `${BASE_URL}/item/barcode`,
+    source: `${BASE_URL}/spareparts/barcode`,
     autoFocus: true,
     select: function (e, ui) {
       $.ajax({
-        url: `${BASE_URL}/item/detail`,
+        url: `${BASE_URL}/spareparts/detail`,
         type: 'get',
         data: {
           barcode: ui.item.value,
@@ -166,51 +166,6 @@ $(function () {
       },
     })
   }
-
-  // tambahkan item ke keranjang
-  /*
-  $(document).on('keypress keyup', '#jumlah', function (e) {
-    let iditem = $('#iditem').val()
-    let barcode = $('#barcode').val()
-    let nama = $('#nama').val()
-    let harga = $('#harga').val()
-    let stok = parseInt($('#stok').val())
-    let jumlah = parseInt($('#jumlah').val())
-    if (jumlah > stok) {
-      $('#jumlah').val(1)
-      toastr.error(`Jumlah melebihi stok, maksimal ${stok}`, 'Informasi', {
-        timeOut: 500,
-      })
-    }
-
-    if (e.keyCode === 13 && jumlah != '' && jumlah > 0) {
-      $.ajax({
-        url: `${BASE_URL}/penjualan/tambah`,
-        method: 'post',
-        data: {
-          [$('#token').attr('name')]: $('#token').val(),
-          iditem: iditem,
-          barcode: barcode,
-          nama: nama,
-          harga: harga,
-          jumlah: jumlah,
-          stok: stok,
-        },
-        success: function (response) {
-          if (response.status) {
-            detailKeranjang()
-            $('#jumlah').val('').prop('disabled', true)
-            $('#barcode').val('').focus()
-            $('#tampil-stok').text('')
-            toastr.success(response.pesan, 'Sukses', { timeOut: 500 })
-          } else {
-            toastr.error(response.pesan)
-          }
-        },
-      })
-    }
-  })
-	*/
 
   // hapus item di keranjang
   $('.content').on('click', '#hapus-item', function () {

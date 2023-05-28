@@ -97,13 +97,15 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="<?= base_url('penjualan/index') ?>" class="nav-link">
+                            <a href="<?= base_url('pembayaran/index') ?>" class="nav-link">
+                            <!-- <a href="<?= base_url('main/pos') ?>" class="nav-link"> -->
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Penjualan</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="<?= base_url('penjualan/invoice') ?>" class="nav-link">
+                            <!-- <a href="<?= base_url('penjualan/invoice') ?>" class="nav-link"> -->
+                            <a href="<?= base_url('pembayaran/invoice') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Invoice</p>
                             </a>

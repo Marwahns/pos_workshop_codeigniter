@@ -8,54 +8,49 @@ use App\Models\PelangganModel;
 use App\Models\PenjualanModel;
 use App\Models\SparepartsModel;
 use App\Models\TransaksiModel;
-use App\Models\Transaction;
-use App\Models\TransactionItem;
 use Irsyadulibad\DataTables\DataTables;
 
 class Penjualan extends BaseController
 {
+    // Session
+    protected $session;
+    // Data
+    protected $data;
+    // Model
     protected $pelangganModel;
     protected $keranjangModel;
     protected $penjualanModel;
     protected $transaksi;
     protected $SpareParts_model;
-    protected $tran_model;
-    protected $tran_item_model;
 
     public function __construct()
     {
-        $this->request = \Config\Services::request();
         $this->pelangganModel = new PelangganModel();
         $this->penjualanModel = new PenjualanModel();
         $this->transaksi      = new TransaksiModel();
         $this->keranjangModel = new KeranjangModel();
         $this->SpareParts_model = new SparepartsModel();
-
-        $this->tran_model = new Transaction;
-        $this->tran_item_model = new TransactionItem;
-        $this->data = ['session' => $this->session,'request'=>$this->request];
+        $this->session = \Config\Services::session();
+        $this->data['session'] = $this->session;
         helper('form');
     }
     public function index()
     {
-        // $data = [
-        //     'title'     => 'Input Penjualan',
-        //     'pelanggan' => $this->pelangganModel->detailPelanggan(),
-        // ];
-        $this->data['title'] =  'Input Penjualan';
-        $this->data['products'] =  $this->SpareParts_model->detailProduk();
-        $this->data['pelanggan'] = $this->pelangganModel->detailPelanggan();
-        $this->data['invoice'] = $this->penjualanModel->invoice();
-        echo view('partial/header', $this->data);
+        $data = [
+            'title'     => 'Input Penjualan',
+            'pelanggan' => $this->pelangganModel->detailPelanggan(),
+            'produk' => $this->SpareParts_model->detailProduk(),
+            'tb_spareparts' => $this->SpareParts_model->detailProduk()
+        ];
+        echo view('partial/header', $data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('penjualan/index_ori', $this->data);
+        echo view('penjualan/index', $data);
         echo view('partial/footer');
     }
 
     public function cekStok()
     {
-        // value di dalam getGet berasal dari data yg ada di ajax
         $barcode = $this->request->getGet('barcode');
         $respon  = $this->keranjangModel->cekStokProduk($barcode);
 
@@ -65,14 +60,14 @@ class Penjualan extends BaseController
     public function tambah()
     {
         if ($this->request->getMethod() == 'post') {
-            $id   = $this->request->getPost('iditem', FILTER_SANITIZE_NUMBER_INT);
+            $id   = $this->request->getPost('spareparts_id', FILTER_SANITIZE_NUMBER_INT);
             $item = [
                 'id'      => $id,
-                'barcode' => $this->request->getPost('barcode', FILTER_SANITIZE_STRING),
-                'nama'    => $this->request->getPost('nama', FILTER_SANITIZE_STRING),
-                'harga'   => $this->request->getPost('harga', FILTER_SANITIZE_NUMBER_INT),
-                'jumlah'  => $this->request->getPost('jumlah', FILTER_SANITIZE_NUMBER_INT),
-                'stok'    => $this->request->getPost('stok', FILTER_SANITIZE_NUMBER_INT),
+                'barcode'            => $this->request->getPost('barcode', FILTER_SANITIZE_STRING),
+                'nama'               => $this->request->getPost('nama', FILTER_SANITIZE_STRING),
+                'harga'              => $this->request->getPost('harga', FILTER_SANITIZE_NUMBER_INT),
+                'jumlah'             => $this->request->getPost('jumlah', FILTER_SANITIZE_NUMBER_INT),
+                'stok'               => $this->request->getPost('stok', FILTER_SANITIZE_NUMBER_INT),
             ];
             $hasil = Keranjang::tambah($id, $item); // masukan item ke keranjang
             if ($hasil == 'error') {
@@ -147,7 +142,7 @@ class Penjualan extends BaseController
             $kembalian = $this->request->getPost('kembalian', FILTER_SANITIZE_NUMBER_INT);
             $data      = [
                 'invoice'      => $this->penjualanModel->invoice(),
-                'id_pelanggan' => $this->request->getPost('id_pelanggan', FILTER_SANITIZE_NUMBER_INT),
+                'pelanggan_id' => $this->request->getPost('pelanggan_id', FILTER_SANITIZE_NUMBER_INT),
                 'total_harga'  => $this->request->getPost('subtotal', FILTER_SANITIZE_NUMBER_INT),
                 'diskon'       => $this->request->getPost('diskon', FILTER_SANITIZE_NUMBER_INT),
                 'total_akhir'  => $this->request->getPost('total_akhir', FILTER_SANITIZE_NUMBER_INT),
@@ -194,14 +189,26 @@ class Penjualan extends BaseController
 
     public function invoice()
     {
-        if ($this->request->isAJAX()) {
-            return DataTables::use('tb_penjualan')->select('id, invoice, tanggal')->make();
-        } else if ($this->request->getMethod() == 'get') {
-            $data = [
-                'title' => 'Daftar Invoice',
-            ];
-            echo view('penjualan/daftar_invoice', $data);
-        }
+        // if ($this->request->isAJAX()) {
+        //     return DataTables::use('tb_penjualan')->select('id, invoice, tanggal')->make();
+        // } else if ($this->request->getMethod() == 'get') {
+        //     $data = [
+        //         'title' => 'Daftar Invoice',
+        //     ];
+        //     echo view('partial/header', $data);
+        //     echo view('partial/top_menu');
+        //     echo view('partial/side_menu');
+        //     echo view('penjualan/daftar_invoice', $data);
+        //     echo view('partial/footer');
+        // }
+        $this->data['page_title'] =  "Daftar Invoice";
+        // $this->data['tb_transaksi'] =  $this->transaksi->detailTransaksi();
+        $this->data['tb_transaksi'] =  $this->transaksi->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
+        echo view('partial/header', $this->data);
+        echo view('partial/top_menu');
+        echo view('partial/side_menu');
+        echo view('penjualan/daftar_invoice', $this->data);
+        echo view('partial/footer');
     }
 
     public function cetak($id)
@@ -214,99 +221,36 @@ class Penjualan extends BaseController
         echo view('penjualan/cetak_termal', ['transaksi' => $transaksi]);
     }
 
-    ## Beda template
-    public function pos()
-    {
-        $this->data['page_title'] = "New Transaction";
-        $this->data['products'] =  $this->SpareParts_model->detailProduk();
-        $this->data['pelanggan'] = $this->pelangganModel->detailPelanggan();
-        echo view('partial/header', $this->data);
-        echo view('partial/top_menu');
-        echo view('partial/side_menu');
-        echo view('penjualan/add', $this->data);
-        echo view('partial/footer');
+    public function addProduk(){
+
+        $this->data['request'] = $this->request;
+
+        $id_product     = $this->request->getVar('produk');
+        $id_pelanggan   = $this->request->getVar('pelanggan');
+        $jumlah         = $this->request->getVar('jumlah');
+
+        $post = [
+            // 'product_id'    => $id_product,
+            'pelanggan_id'   => $id_pelanggan,
+            'jumlah'        => $jumlah
+        ];
+
+        $this->penjualanModel->insert($post);
+        return redirect()->to('penjualan')->withInput()->with('success', 'Berhasil Menambahkan Data');
     }
 
-    public function save_transaction()
-    {
-        extract($this->request->getPost());
+    public function buatFaktur(){
+        // $tgl = $this->request->getPost('tanggal');
+        // $this->data['getFaktur'] = $this->penjualanModel->createFaktur($tgl);
+        // return $this->data;
+        if ($this->request->isAJAX()) {
+            $respon = [
+                'invoice'   => $this->penjualanModel->invoice(),
+                'keranjang' => Keranjang::keranjang(),
+                'sub_total' => Keranjang::sub_total(),
+            ];
 
-        $pref = date("Ymd");
-        $code = sprintf("%'.05d", 1);
-        while (true) {
-            if ($this->tran_model->where(" code = '{$pref}{$code}' ")->countAllResults() > 0) {
-                $code = sprintf("%'.05d", ceil($code) + 1);
-            } else {
-                $code = $pref . $code;
-                break;
-            }
+            return $this->response->setJSON($respon);
         }
-
-        $data['code'] = $code;
-        foreach ($this->request->getPost() as $k => $v) {
-            if (!is_array($this->request->getPost($k)) && !in_array($k, ['id'])) {
-                $data[$k] = htmlspecialchars($v);
-            }
-        }
-        $save_transaction = $this->tran_model->save($data);
-        if ($save_transaction) {
-            $transaction_id = $this->tran_model->insertID();
-            foreach ($product_id as $k => $v) {
-                $data2['transaction_id'] = $transaction_id;
-                $data2['product_id'] = $v;
-                $data2['price'] = $price[$k];
-                $data2['quantity'] = $quantity[$k];
-                $this->tran_item_model->save($data2);
-            }
-            $this->session->setFlashdata('main_success', "Transaction has been saved successfully.");
-            return redirect()->to('penjualan/pos');
-        }
-    }
-    public function transactions()
-    {
-        $this->data['page_title'] = "Transactions";
-        $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
-        $this->data['perPage'] =  10;
-        $this->data['total'] =  $this->tran_model->countAllResults();
-        $this->data['transactions'] = $this->tran_model
-            ->select(" transactions.*, COALESCE((SELECT SUM(transaction_items.quantity) FROM transaction_items where transaction_id = transactions.id ), 0) as total_items")
-            ->paginate($this->data['perPage']);
-        $this->data['total_res'] = is_array($this->data['transactions']) ? count($this->data['transactions']) : 0;
-        $this->data['pager'] = $this->tran_model->pager;
-        return view('pages/pos/list', $this->data);
-    }
-
-    public function transaction_delete($id = '')
-    {
-        if (empty($id)) {
-            $this->session->setFlashdata('main_error', "Transaction Deletion failed due to unknown ID.");
-            return redirect()->to('penjualan/transactions');
-        }
-        $delete = $this->tran_model->where('id', $id)->delete();
-        if ($delete) {
-            $this->session->setFlashdata('main_success', "Transaction has been deleted successfully.");
-        } else {
-            $this->session->setFlashdata('main_error', "Transaction Deletion failed due to unknown ID.");
-        }
-        return redirect()->to('penjualan/transactions');
-    }
-    public function transaction_view($id = '')
-    {
-        if (empty($id)) {
-            $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");
-            return redirect()->to('penjualan/transactions');
-        }
-        $this->data['page_title'] = "Transactions";
-        $this->data['details'] = $this->tran_model->where('id', $id)->first();
-        if (!$this->data['details']) {
-            $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");
-            return redirect()->to('penjualan/transactions');
-        }
-        $this->data['items'] = $this->tran_item_model
-            ->select("transaction_items.*, CONCAT(tb_spareparts.kode_spareparts,'-',tb_spareparts.spareparts) as product")
-            ->where('transaction_id', $id)
-            ->join('tb_spareparts', " transaction_items.product_id = tb_spareparts.id ", 'inner')
-            ->findAll();
-        return view('pages/pos/view', $this->data);
     }
 }

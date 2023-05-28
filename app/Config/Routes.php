@@ -62,6 +62,9 @@ $routes->post('/penjualan/(:any)', 'Penjualan::$1');
 $routes->get('/transaksi/(:any)', 'Transaksi::$1');
 $routes->post('/transaksi/(:any)', 'Transaksi::$1');
 
+$routes->get('/pembayaran/(:any)', 'Pembayaran::$1');
+$routes->post('/pembayaran/(:any)', 'Pembayaran::$1');
+
 // API
 $routes->resource('api/home', ['controller' => 'Api\Home']);
 

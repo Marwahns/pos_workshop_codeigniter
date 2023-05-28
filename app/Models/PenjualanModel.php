@@ -84,4 +84,25 @@ class PenjualanModel extends Model
         return $this->builder('tb_bulan_tahun')->select('bulan')->selectCount('jumlah_item', 'total')->join('tb_transaksi', 'date_format(created_at, "%m-%Y") = bulan_tahun', 'left')->where('tahun', $tahun)->groupBy('bulan_tahun')->get()->getResult();
     }
 
+    public function produk() {
+        return $this->belongsTo(SparepartsModel::class, 'product_id', 'id');
+    }
+
+    public function createFaktur($tgl)
+    {
+        $query = $this->db->query("SELECT MAX(id) FROM tb_penjualan WHERE DATE_FORMAT(tanggal, '%Y-%m-%d') = '$tgl'");
+        $hasil = $query->getRowArray();
+        $data = $hasil['id'];
+
+        $lastNoUrut = substr($data, -4);
+
+        // nomor urut tambah 1
+        $nextNoUrut = intval($lastNoUrut) + 1;
+
+        // membuat format nomor transaksi berikutnya
+        $fakturPnenjualan = 'J' . date('dmy', strtotime($tgl)) . sprintf('%05s', $nextNoUrut);
+        $msg = ['fakturpenjualan' => $fakturPnenjualan];
+
+        echo json_encode($msg);
+    }
 }

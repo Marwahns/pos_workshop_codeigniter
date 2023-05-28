@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= get_pengaturan('nama_toko'); ?> | Cetak Struk</title>
+    <title>Bengkel 179 | Cetak Struk</title>
     <style>
         html {
             font-family: "Verdana, Arial";
@@ -59,9 +59,9 @@
 <body onload="print()">
     <div class="container">
         <div class="title">
-            <h2><?= get_pengaturan('nama_toko'); ?></h2>
-            <p><?= get_pengaturan('alamat'); ?></p>
-            <p><?= get_pengaturan('no_telp'); ?></p>
+            <h2>Bengkel 179</h2>
+            <p>Depok, Jawa Barat</p>
+            <p>0213456789</p>
         </div>
         <div class="head">
             <table class="table">

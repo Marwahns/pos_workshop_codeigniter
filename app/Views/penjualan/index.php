@@ -39,9 +39,9 @@
                             <div class="form-group row">
                                 <label for="pelanggan" class="col-sm-3 col-form-label">Pelanggan</label>
                                 <div class="col-sm-9">
-                                    <select name="pelanggan_id" id="pelanggan_id" class="form-control">
+                                    <select name="pelanggan" id="pelanggan" class="form-control">
                                         <?php foreach (esc($pelanggan) as $data) : ?>
-                                            <option value="<?= esc($data->id) ?>"><?= esc($data->nama); ?></option>
+                                            <option value="<?= esc($data->id) ?>"><?= esc($data->pelanggan); ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -56,11 +56,11 @@
                                 <label for="barcode" class="col-sm-3 col-form-label">Barcode</label>
                                 <div class="col-sm-9">
                                     <div class="input-group">
-                                        <input type="hidden" id="spareparts_id">
-                                        <input type="hidden" id="spareparts">
+                                        <input type="hidden" id="iditem">
+                                        <input type="hidden" id="nama">
                                         <input type="hidden" id="harga">
                                         <input type="hidden" id="stok">
-                                        <input type="text" class="form-control mr-2" id="barcode" name="kode_spareparts" placeholder="Cari barcode / nama barang" autofocus autocomplete="off">
+                                        <input type="text" class="form-control mr-2" id="barcode" name="barcode" placeholder="Cari barcode / nama barang" autofocus autocomplete="off">
                                         <span class="text-muted" id="tampil-stok"></span>
                                     </div>
                                 </div>
@@ -96,14 +96,13 @@
                             <table class="table table-bordered table-striped" id="tabel-keranjang" width="100%">
                                 <thead>
                                     <tr>
-                                        <!-- <th>#</th> -->
                                         <th>Barcode</th>
-                                        <th>Product</th>
-                                        <th>Price</th>
-                                        <th>Qty</th>
-                                        <th style="width: 150px;">Discount item (%)</th>
+                                        <th>Nama Item</th>
+                                        <th>Harga</th>
+                                        <th>Jumlah</th>
+                                        <th style="width: 150px;">Diskon item (%)</th>
                                         <th>Total</th>
-                                        <th>Action</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -124,13 +123,13 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="diskon" class="col-sm-5 col-form-label">Discount Total (%)</label>
+                                <label for="diskon" class="col-sm-5 col-form-label">Dis Total (%)</label>
                                 <div class="col-sm-7">
                                     <input type="number" class="form-control text-right" name="diskon" id="diskon" autocomplete="off" value="0" min="0" disabled>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="total_akhir" class="col-sm-5 col-form-label">Grand Total</label>
+                                <label for="total_akhir" class="col-sm-5 col-form-label">Total Akhir</label>
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control text-right" name="total_akhir" id="total_akhir" value="0" disabled>
                                 </div>
@@ -143,13 +142,13 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body">
                             <div class="form-group row">
-                                <label for="tunai" class="col-sm-5 col-form-label">Cash</label>
+                                <label for="tunai" class="col-sm-5 col-form-label">Tunai</label>
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control text-right" name="tunai" id="tunai" value="0" disabled>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label for="kembalian" class="col-sm-5 col-form-label">Change</label>
+                                <label for="kembalian" class="col-sm-5 col-form-label">Kembalian</label>
                                 <div class="col-sm-7">
                                     <input type="text" class="form-control text-right" name="kembalian" id="kembalian" value="0" disabled>
                                 </div>
@@ -162,7 +161,7 @@
                     <div class="card card-primary card-outline">
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="catatan">Note</label>
+                                <label for="catatan">Catatan</label>
                                 <textarea class="form-control" name="catatan" id="catatan" rows="3" disabled></textarea>
                             </div>
                         </div>
@@ -172,15 +171,15 @@
                 <div class="col-md-3">
                     <div class="card card-primary card-outline">
                         <div class="card-body">
-                            <p><button class="btn btn-warning" id="batal" disabled><i class="fa fa-refresh"></i> Cancel</button></p>
-                            <p><button class="btn btn-success" id="bayar" disabled><i class="fa fa-paper-plane"></i> Process Payment</button></p>
+                            <p><button class="btn btn-warning" id="batal" disabled><i class="fa fa-refresh"></i> Batal</button></p>
+                            <p><button class="btn btn-success" id="bayar" disabled><i class="fa fa-paper-plane"></i> Proses Pembayaran</button></p>
                         </div>
                     </div>
                 </div>
                 <!-- .col-md-3 -->
             </div>
             <!-- .row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
     <!-- /.content -->
 
@@ -245,3 +244,14 @@
     </div>
 
 </div>
+</div>
+</body>
+
+<script src="<?=base_url('js/penjualan.js')?>"></script>
+<script type="text/javascript">
+    let auto_numeric = new AutoNumeric('#tunai', {
+        decimalCharacter: ",",
+        decimalPlaces: 0,
+        digitGroupSeparator: ".",
+    });
+</script>

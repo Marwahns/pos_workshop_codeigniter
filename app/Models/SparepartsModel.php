@@ -71,6 +71,16 @@ class SparepartsModel extends Model
         }
     }
 
+    public function detailPelanggan($id = null)
+    {
+        $builder = $this->builder($this->table)->select('*');
+        if (empty($id)) {
+            return $builder->get()->getResult();
+        } else {
+            return $builder->where('id', $id)->get(1)->getRow();
+        }
+    }
+
     ######################################## Search produk ########################################
     public function cariProduk($keyword)
     {
@@ -120,10 +130,14 @@ class SparepartsModel extends Model
     ######################################## Search Barcode ########################################
     public function barcodeModel($keyword)
     {
-        return $this->builder($this->table)->select('kode_spareparts, spareparts')
-        ->like('kode_spareparts', $keyword)
-        ->orLike('spareparts', $keyword)
-        ->get()->getResult();
+        return $this->db->table('tb_spareparts')->select('tb_spareparts.kode_spareparts, tb_spareparts.spareparts')->like('tb_spareparts.kode_spareparts', $keyword)->orLike('tb_spareparts.spareparts', $keyword)->get()->getResult();
+    }
+
+    ######################################## Search Produk ########################################
+    public function searchProduk($keyword)
+    {
+        $builder = $this->builder($this->table)->like('spareparts',$keyword)->orLike('kode_spareparts',$keyword)->orderBy('spareparts', 'ASC')->limit(10)->get()->getResult();
+        return $builder;
     }
     
 }
