@@ -115,6 +115,11 @@
       maximumFractionDigits: 2,
       minimumFractionDigits: 2
     }))
+    $('#sub_total').val(parseFloat(total).toLocaleString('en-US', {
+      style: 'decimal',
+      maximumFractionDigits: 2,
+      minimumFractionDigits: 2
+    }))
     $('[name="total_amount"]').val(total)
     
     $('#tampilkan_total').text(parseFloat(total).toLocaleString('en-US', {
@@ -136,17 +141,21 @@
 
   $(function() {
     $("#example1").DataTable({
+      "bPaginate": false,
+      "paging": false,
+      "info": false,
       "responsive": true,
       "lengthChange": false,
       "autoWidth": false,
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $('#example2').DataTable({
-      "paging": true,
+      "bPaginate": false,
+      "paging": false,
       "lengthChange": false,
       "searching": false,
       "ordering": true,
-      "info": true,
+      "info": false,
       "autoWidth": false,
       "responsive": true,
     });
@@ -192,6 +201,7 @@
       $('#select2_pelanggan_id').prop('disabled', true)
 
       $('#cancel_payment').prop('disabled', false)
+
     })
 
     $('[name="tendered"]').on('input change', function() {

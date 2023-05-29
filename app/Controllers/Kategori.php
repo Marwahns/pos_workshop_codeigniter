@@ -29,6 +29,12 @@ class Kategori extends BaseController
         $this->data['page_title'] =  "List Kategori";
         // $this->data['tb_kategori'] =  $this->kategori_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
         $this->data['tb_kategori'] =  $this->kategori_model->detailKategori();
+        $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
+        $this->data['perPage'] =  10;
+        $this->data['total'] =  $this->kategori_model->countAllResults();
+        $this->data['kategori'] = $this->kategori_model->paginate($this->data['perPage']);
+        $this->data['total_res'] = is_array($this->data['kategori'])? count($this->data['kategori']) : 0;
+        $this->data['pager'] = $this->kategori_model->pager;
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');

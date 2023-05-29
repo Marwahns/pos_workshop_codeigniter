@@ -36,10 +36,16 @@ class SpareParts extends BaseController
     {
         $this->data['page_title'] =  "List Spare Parts";
         $this->data['tb_spareparts'] =  $this->SpareParts_model->detailProduk();
+        $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
+        $this->data['perPage'] =  10;
+        $this->data['total'] =  $this->SpareParts_model->countAllResults();
+        $this->data['products'] = $this->SpareParts_model->paginate($this->data['perPage']);
+        $this->data['total_res'] = is_array($this->data['products'])? count($this->data['products']) : 0;
+        $this->data['pager'] = $this->SpareParts_model->pager;
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('spareparts/list');
+        echo view('spareparts/list', $this->data);
         echo view('partial/footer');
     }
 

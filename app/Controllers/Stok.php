@@ -37,6 +37,12 @@ class Stok extends BaseController
     {
         $this->data['page_title'] =  "List Stock Masuk";
         $this->data['tb_stok'] =  $this->stok_model->detailStokMasuk();
+        $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
+        $this->data['perPage'] =  10;
+        $this->data['total'] =  $this->stok_model->countAllResults();
+        $this->data['stok_masuk'] = $this->stok_model->paginate($this->data['perPage']);
+        $this->data['total_res'] = is_array($this->data['stok_masuk'])? count($this->data['stok_masuk']) : 0;
+        $this->data['pager'] = $this->stok_model->pager;
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -49,10 +55,16 @@ class Stok extends BaseController
     {
         $this->data['page_title'] =  "List Stock Keluar";
         $this->data['tb_stok'] =  $this->stok_model->detailStokKeluar();
+        $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
+        $this->data['perPage'] =  10;
+        $this->data['total'] =  $this->stok_model->countAllResults();
+        $this->data['stok_keluar'] = $this->stok_model->paginate($this->data['perPage']);
+        $this->data['total_res'] = is_array($this->data['stok_keluar'])? count($this->data['stok_keluar']) : 0;
+        $this->data['pager'] = $this->stok_model->pager;
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
-        echo view('stok/keluar/list', $this->data );
+        echo view('stok/keluar/list');
         echo view('partial/footer');
     }
 

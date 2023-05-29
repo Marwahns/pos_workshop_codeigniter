@@ -33,10 +33,10 @@
                             <dt class="col-auto">Transaction Date/Time:</dt>
                             <dd class="col-auto flex-shrink-1 flex-grow-1 px-2"><?= date("F d, Y h:i A", strtotime($details['created_at'])) ?></dd>
                         </dl>
-                        <dl class="d-flex w-100">
+                        <!-- <dl class="d-flex w-100">
                             <dt class="col-auto">Customer:</dt>
                             <dd class="col-auto flex-shrink-1 flex-grow-1 px-2"><?= $details['customer'] ?></dd>
-                        </dl>
+                        </dl> -->
                     </div>
                     
                     <h5 class="text-bold">Purchased Products</h5>

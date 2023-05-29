@@ -87,7 +87,7 @@
                         </div>
 
                         <!-- Gambar -->
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="exampleInputFile">File input</label>
                             <div class="input-group">
                                 <div class="custom-file">
@@ -109,7 +109,7 @@
                             </div>
                         </div>
 
-                        <input type="hidden" name="gambarLama" id="gambarLama">
+                        <input type="hidden" name="gambarLama" id="gambarLama"> -->
 
                     </div>
                     <!-- /.card-body -->
@@ -127,8 +127,6 @@
     </section>
     <!-- /.content -->
 </div>
-</div>
-</body>
 <script type="text/javascript">
     $('#search_supplier').autocomplete({
         source: `${BASE_URL}/spareparts/barcode`,

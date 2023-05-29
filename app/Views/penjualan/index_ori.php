@@ -55,6 +55,14 @@
                                     </div>
                                     <input type="text" class="form-control" id="customer" name="customer" hidden>
                                 </div>
+
+                                <!-- Nama Customer -->
+                                <div class="form-group row">
+                                    <div class="col-sm-7">
+                                        <input type="hidden" class="form-control text-right" name="nama_customer" id="nama_customer" placeholder="0" disabled>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -186,20 +194,20 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body">
                         <!-- Sub Total -->
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="sub_total" class="col-sm-5 col-form-label">Sub Total</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control text-right" name="sub_total" id="sub_total" value="0" disabled>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Discount Total -->
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label for="diskon" class="col-sm-5 col-form-label">Discount Total (%)</label>
                             <div class="col-sm-7">
                                 <input type="number" class="form-control text-right" name="diskon" id="diskon" autocomplete="off" value="0" min="0" disabled>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Total Akhir -->
                         <div class="form-group row">
@@ -251,7 +259,7 @@
                     <div class="card-body">
                         <!-- ## class="btn btn-warning disabled" -->
                         <p><a href="<?= base_url('pembayaran/index') ?>" class="btn btn-warning" id="cancel_payment"><i class="fa fa-refresh"></i> Cancel</a></p>
-                        <p><button class="btn btn-success" id="save_transaction" disabled><i class="fa fa-paper-plane" ></i> Process Payment</button></p>
+                        <p><button class="btn btn-success" id="save_transaction" disabled><i class="fa fa-paper-plane"></i> Process Payment</button></p>
                     </div>
                 </div>
             </div>

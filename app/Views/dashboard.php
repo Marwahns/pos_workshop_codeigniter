@@ -80,7 +80,7 @@
             <div class="inner">
               <h3><?= esc($supplier) ?></h3>
 
-              <p>Unique Visitors</p>
+              <p>Supplier</p>
             </div>
             <div class="icon">
               <i class="ion ion-pie-graph"></i>

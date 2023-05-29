@@ -78,4 +78,10 @@ class TransactionItem extends Model
         $builder = $this->builder($this->table)->select('SUM(transaction_items.quantity)')->get();
         return $builder;
     }
+
+    function stok_berkurang($post = null)
+    {
+        return $this->db->table('tb_spareparts')->set('stok', 'stok-' . $post['quantity'], false)->where('id', $post['product_id'])->update();
+    }
+
 }

@@ -64,6 +64,9 @@
                                     <?php endif; ?>
                                 </tbody>
                             </table>
+                            <div>
+                                <?= $pager->makeLinks($page, $perPage, $total, 'custom_view') ?>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>

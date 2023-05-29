@@ -23,6 +23,7 @@ class Pembayaran extends BaseController
     protected $tran_item_model;
     protected $pelanggan;
     protected $penjualanModel;
+    protected $productModel;
 
     public function __construct()
     {
@@ -33,6 +34,7 @@ class Pembayaran extends BaseController
         $this->tran_item_model = new TransactionItem();
         $this->pelanggan = new PelangganModel();
         $this->penjualanModel = new PenjualanModel();
+        $this->productModel = new SparepartsModel();
         $this->data = ['session' => $this->session, 'request' => $this->request];
     }
 
@@ -41,7 +43,8 @@ class Pembayaran extends BaseController
         $this->data['title'] =  'Input Penjualan';
         $this->data['products'] =  $this->prod_model->findAll();
         $this->data['pelanggan'] = $this->pelanggan->detailPelanggan();
-        $this->data['invoice'] = $this->penjualanModel->invoice();
+        $this->data['invoice'] = $this->tran_model->invoice();
+        // $this->data['faktur'] = $this->faktur();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -72,7 +75,8 @@ class Pembayaran extends BaseController
             }
         }
 
-        $data['code'] = $code;
+        // $data['code'] = $code;
+        $data['code'] = $this->tran_model->invoice();
         foreach ($this->request->getPost() as $k => $v) {
             if (!is_array($this->request->getPost($k)) && !in_array($k, ['id'])) {
                 $data[$k] = htmlspecialchars($v);
@@ -86,11 +90,24 @@ class Pembayaran extends BaseController
                 $data2['product_id'] = $v;
                 $data2['price'] = $price[$k];
                 $data2['quantity'] = $quantity[$k];
+                // $this->tran_item_model->stok_bertambah($data2);
                 $this->tran_item_model->save($data2);
             }
+            $this->data['penjualan'] = $this->productModel->set('stok', 'stok-' . $data2['quantity'], false)->where('id', $data2['product_id'])->update();
             $this->session->setFlashdata('main_success', "Transaction has been saved successfully.");
+
+            $this->data['items'] = $this->tran_item_model
+                // ->select("transaction_items.*, CONCAT(tb_spareparts.kode_spareparts,'-',tb_spareparts.spareparts) as product")
+                ->select('transaction_items.price, transaction_items.quantity, 
+                                transactions.code, transactions.customer, transactions.total_amount, transactions.tendered, transactions.created_at, 
+                                tb_spareparts.spareparts')
+                ->join('tb_spareparts', " transaction_items.product_id = tb_spareparts.id ", 'inner')
+                ->join('transactions', 'transactions.id=transaction_items.transaction_id')
+                ->where('transaction_id', $transaction_id)
+                ->findAll();
             // return redirect()->to('pembayaran/cetak');
-            return redirect()->to('pembayaran/index');
+            // return redirect()->to('pembayaran/index');
+            return view('penjualan/cetak_termal', $this->data);
         }
     }
 
@@ -98,6 +115,8 @@ class Pembayaran extends BaseController
     {
         $this->data['title'] =  'Daftar Penjualan';
         $this->data['total'] =  $this->tran_model->countAllResults();
+        $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
+        $this->data['perPage'] =  10;
         $this->data['transactions'] = $this->tran_model
             ->select(" transactions.*, COALESCE((SELECT SUM(transaction_items.quantity) FROM transaction_items where transaction_id = transactions.id ), 0) as total_items")
             ->paginate($this->data['perPage']);
@@ -105,6 +124,7 @@ class Pembayaran extends BaseController
         $this->data['products'] =  $this->prod_model->findAll();
         $this->data['pelanggan'] = $this->pelanggan->detailPelanggan();
         $this->data['invoice'] = $this->penjualanModel->invoice();
+        $this->data['pager'] = $this->tran_model->pager;
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -223,17 +243,17 @@ class Pembayaran extends BaseController
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        // $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
         // set kolom head
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A1', 'No')
             ->setCellValue('B1', 'Invoice')
             ->setCellValue('C1', 'Tanggal')
-            ->setCellValue('D1', 'Spare Parts')
-            ->setCellValue('E1', 'Kasir')
-            ->setCellValue('F1', 'Qty')
-            ->setCellValue('G1', 'Total Belanja')
-            ->setCellValue('H1', 'Tunai');
+            // ->setCellValue('D1', 'Spare Parts')
+            ->setCellValue('D1', 'Kasir')
+            ->setCellValue('E1', 'Qty')
+            ->setCellValue('F1', 'Total Belanja')
+            ->setCellValue('G1', 'Tunai');
         $row = 2;
         // looping data item
         // foreach ($this->tran_item_model
@@ -243,17 +263,17 @@ class Pembayaran extends BaseController
         //     ->join('tb_spareparts', " transaction_items.product_id = tb_spareparts.id ", 'inner')
         //     ->join('transactions', 'transactions.id=transaction_items.transaction_id')
         //     ->findAll() as $key => $data) {
-            foreach ($this->tran_item_model->detailTransaksi() as $key => $data){
+        foreach ($this->tran_item_model->detailTransaksi() as $key => $data) {
             $spreadsheet->getActiveSheet()
                 ->setCellValue('A' . $row, $key + 1)
                 ->setCellValue('B' . $row, $data->code)
                 ->setCellValue('C' . $row, $data->created_at)
                 ->setCellValue('B' . $row, $data->kode_spareparts . '-' . $data->spareparts)
-                ->setCellValue('D' . $row, $data->customer)
-                ->setCellValue('E' . $row, $data->price)
-                ->setCellValue('F' . $row, $data->quantity)
-                ->setCellValue('G' . $row, $data->total_amount)
-                ->setCellValue('H' . $row, $data->tendered);
+                // ->setCellValue('D' . $row, $data->customer)
+                ->setCellValue('D' . $row, $data->price)
+                ->setCellValue('E' . $row, $data->quantity)
+                ->setCellValue('F' . $row, $data->total_amount)
+                ->setCellValue('G' . $row, $data->tendered);
             $row++;
         }
         // tulis dalam format .xlsx

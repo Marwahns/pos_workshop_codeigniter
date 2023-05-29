@@ -61,13 +61,13 @@
                                     <small class="invalid-feedback"></small>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label for="password" class="col-sm-2 col-form-label">Password</label>
                                 <div class="col-sm-10">
                                     <input type="password" class="form-control" name="password" id="password" autocomplete="off">
                                     <small class="text-danger">Kosongkan jika tidak ingin di ganti!</small>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <label for="alamat" class="col-sm-2 col-form-label">Alamat</label>
                                 <div class="col-sm-10">
@@ -75,7 +75,7 @@
                                     <small class="invalid-feedback"></small>
                                 </div>
                             </div>
-                            <div class="form-group row">
+                            <!-- <div class="form-group row">
                                 <label for="avatar" class="col-sm-2 col-form-label">Photo Profile</label>
                                 <div class="col-sm-2 d-none">
                                     <img class="img-thumbnail" id="img-preview">
@@ -87,7 +87,7 @@
                                         <small class="invalid-feedback"></small>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="form-group row">
                                 <input type="hidden" name="id" value="<?= get_user('id') ?>">
                                 <input type="hidden" name="role" value="<?= get_user('id_role') ?>">

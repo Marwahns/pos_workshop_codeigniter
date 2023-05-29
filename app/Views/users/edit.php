@@ -21,7 +21,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card card-primary">
-                <form action="<?= base_url('users/saveAccount') ?>" method="POST" id="edit-form" enctype="multipart/form-data">
+                <form action="<?= base_url('users/saveEditAccount') ?>" method="POST" id="edit-form" enctype="multipart/form-data">
                     <div class="card-body">
                         <input type="hidden" name="id" value="<?= isset($data['id']) ? $data['id'] : '' ?>">
 
@@ -47,7 +47,7 @@
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Password</label>
-                            <input type="text" class="form-control" placeholder="Input Password" id="password" name="password" required="required" value="<?= !empty($request->getPost('password')) ? $request->getPost('password') : '' ?>">
+                            <input type="text" class="form-control" placeholder="Input Password" id="password" name="password" value="<?= !empty($request->getPost('password')) ? $request->getPost('password') : '' ?>">
                         </div>
 
                         <div class="form-group">

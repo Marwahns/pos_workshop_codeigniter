@@ -143,10 +143,105 @@ class Users extends BaseController
             else
                 $this->session->setFlashdata('success_message', 'Data has been added successfully');
             $id = !empty($this->request->getPost('id')) ? $this->request->getPost('id') : $save;
+            $this->user_model->save($post);
             return redirect()->to('/users/view_detailUsers/' . $id);
         } else {
             return view('users/create', $this->data);
         }
+    }
+
+    ######################################## Save Edit Account ########################################
+    public function saveEditAccount()
+    {
+        // validasi input
+        if (!$this->validate([
+            'id_status' => [
+                'rules' => 'required|min_length[1]|max_length[11]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'id_role' => [
+                'rules' => 'required|min_length[1]|max_length[11]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'email' => [
+                'rules' => 'required|min_length[2]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'username' => [
+                'rules' => 'required|min_length[1]|max_length[30]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            // 'password' => [
+            //     'rules' => 'min_length[1]|max_length[255]',
+            // ],
+
+            'nama' => [
+                'rules' => 'required|min_length[1]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+            'alamat' => [
+                'rules' => 'required|min_length[1]|max_length[255]',
+                'error' => [
+                    'required' => '{field} harus diisi'
+                ]
+            ],
+
+        ])) {
+            $respon = [
+                'validasi' => false,
+                'error'    => $this->validator->getErrors(),
+            ];
+            $validation = \Config\Services::validation();
+            $this->data['validation'] = \Config\Services::validation();
+            return redirect()->to('/users/editUsers')->withInput()->with('validation', $validation);
+            return $this->response->setJSON($respon);
+            // return redirect()->back()->with('error', $this->validator->getErrors());
+        }
+
+        $this->data['request'] = $this->request;
+        $getpost = $this->request->getPost();
+        $post = [
+            'id_role' => $this->request->getPost('id_role'),
+            'id_status' => $this->request->getPost('id_status'),
+            'email' => $this->request->getPost('email'),
+            'username' => $this->request->getPost('username'),
+            // 'password' => buat_password($getpost['password']),
+            'nama' => $this->request->getPost('nama'),
+            'alamat' => $this->request->getPost('alamat'),
+        ];
+        if (!empty($this->request->getPost('id'))){
+
+            // jika password di update
+            if (!empty($this->request->getPost('password'))) {
+                $post = [
+                    'password' => buat_password($getpost['password'])
+                ];
+            } 
+
+            $save =$this->user_model->where(['id' => $this->request->getPost('id')])->set($post)->update();
+            $id = !empty($this->request->getPost('id')) ? $this->request->getPost('id') : $save;
+
+            return redirect()->to('/users/view_detailUsers/' . $id);
+            
+        } else{
+            return view('users/index', $this->data);
+        }
+
     }
 
     ######################################## Edit Form Page ########################################

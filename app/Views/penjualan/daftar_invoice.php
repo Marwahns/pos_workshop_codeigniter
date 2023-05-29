@@ -24,13 +24,14 @@
                 <div class="card-body">
                     <div class="pesan" data-pesan="<?= session('pesan') ?>"></div>
                     <div class="table-responsive">
-                        <table id="example1" class="table table-bordered table-striped" id="tabel-invoice" width="100%">
+                        <!-- id="tabel-invoice" -->
+                        <table id="example1" class="table table-bordered table-striped" width="100%">
                             <thead>
                                 <tr>
                                     <th>#</th>
                                     <th>Invoice</th>
                                     <th>Tanggal</th>
-                                    <th>Customer</th>
+                                    <!-- <th>Customer</th> -->
                                     <th>Total Amount</th>
                                     <th>Action</th>
                                 </tr>
@@ -43,7 +44,7 @@
                                             <th><?= $i++; ?></th>
                                             <td><?= $row['code'] ?></td>
                                             <td><?= date("Y-m-d h:i A", strtotime($row['created_at'])) ?></td>
-                                            <td><?= $row['customer'] ?></td>
+                                            <!-- <td><?= $row['customer'] ?></td> -->
                                             <td><?= number_format($row['total_amount'], 2) ?></td>
                                             <!-- <td><?= $row->invoice ?></td>
                                             <td><?= $row->tanggal ?></td> -->
@@ -59,6 +60,9 @@
                                 <?php endif; ?>
                             </tbody>
                         </table>
+                        <div>
+                            <?= $pager->makeLinks($page, $perPage, $total, 'custom_view') ?>
+                        </div>
                     </div>
                 </div>
             </div>

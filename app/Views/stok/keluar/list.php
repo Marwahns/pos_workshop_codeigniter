@@ -64,7 +64,7 @@
                                                 <td>
                                                     <div class="btn-group btn-group-sm">
                                                         <a href="<?= base_url('stok/view_detailStokKeluar/' . $row->id) ?>" class="btn btn-default bg-gradient-light border text-dark rounded-0" title="View Spare Parts"><i class="fa fa-eye"></i></a>
-                                                        
+
                                                         <a href="<?= base_url('stok/deleteStokKeluar/' . $row->id) ?>" class="btn btn-danger rounded-0" title="Delete Spare Parts"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </td>
@@ -73,6 +73,9 @@
                                     <?php endif; ?>
                                 </tbody>
                             </table>
+                            <div>
+                                <?= $pager->makeLinks($page, $perPage, $total, 'custom_view') ?>
+                            </div>
                         </div>
                         <!-- /.card-body -->
                     </div>

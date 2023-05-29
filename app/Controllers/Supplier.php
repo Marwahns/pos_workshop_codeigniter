@@ -31,6 +31,12 @@ class Supplier extends BaseController
         $this->data['page_title'] =  "List Supplier";
         // $this->data['tb_supplier'] =  $this->supplier_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
         $this->data['tb_supplier'] =  $this->supplier_model->detailSupplier();
+        $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
+        $this->data['perPage'] =  10;
+        $this->data['total'] =  $this->supplier_model->countAllResults();
+        $this->data['supplier'] = $this->supplier_model->paginate($this->data['perPage']);
+        $this->data['total_res'] = is_array($this->data['supplier'])? count($this->data['supplier']) : 0;
+        $this->data['pager'] = $this->supplier_model->pager;
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
