@@ -84,7 +84,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="product" class="control-label">Choose Product</label>
-                                    <select id="product" class="form-control select2">
+                                    <select id="product" class="form-control select2" onchange="getSelectValue();">
                                         <option value="" disabled selected></option>
                                         <?php
                                         foreach ($products as $row) :
@@ -95,7 +95,7 @@
                                 </div>
 
                                 <div class="form-group text-right">
-                                    <button class="btn btn-primary" type="button" id="add_item"> Tambah</button>
+                                    <button class="btn btn-primary" type="button" id="add_item" disabled> Tambah</button>
                                 </div>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                         <div class="form-group row">
                             <label for="tunai" class="col-sm-5 col-form-label">Cash</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control text-right" name="tendered" id="tendered" placeholder="0" disabled>
+                                <input type="text" class="form-control text-right" name="tendered" id="tendered" placeholder="0" disabled ">
                             </div>
                         </div>
 
@@ -289,6 +289,28 @@
     </tr>
 </noscript>
 
+<script type="text/javascript">
+    function getSelectValue() {
+        var selectedValue = document.getElementById("product").value;
+        if (selectedValue > 0) {
+            $('#add_item').prop('disabled', false);
+        }
+
+        if (selectedValue < 1) {
+            $('#add_item').prop('disabled', true);
+        }
+    }
+
+    function getChange() {
+        var changeValue = document.getElementById("change").value;
+        if (changeValue == 0 || changeValue > 0) {
+            $('#save_transaction').prop('disabled', false)
+        }
+        // alert(changeValue);
+    }
+
+    // getSelectValue();
+</script>
 
 <!-- <script type="text/javascript">
     // Cari item berdasarkan barcode

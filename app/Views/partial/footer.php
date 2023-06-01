@@ -131,12 +131,13 @@
 
     if($('#tampilkan_total' > 0)){
       $('#tendered').prop('disabled', false)
-    } 
-
-    if($('#tendered' > 0)){
       $('#save_transaction').prop('disabled', false)
     } 
 
+    // if($('#tendered' > 0)){
+    //   $('#save_transaction').prop('disabled', false)
+    // } 
+    $('#change').val(0-total)
   }
 
   $(function() {
@@ -227,6 +228,10 @@
       var tendered = $('[name="tendered"]').val()
       var amount = $('[name="total_amount"]').val()
       if (parseFloat(tendered) < parseFloat(amount)) {
+        alert("Invalid tendered amount.")
+        return false;
+      }
+      if(amount < 0){
         alert("Invalid tendered amount.")
         return false;
       }
