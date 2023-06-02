@@ -44,7 +44,6 @@ class Pembayaran extends BaseController
         $this->data['products'] =  $this->prod_model->findAll();
         $this->data['pelanggan'] = $this->pelanggan->detailPelanggan();
         $this->data['invoice'] = $this->tran_model->invoice();
-        // $this->data['faktur'] = $this->faktur();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');

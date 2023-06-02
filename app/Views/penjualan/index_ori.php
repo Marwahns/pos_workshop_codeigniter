@@ -22,6 +22,7 @@
         <div class="container-fluid">
             <form action="<?= base_url("pembayaran/save_transaction") ?>" id="transaction-form" method="POST" onkeydown="return event.key != 'Enter';">
                 <input type="hidden" name="total_amount" value="0">
+                <input type="hidden" name="grand_total" value="0">
                 <div class="row">
                     <!-- Card 1 -->
                     <div class="col-md-6">
@@ -48,19 +49,14 @@
                                     <label for="pelanggan" class="col-sm-3 col-form-label">Pelanggan</label>
                                     <div class="col-sm-9">
                                         <select id="select2_pelanggan_id" name="pelanggan_id" class="form-control">
-                                            <?php foreach (esc($pelanggan) as $data) : ?>
-                                                <option value="<?= esc($data->id) ?>"><?= esc($data->nama); ?></option>
-                                            <?php endforeach; ?>
+                                            <?php foreach ($pelanggan as $key => $value) { ?>
+                                                <option <?= !empty($request->getPost('pelanggan')) && $request->getPost('pelanggan') == $value->id ? 'selected' : '' ?> value="<?= $value->id ?>"><?= $value->nama ?></option>
+                                            <?php } ?>
                                         </select>
                                     </div>
-                                    <input type="text" class="form-control" id="customer" name="customer" hidden>
-                                </div>
 
-                                <!-- Nama Customer -->
-                                <div class="form-group row">
-                                    <div class="col-sm-7">
-                                        <input type="hidden" class="form-control text-right" name="nama_customer" id="nama_customer" placeholder="0" disabled>
-                                    </div>
+                                    <!-- Nama Customer -->
+                                    <input type="text" class="form-control" id="nama_customer" name="nama_customer" disabled value="-">
                                 </div>
 
                             </div>
@@ -89,9 +85,12 @@
                                         <?php
                                         foreach ($products as $row) :
                                         ?>
-                                            <option value="<?= $row['id'] ?>" data-price="<?= $row['harga'] ?>"><?= $row['kode_spareparts'] . " - " . $row['spareparts'] ?></option>
+                                            <option value="<?= $row['id'] ?>" data-price="<?= $row['harga'] ?>" data-stok="<?= $row['stok'] ?>"><?= $row['kode_spareparts'] . " - " . $row['spareparts'] ?></option>
                                         <?php endforeach; ?>
                                     </select>
+
+                                    <!-- Stok -->
+                                    <p class="mt-2"><span>Stok: </span><span id="show_stok"> -</span></p>
                                 </div>
 
                                 <div class="form-group text-right">
@@ -115,7 +114,8 @@
                                         <col width="5%">
                                         <col width="15%">
                                         <col width="30%">
-                                        <col width="20%">
+                                        <col width="5%">
+                                        <col width="15%">
                                         <col width="20%">
                                     </colgroup>
                                     <thead>
@@ -123,6 +123,7 @@
                                             <th class="p-1 text-center"></th>
                                             <th class="p-1 text-center">QTY</th>
                                             <th class="p-1 text-center">Product</th>
+                                            <th class="p-1 text-center">Stok</th>
                                             <th class="p-1 text-center">Unit Price</th>
                                             <th class="p-1 text-center">Total</th>
                                         </tr>
@@ -144,7 +145,8 @@
                                             <col width="5%">
                                             <col width="15%">
                                             <col width="30%">
-                                            <col width="20%">
+                                            <col width="5%">
+                                            <col width="15%">
                                             <col width="20%">
                                         </colgroup>
                                         <tbody>
@@ -194,26 +196,26 @@
                 <div class="card card-primary card-outline">
                     <div class="card-body">
                         <!-- Sub Total -->
-                        <!-- <div class="form-group row">
+                        <div class="form-group row">
                             <label for="sub_total" class="col-sm-5 col-form-label">Sub Total</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control text-right" name="sub_total" id="sub_total" value="0" disabled>
                             </div>
-                        </div> -->
+                        </div>
 
                         <!-- Discount Total -->
-                        <!-- <div class="form-group row">
+                        <div class="form-group row">
                             <label for="diskon" class="col-sm-5 col-form-label">Discount Total (%)</label>
                             <div class="col-sm-7">
-                                <input type="number" class="form-control text-right" name="diskon" id="diskon" autocomplete="off" value="0" min="0" disabled>
+                                <input type="number" class="form-control text-right" name="diskon" id="diskon" min="0" placeholder="0" autocomplete="off" disabled>
                             </div>
-                        </div> -->
+                        </div>
 
                         <!-- Total Akhir -->
                         <div class="form-group row">
                             <label for="total_akhir" class="col-sm-5 col-form-label">Grand Total</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control text-right" name="total_akhir" id="gtotal" value="0" disabled>
+                                <input type="text" class="form-control text-right" name="total_akhir" id="gtotal" min="0" placeholder="0" disabled>
                             </div>
                         </div>
                     </div>
@@ -227,12 +229,12 @@
                         <div class="form-group row">
                             <label for="tunai" class="col-sm-5 col-form-label">Cash</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control text-right" name="tendered" id="tendered" placeholder="0" disabled ">
+                                <input type="number" class="form-control text-right" name="tendered" id="tendered" min="0" placeholder="0" disabled>
                             </div>
                         </div>
 
                         <!-- Change -->
-                        <div class="form-group row">
+                        <div class=" form-group row">
                             <label for="kembalian" class="col-sm-5 col-form-label">Change</label>
                             <div class="col-sm-7">
                                 <input type="text" class="form-control text-right" name="kembalian" id="change" placeholder="0" disabled>
@@ -281,9 +283,10 @@
             <button class="btn btn-outline-danger btn-sm rounded-0 rem_item" type="button"><i class="fa fa-times"></i></button>
         </td>
         <td class="py-1 px-2 align-middle">
-            <input type="number" class="form-control form-control-sm rounded-0 text-center" name="quantity[]" required="required" min="1" value="1">
+            <input type="number" class="form-control form-control-sm rounded-0 text-center" name="quantity[]" id="qty_produk" required="required" min="1" value="1">
         </td>
         <td class="py-1 px-2 align-middle product_item"></td>
+        <td class="py-1 px-2 align-middle stok text-end" id="stok_produk"></td>
         <td class="py-1 px-2 align-middle unit_price text-end"></td>
         <td class="py-1 px-2 align-middle total_price text-end">0.00</td>
     </tr>
@@ -309,54 +312,10 @@
         // alert(changeValue);
     }
 
+    // function getTotalDiskon(){
+    //     let diskon_akhir = ($('#diskon').val() / 100) * ($('#gtotal'));
+    //     let total_akhir = ($('#gtotal')) - diskon_akhir
+    // }
+
     // getSelectValue();
 </script>
-
-<!-- <script type="text/javascript">
-    // Cari item berdasarkan barcode
-    $('#tambah').on('click', function(e) {
-        tambahKeKranjang()
-    })
-    $('#jumlah').on('keypress', function(e) {
-        if (e.keyCode === 13 && e.target.value != '') {
-            tambahKeKranjang()
-        }
-    })
-
-    function tambahKeKranjang() {
-        let spareparts_id = $('#spareparts_id').val()
-        let barcode = $('#barcode').val()
-        let nama = $('#nama').val()
-        let harga = $('#harga').val()
-        let stok = parseInt($('#stok').val())
-        let jumlah = parseInt($('#jumlah').val())
-
-        $.ajax({
-            url: `${BASE_URL}/penjualan/tambah`,
-            method: 'post',
-            data: {
-                [$('#token').attr('name')]: $('#token').val(),
-                spareparts_id: spareparts_id,
-                barcode: barcode,
-                nama: nama,
-                harga: harga,
-                jumlah: jumlah,
-                stok: stok,
-            },
-            success: function(response) {
-                if (response.status) {
-                    detailKeranjang()
-                    $('#jumlah').val('').prop('disabled', true)
-                    $('#tambah').prop('disabled', true)
-                    $('#barcode').val('').focus()
-                    $('#tampil-stok').text('')
-                    toastr.success(response.pesan, 'Sukses', {
-                        timeOut: 500
-                    })
-                } else {
-                    toastr.error(response.pesan)
-                }
-            },
-        })
-    }
-</script> -->

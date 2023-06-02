@@ -67,6 +67,7 @@ $routes->post('/pembayaran/(:any)', 'Pembayaran::$1');
 
 // API
 $routes->resource('api/home', ['controller' => 'Api\Home']);
+$routes->resource('api/pelanggan', ['controller' => 'Api\Pelanggan']);
 
 /*
  * --------------------------------------------------------------------
