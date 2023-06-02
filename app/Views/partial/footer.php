@@ -154,64 +154,68 @@
     $('#product').select2()
 
     $('#add_item').click(function() {
-      var pid = $('#product').val()
-      if ($('#item-table tbody tr[data-id="' + pid + '"]').length > 0) {
-        $('#item-table tbody tr[data-id="' + pid + '"]').find('[name="quantity[]"]').val(parseInt($('#item-table tbody tr[data-id="' + pid + '"]').find('[name="quantity[]"]').val()) + 1).trigger('change')
+      if ($('#nama_customer').val() == "") {
+        alert("Please select type customer")
+      } else {
+        var pid = $('#product').val()
+        if ($('#item-table tbody tr[data-id="' + pid + '"]').length > 0) {
+          $('#item-table tbody tr[data-id="' + pid + '"]').find('[name="quantity[]"]').val(parseInt($('#item-table tbody tr[data-id="' + pid + '"]').find('[name="quantity[]"]').val()) + 1).trigger('change')
+          $('#product').val('').trigger('change')
+          return false;
+        }
+        var pname = $('#product option[value="' + pid + '"]').text()
+        var stok = $('#product option[value="' + pid + '"]').attr('data-stok')
+        var price = $('#product option[value="' + pid + '"]').attr('data-price')
+        var tr = $($('noscript#item-clone').html()).clone()
+        tr.attr('data-id', pid)
+        tr.find('[name="product_id[]"]').val(pid)
+        tr.find('[name="price[]"]').val(price)
+        tr.find('.product_item').text(pname)
+        tr.find('.stok').text(stok)
+        tr.find('.unit_price').text(parseFloat(price).toLocaleString('en-US', {
+          style: 'decimal',
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2
+        }))
+        tr.find('.total_price').text(parseFloat(price).toLocaleString('en-US', {
+          style: 'decimal',
+          maximumFractionDigits: 2,
+          minimumFractionDigits: 2
+        }))
+        $('#item-table tbody').append(tr)
         $('#product').val('').trigger('change')
-        return false;
-      }
-      var pname = $('#product option[value="' + pid + '"]').text()
-      var stok = $('#product option[value="' + pid + '"]').attr('data-stok')
-      var price = $('#product option[value="' + pid + '"]').attr('data-price')
-      var tr = $($('noscript#item-clone').html()).clone()
-      tr.attr('data-id', pid)
-      tr.find('[name="product_id[]"]').val(pid)
-      tr.find('[name="price[]"]').val(price)
-      tr.find('.product_item').text(pname)
-      tr.find('.stok').text(stok)
-      tr.find('.unit_price').text(parseFloat(price).toLocaleString('en-US', {
-        style: 'decimal',
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2
-      }))
-      tr.find('.total_price').text(parseFloat(price).toLocaleString('en-US', {
-        style: 'decimal',
-        maximumFractionDigits: 2,
-        minimumFractionDigits: 2
-      }))
-      $('#item-table tbody').append(tr)
-      $('#product').val('').trigger('change')
-      calculate_total()
-      tr.find('.rem_item').click(function() {
-        if (confirm("Are you sure to remove this item") === true) {
-          tr.remove()
-          calculate_total()
-        }
-      })
-      tr.find('[name="quantity[]"]').on('change input', function() {
-        var qty = tr.find('[name="quantity[]"]').val()
-        if (qty > stok) {
-          alert('Jumlah melebihi stok, maksimal ' + stok, '', {
-            timeOut: 500,
-          })
-          tr.find('[name="quantity[]"]').val(1) // set jumlah quantity menjadi 1
-        }
-
         calculate_total()
-      })
+        tr.find('.rem_item').click(function() {
+          if (confirm("Are you sure to remove this item") === true) {
+            tr.remove()
+            calculate_total()
+          }
+        })
+        tr.find('[name="quantity[]"]').on('change input', function() {
+          var qty = tr.find('[name="quantity[]"]').val()
+          if (qty > stok) {
+            alert('Jumlah melebihi stok, maksimal ' + stok, '', {
+              timeOut: 500,
+            })
+            tr.find('[name="quantity[]"]').val(1) // set jumlah quantity menjadi 1
+          }
 
-      $('#select2_pelanggan_id').prop('disabled', true)
+          calculate_total()
+        })
 
-      $('#cancel_payment').prop('disabled', false)
+        $('#select2_pelanggan_id').prop('disabled', true)
 
-      $('#show_stok').text('')
+        $('#cancel_payment').prop('disabled', false)
+
+        $('#show_stok').text('')
+      }
 
     })
 
     $('[name="diskon"]').on('input change', function() {
       var diskon = $(this).val()
       var sub_total = $('[name="total_amount"]').val()
-      var totalDiskon = parseFloat(diskon/100)*parseFloat(sub_total)
+      var totalDiskon = parseFloat(diskon / 100) * parseFloat(sub_total)
       diskon = diskon > 0 ? diskon : 0;
       sub_total = sub_total > 0 ? sub_total : 0;
       var calculateDiskon = parseFloat(sub_total) - parseFloat(totalDiskon);
@@ -221,17 +225,17 @@
         maximumFractionDigits: 2,
         minimumFractionDigits: 2
       }))
-      
+
       $('#change').val(0 - calculateDiskon)
 
       // calculate_total()
     })
-    
+
 
     $('[name="tendered"]').on('input change', function() {
       var diskon = $('#diskon').val()
       var sub_total = $('[name="total_amount"]').val()
-      var totalDiskon = parseFloat(diskon/100)*parseFloat(sub_total)
+      var totalDiskon = parseFloat(diskon / 100) * parseFloat(sub_total)
       diskon = diskon > 0 ? diskon : 0;
       sub_total = sub_total > 0 ? sub_total : 0;
       var calculateDiskon = parseFloat(sub_total) - parseFloat(totalDiskon);

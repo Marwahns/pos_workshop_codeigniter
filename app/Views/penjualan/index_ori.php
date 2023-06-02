@@ -22,7 +22,6 @@
         <div class="container-fluid">
             <form action="<?= base_url("pembayaran/save_transaction") ?>" id="transaction-form" method="POST" onkeydown="return event.key != 'Enter';">
                 <input type="hidden" name="total_amount" value="0">
-                <input type="hidden" name="grand_total" value="0">
                 <div class="row">
                     <!-- Card 1 -->
                     <div class="col-md-6">
@@ -48,7 +47,8 @@
                                 <div class="form-group row">
                                     <label for="pelanggan" class="col-sm-3 col-form-label">Pelanggan</label>
                                     <div class="col-sm-9">
-                                        <select id="select2_pelanggan_id" name="pelanggan_id" class="form-control">
+                                        <select id="select2_pelanggan_id" name="pelanggan_id" class="form-control"> 
+                                            <option value="" disabled selected>Select Type Customer</option>
                                             <?php foreach ($pelanggan as $key => $value) { ?>
                                                 <option <?= !empty($request->getPost('pelanggan')) && $request->getPost('pelanggan') == $value->id ? 'selected' : '' ?> value="<?= $value->id ?>"><?= $value->nama ?></option>
                                             <?php } ?>
@@ -56,7 +56,7 @@
                                     </div>
 
                                     <!-- Nama Customer -->
-                                    <input type="text" class="form-control" id="nama_customer" name="nama_customer" disabled value="-">
+                                    <input type="hidden" class="form-control" id="nama_customer" name="nama_customer" disabled value="">
                                 </div>
 
                             </div>
@@ -310,6 +310,14 @@
             $('#save_transaction').prop('disabled', false)
         }
         // alert(changeValue);
+    }
+
+    function getCustomer() {
+        var customer = document.getElementById("nama_customer").value;
+        if (customer == "") {
+            $('#add_item').prop('disabled', true)
+            alert("Please select type customer")
+        }
     }
 
     // function getTotalDiskon(){
