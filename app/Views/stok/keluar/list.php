@@ -58,7 +58,7 @@
                                             <tr>
                                                 <th><?= $i++; ?></th>
                                                 <td><?= $row->kode_spareparts ?></td>
-                                                <td><?= $row->spareparts_id ?></td>
+                                                <td><?= $row->spareparts ?></td>
                                                 <td><?= $row->jumlah ?></td>
                                                 <td><?= $row->created_at ?></td>
                                                 <td>

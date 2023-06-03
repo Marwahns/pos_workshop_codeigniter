@@ -74,7 +74,6 @@ class Pembayaran extends BaseController
             }
         }
 
-        // $data['code'] = $code;
         $data['code'] = $this->tran_model->invoice();
         foreach ($this->request->getPost() as $k => $v) {
             if (!is_array($this->request->getPost($k)) && !in_array($k, ['id'])) {
@@ -89,14 +88,12 @@ class Pembayaran extends BaseController
                 $data2['product_id'] = $v;
                 $data2['price'] = $price[$k];
                 $data2['quantity'] = $quantity[$k];
-                // $this->tran_item_model->stok_bertambah($data2);
                 $this->tran_item_model->save($data2);
             }
             $this->data['penjualan'] = $this->productModel->set('stok', 'stok-' . $data2['quantity'], false)->where('id', $data2['product_id'])->update();
             $this->session->setFlashdata('main_success', "Transaction has been saved successfully.");
 
             $this->data['items'] = $this->tran_item_model
-                // ->select("transaction_items.*, CONCAT(tb_spareparts.kode_spareparts,'-',tb_spareparts.spareparts) as product")
                 ->select('transaction_items.price, transaction_items.quantity, 
                                 transactions.code, transactions.customer, transactions.total_amount, transactions.tendered, transactions.created_at, 
                                 tb_spareparts.spareparts')
@@ -104,8 +101,6 @@ class Pembayaran extends BaseController
                 ->join('transactions', 'transactions.id=transaction_items.transaction_id')
                 ->where('transaction_id', $transaction_id)
                 ->findAll();
-            // return redirect()->to('pembayaran/cetak');
-            // return redirect()->to('pembayaran/index');
             return view('penjualan/cetak_termal', $this->data);
         }
     }
@@ -141,7 +136,6 @@ class Pembayaran extends BaseController
             ->select(" transactions.*, COALESCE((SELECT SUM(transaction_items.quantity) FROM transaction_items where transaction_id = transactions.id ), 0) as total_items")
             ->paginate($this->data['perPage']);
         $this->data['total_res'] = is_array($this->data['transactions']) ? count($this->data['transactions']) : 0;
-        // $this->data['pager'] = $this->tran_model->pager;
         return view('pembayaran/invoice', $this->data);
     }
 
@@ -196,7 +190,6 @@ class Pembayaran extends BaseController
             return redirect()->to('pembayaran/transactions');
         }
         $this->data['items'] = $this->tran_item_model
-            // ->select("transaction_items.*, CONCAT(tb_spareparts.kode_spareparts,'-',tb_spareparts.spareparts) as product")
             ->select('transaction_items.price, transaction_items.quantity, 
                                 transactions.code, transactions.customer, transactions.total_amount, transactions.tendered, transactions.created_at, 
                                 tb_spareparts.spareparts')
@@ -204,19 +197,7 @@ class Pembayaran extends BaseController
             ->join('transactions', 'transactions.id=transaction_items.transaction_id')
             ->where('transaction_id', $id)
             ->findAll();
-        // echo view('partial/header', $this->data);
-        // echo view('partial/top_menu');
-        // echo view('partial/side_menu');
         echo view('penjualan/cetak_termal', $this->data);
-        // echo view('pos/generatereceipt', $this->data);
-        // echo view('partial/footer');
-
-        // $transaksi = $this->tran_item_model->where('id', $id)->first();
-        // // jika id penjualan tidak ditemukan redirect ke halaman invoice dan tampilkan error
-        // if (empty($transaksi)) {
-        //     return redirect()->to('/pembayaran/invoice')->with('pesan', 'Invoice tidak ditemukan');
-        // }
-        // echo view('penjualan/daftar_invoice');
     }
 
     ######################################## Download Spreadhsheet ########################################
@@ -255,13 +236,6 @@ class Pembayaran extends BaseController
             ->setCellValue('G1', 'Tunai');
         $row = 2;
         // looping data item
-        // foreach ($this->tran_item_model
-        //     ->select('transaction_items.price As price, transaction_items.quantity As quantity, 
-        // transactions.code As code, transactions.customer As customer, transactions.total_amount As total_amount, transactions.tendered As tendered, transactions.created_at As created_at, 
-        // tb_spareparts.spareparts As spareparts')
-        //     ->join('tb_spareparts', " transaction_items.product_id = tb_spareparts.id ", 'inner')
-        //     ->join('transactions', 'transactions.id=transaction_items.transaction_id')
-        //     ->findAll() as $key => $data) {
         foreach ($this->tran_item_model->detailTransaksi() as $key => $data) {
             $spreadsheet->getActiveSheet()
                 ->setCellValue('A' . $row, $key + 1)

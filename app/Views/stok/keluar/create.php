@@ -68,13 +68,17 @@
                         <!-- Supplier -->
                         <div class="form-group">
                             <label for="exampleInputEmail1">Supplier</label>
-                            <input name="supplier_id" id="supplier_id" type="text" class="form-control" readonly required value="<?= !empty($request->getPost('supplier_id')) ? $request->getPost('supplier_id') : '' ?>">
+                            <!-- Memasukkan supplier_id -->
+                            <input name="supplier_id" id="supplier_id" type="hidden" class="form-control" readonly required value="<?= !empty($request->getPost('supplier_id')) ? $request->getPost('supplier_id') : '' ?>">
+
+                            <!-- Menampilkan nama supplier -->
+                            <input type="text" class="form-control" id="nama_supplier_stok_keluar" name="nama_supplier_stok_keluar" disabled value="-">
                         </div>
 
                         <!-- Jumlah -->
                         <div class="form-group">
                             <label for="exampleInputPassword1">Jumlah</label>
-                            <input type="number" class="form-control" id="jumlahKeluar" name="jumlahKeluar" required="required" value="<?= !empty($request->getPost('jumlah')) ? $request->getPost('jumlah') : '' ?>" onkeypress="getSelectValue();">
+                            <input type="number" class="form-control" id="jumlah" name="jumlah" required="required" min="1" value="<?= !empty($request->getPost('jumlah')) ? $request->getPost('jumlah') : '' ?>">
                         </div>
 
                         <!-- Keterangan -->
@@ -100,16 +104,12 @@
     <!-- /.content -->
 
     <!-- <script type="text/javascript">
-        getSelectValue()
-
-        function getSelectValue() {
-            var stok = $('#stok').val()
+        function getJumlah() {
+            var stok = $('#stokKeluar').val()
             var jumlah = $('#jumlah').val()
             if (jumlah > stok) {
-                alert('Jumlah melebihi stok, maksimal ' + stok, '', {
-                    timeOut: 500,
-                })
-                $('#jumlah').val(1) // set jumlah quantity menjadi 1
+                $('#btn_stok_keluar').prop('disabled', true)
+
             }
         }
     </script> -->

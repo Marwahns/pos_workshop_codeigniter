@@ -219,6 +219,12 @@
       diskon = diskon > 0 ? diskon : 0;
       sub_total = sub_total > 0 ? sub_total : 0;
       var calculateDiskon = parseFloat(sub_total) - parseFloat(totalDiskon);
+
+      if (diskon > 10) {
+        alert('Diskon tidak boleh melebihi 10%')
+        $('#diskon').val(0) // set jumlah diskon menjadi 0
+      }
+
       console.log(calculateDiskon)
       $('#gtotal').val(parseFloat(calculateDiskon).toLocaleString('en-US', {
         style: 'decimal',
@@ -228,7 +234,6 @@
 
       $('#change').val(0 - calculateDiskon)
 
-      // calculate_total()
     })
 
 
@@ -309,25 +314,31 @@
       getBarang(event.target.value).then(spareparts_id => {
         $('#spareparts').val(spareparts_id.spareparts);
         $('#stokKeluar').val(spareparts_id.stok);
-        $('#kategori_id').val(spareparts_id.kategori_id);
+        $('#kategori_id').val(spareparts_id.kategori);
         $('#supplier_id').val(spareparts_id.supplier_id);
+        $('#nama_supplier_stok_keluar').val(spareparts_id.nama);
+        $('#show_stok_keluar').text(spareparts_id.stok);
       });
 
     });
 
-    $('#jumlahKeluar').on('input change', function() {
+    $('#jumlah').on('input change', function() {
       var stok = $('#stokKeluar').val()
-      var jumlah = $('#jumlahKeluar').val()
-      if (jumlah > stok) {
+      var jumlah = $('#jumlah').val()
+      var calculate = stok - jumlah
+      console.log(jumlah)
+
+      if (calculate < 0) {
         alert('Jumlah melebihi stok, maksimal ' + stok, '', {
           timeOut: 500,
         })
-        $('#btn_stok_keluar').prop('disabled', true)
-        $('#jumlah').val(0) // set jumlah quantity menjadi 
-
-      } else if(jumlah == 0) {
-        $('#btn_stok_keluar').prop('disabled', true)
-      } else{
+        $('#jumlah').val(1) // set jumlah menjadi 1
+      } else if (jumlah == 0) {
+        alert('Jumlah tidak boleh 0', {
+          timeOut: 500,
+        })
+        $('#jumlah').val(1) // set jumlah menjadi 1    
+      } else {
         $('#btn_stok_keluar').prop('disabled', false)
       }
 
@@ -337,8 +348,9 @@
       getBarang(event.target.value).then(spareparts_id => {
         $('#spareparts').val(spareparts_id.spareparts);
         $('#stok').val(spareparts_id.stok);
-        $('#kategori_id').val(spareparts_id.kategori_id);
+        $('#kategori_id').val(spareparts_id.kategori);
         $('#supplier_id').val(spareparts_id.supplier_id);
+        $('#nama_supplier').val(spareparts_id.nama);
       });
 
     });

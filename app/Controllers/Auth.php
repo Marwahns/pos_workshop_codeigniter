@@ -37,7 +37,7 @@ class Auth extends BaseController
         $post = $this->request->getPost();
         $user = $this->userModel->getUsername($post);
         if($user){
-            if(password_verify($post['password'], $user->password)){
+            if(password_verify($post['password'], $user->password) && $user->id_status == 1){
                 $params = ['id' => $user->id];
                 $this->data['join_role'] = $this->userModel->getJoinToRole();
                 session()->set($params);

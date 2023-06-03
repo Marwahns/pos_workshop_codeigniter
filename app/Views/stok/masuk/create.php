@@ -66,7 +66,11 @@
                         <!-- Supplier -->
                         <div class="form-group">
                             <label for="exampleInputEmail1">Supplier</label>
-                            <input name="supplier_id" id="supplier_id" type="text" class="form-control" readonly required value="<?= !empty($request->getPost('supplier_id')) ? $request->getPost('supplier_id') : '' ?>">
+                            <!-- Memasukkan supplier_id -->
+                            <input name="supplier_id" id="supplier_id" type="hidden" class="form-control" readonly required value="<?= !empty($request->getPost('supplier_id')) ? $request->getPost('supplier_id') : '' ?>">
+
+                            <!-- Menampilkan nama supplier -->
+                            <input type="text" class="form-control" id="nama_supplier" name="nama_supplier" disabled value="-">
                         </div>
 
                         <!-- Jumlah -->

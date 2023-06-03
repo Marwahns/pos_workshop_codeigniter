@@ -74,7 +74,7 @@ class Stok extends BaseController
         $this->data['page_title'] =  "Add New";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
-        $this->data['spareparts_id'] =  $this->SpareParts_model->orderBy('id ASC')->select('*')->get()->getResult();
+        $this->data['spareparts_id'] =  $this->SpareParts_model->detailProduk();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -88,7 +88,7 @@ class Stok extends BaseController
         $this->data['page_title'] =  "Add New";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
-        $this->data['spareparts_id'] =  $this->SpareParts_model->orderBy('id ASC')->select('*')->get()->getResult();
+        $this->data['spareparts_id'] =  $this->SpareParts_model->detailProduk();
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
