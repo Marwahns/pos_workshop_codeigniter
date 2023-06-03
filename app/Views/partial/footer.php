@@ -308,12 +308,30 @@
     $('#select2_spareparts_id').on('change', (event) => {
       getBarang(event.target.value).then(spareparts_id => {
         $('#spareparts').val(spareparts_id.spareparts);
-        $('#stok').val(spareparts_id.stok);
+        $('#stokKeluar').val(spareparts_id.stok);
         $('#kategori_id').val(spareparts_id.kategori_id);
         $('#supplier_id').val(spareparts_id.supplier_id);
       });
 
     });
+
+    $('#jumlahKeluar').on('input change', function() {
+      var stok = $('#stokKeluar').val()
+      var jumlah = $('#jumlahKeluar').val()
+      if (jumlah > stok) {
+        alert('Jumlah melebihi stok, maksimal ' + stok, '', {
+          timeOut: 500,
+        })
+        $('#btn_stok_keluar').prop('disabled', true)
+        $('#jumlah').val(0) // set jumlah quantity menjadi 
+
+      } else if(jumlah == 0) {
+        $('#btn_stok_keluar').prop('disabled', true)
+      } else{
+        $('#btn_stok_keluar').prop('disabled', false)
+      }
+
+    })
 
     $('#select2_spareparts_stok_masuk').on('change', (event) => {
       getBarang(event.target.value).then(spareparts_id => {

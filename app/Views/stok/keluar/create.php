@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Add New Stok Masuk Spare Parts</h1>
+                    <h1>Add Stok Keluar Spare Parts</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -62,7 +62,7 @@
                             <label for="unit" class="regular-form-1">Kategori</label>
                             <input type="text" class="form-control" id="kategori_id" name="kategori_id" disabled value="-">
                             <label for="stok" class="regular-form-1">Stok</label>
-                            <input type="text" class="form-control" id="stok" name="stok" disabled value="-">
+                            <input type="text" class="form-control" id="stokKeluar" name="stokKeluar" disabled value="-">
                         </div>
 
                         <!-- Supplier -->
@@ -74,7 +74,7 @@
                         <!-- Jumlah -->
                         <div class="form-group">
                             <label for="exampleInputPassword1">Jumlah</label>
-                            <input type="number" class="form-control" id="jumlah" name="jumlah" required="required" value="<?= !empty($request->getPost('jumlah')) ? $request->getPost('jumlah') : '' ?>">
+                            <input type="number" class="form-control" id="jumlahKeluar" name="jumlahKeluar" required="required" value="<?= !empty($request->getPost('jumlah')) ? $request->getPost('jumlah') : '' ?>" onkeypress="getSelectValue();">
                         </div>
 
                         <!-- Keterangan -->
@@ -89,7 +89,7 @@
                     <div class="card-footer">
                         <button type="reset" form="create-form" class="btn btn-danger w-24">Reset</button>
                         <a class="btn btn-primary w-24 mr-1" href="<?= base_url('stok/indexStokKeluar/') ?>">Cancel</a>
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="submit" class="btn btn-success" id="btn_stok_keluar" disabled>Save</button>
                     </div>
                 </form>
             </div>
@@ -98,6 +98,19 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    <!-- <script type="text/javascript">
+        getSelectValue()
+
+        function getSelectValue() {
+            var stok = $('#stok').val()
+            var jumlah = $('#jumlah').val()
+            if (jumlah > stok) {
+                alert('Jumlah melebihi stok, maksimal ' + stok, '', {
+                    timeOut: 500,
+                })
+                $('#jumlah').val(1) // set jumlah quantity menjadi 1
+            }
+        }
+    </script> -->
 </div>
-</div>
-</body>
