@@ -46,6 +46,8 @@
     <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/bs-stepper/css/bs-stepper.min.css') ?>">
     <!-- dropzonejs -->
     <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/dropzone/min/dropzone.min.css') ?>">
+    <!-- fullCalendar -->
+    <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/fullcalendar/main.css') ?>">
 </head>
 
 <body class="<?= $body_class ?>">

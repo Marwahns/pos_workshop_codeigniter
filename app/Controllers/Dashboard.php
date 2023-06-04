@@ -34,15 +34,21 @@ class Dashboard extends BaseController
     public function index()
     {
         $data = [
-            'title'             => 'Dashboard',
-            'spareParts'        => $this->spareParts_model->countAllResults(),
-            'supplier'          => $this->supplier_model->countAllResults(),
-            'kategori'          => $this->kategori_model->countAllResults(),
-            // 'penjualan'         => $this->transaksi_model->countAllResults(),
-            // 'penjualan_harian'  => $this->penjualan_daily(),
-            // 'penjualan_bulanan' => $this->penjualan_daily(true),
-            'item'              => $this->transaksi_item_model->get_quantity(),
-            'users'             => $this->auth_model->countAllResults(),
+            'title'                 => 'Dashboard',
+            'spareParts'            => $this->spareParts_model->countAllResults(),
+            'item'                  => $this->spareParts_model->selectSum('stok')->first(),
+            'kategori'              => $this->kategori_model->countAllResults(),
+            'supplier'              => $this->supplier_model->countAllResults(),
+            'penjualan'             => $this->transaksi_model->countAllResults(),
+            'penjualan_harian'      => $this->transaksi_model->selectCount('id')->where('DATE(created_at) = DATE(NOW())')->first(),
+            'penjualan_mingguan'    => $this->transaksi_model->selectCount('id')->where('WEEK(created_at) = WEEK(NOW())')->first(),
+            'penjualan_bulanan'     => $this->transaksi_model->selectCount('id')->where('MONTH(created_at) = MONTH(NOW())')->first(),
+            'users'                 => $this->auth_model->countAllResults(),
+            'pendapatan_harian'     => $this->transaksi_model->selectSum('total_amount')->where('DATE(created_at) = DATE(NOW())')->first(),
+            'pendapatan_mingguan'   => $this->transaksi_model->selectSum('total_amount')->where('WEEK(created_at) = WEEK(NOW())')->first(),
+            'pendapatan_bulanan'    => $this->transaksi_model->selectSum('total_amount')->where('MONTH(created_at) = MONTH(NOW())')->first(),
+            'amount'                => $this->transaksi_model->selectSum('total_amount')->first(),
+
         ];
         
         echo view('partial/header',$data);
@@ -51,18 +57,5 @@ class Dashboard extends BaseController
         echo view('dashboard',$data);
         echo view('partial/footer');
     }
-
-    // private function penjualan_daily($bulanan = false){
-	// 	$today = date("Y-m-d",strtotime("today"));
-	// 	$yesterday = date("Y-m-d",strtotime("-1 day"));	
-	// 	if($bulanan){
-	// 		$yesterday = date("Y-m-d",strtotime("-30 day"));	
-	// 	}	
-
-	// 	$filter['DATE(sales_transaction.date) >='] = $yesterday;
-	// 	$filter['DATE(sales_transaction.date) <='] = $today;
-
-	// 	$penjualans = $this->transaksi_model->get_filter($filter,url_param());
-	// 	return $penjualans;
-	// }
+    
 }

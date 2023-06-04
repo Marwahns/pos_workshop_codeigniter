@@ -6,30 +6,46 @@
       <div class="row mb-2">
         <div class="col-sm-6">
           <h1 class="m-0">Dashboard</h1>
-        </div><!-- /.col -->
+        </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
             <li class="breadcrumb-item"><a href="#">Home</a></li>
             <li class="breadcrumb-item active">Dashboard</li>
           </ol>
-        </div><!-- /.col -->
-      </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- /.content-header -->
 
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-      <!-- Small boxes (Stat box) -->
       <div class="row">
+
+        <!-- ## Spare Parts -->
         <div class="col-lg-3 col-6">
-          <!-- small box -->
           <div class="small-box bg-info">
             <div class="inner">
               <h3><?= esc($spareParts) ?></h3>
+              <p>Total Spare Parts</p>
+            </div>
+            <div class="icon">
+              <i class="fas fa-boxes"></i>
+            </div>
+            <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+              <a href="<?= base_url('spareparts/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+            <?php } ?>
+          </div>
+        </div>
 
-              <p>Spare Parts</p>
+        <!-- ## Items -->
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-gradient-orange">
+            <div class="inner">
+              <?php foreach ($item as $value) { ?>
+                <h3><?= $value ?></h3>
+              <?php } ?>
+              <p>Total Items</p>
             </div>
             <div class="icon">
               <i class="ion ion-bag"></i>
@@ -39,205 +55,224 @@
             <?php } ?>
           </div>
         </div>
-        <!-- ./col -->
+
+        <!-- ## Category -->
         <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-success">
+          <div class="small-box bg-pink">
             <div class="inner">
               <h3><?= esc($kategori) ?></h3>
 
-              <p>Kategori</p>
+              <p>Total Category</p>
             </div>
             <div class="icon">
-              <i class="ion ion-stats-bars"></i>
+              <i class="fas fa-project-diagram"></i>
             </div>
             <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
               <a href="<?= base_url('kategori/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             <?php } ?>
           </div>
         </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-warning">
-            <div class="inner">
-              <h3><?= esc($users) ?></h3>
 
-              <p>User Registrations</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-            <?php if (get_user('id_role') == 1) { ?>
-              <a href="<?= base_url('users/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
-            <?php } ?>
-          </div>
-        </div>
-        <!-- ./col -->
+        <!-- ## Supplier -->
         <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <div class="small-box bg-danger">
+          <div class="small-box bg-fuchsia">
             <div class="inner">
               <h3><?= esc($supplier) ?></h3>
-
-              <p>Supplier</p>
+              <p>Total Supplier</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="fas fa-people-carry"></i>
             </div>
             <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
               <a href="<?= base_url('supplier/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
             <?php } ?>
           </div>
         </div>
-        <!-- ./col -->
-      </div>
-      <!-- /.row -->
-
-      <div class="row">
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <!-- <div class="small-box bg-info">
-            <div class="inner">
-              <h3><?= esc($spareParts) ?></h3>
-
-              <p>Daily Sales</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-bag"></i>
-            </div>
-          </div> -->
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <!-- <div class="small-box bg-success">
-            <div class="inner">
-              <h3><?= esc($kategori) ?></h3>
-
-              <p>Monthly Sales</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-stats-bars"></i>
-            </div>
-          </div> -->
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-          <!-- small box -->
-          <!-- <div class="small-box bg-warning">
-            <div class="inner">
-              <h3><?= esc($users) ?></h3>
-
-              <p>Sales Return</p>
-            </div>
-            <div class="icon">
-              <i class="ion ion-person-add"></i>
-            </div>
-          </div> -->
-        </div>
-        <!-- ./col -->
       </div>
 
-      <!-- Main row -->
-      <div class="row">
-        <!-- Left col -->
-        <section class="col-lg-7 connectedSortable">
-          <!-- Custom tabs (Charts with tabs)-->
-          <div class="card">
-            <!-- <div class="card-header">
-              <h3 class="card-title">
-                <i class="fas fa-chart-pie mr-1"></i>
-                Sales
-              </h3>
-              <div class="card-tools">
-                <ul class="nav nav-pills ml-auto">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#revenue-chart" data-toggle="tab">Area</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#sales-chart" data-toggle="tab">Donut</a>
-                  </li>
-                </ul>
+      <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+        <div class="row">
+
+          <!-- ## Penjualan Harian -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-warning">
+              <div class="inner">
+                <?php foreach ($penjualan_harian as $value) { ?>
+                  <h3><?= $value ?></h3>
+                <?php } ?>
+                <p>Total Penjualan Harian</p>
               </div>
-            </div> -->
-            <!-- /.card-header -->
-            <!-- <div class="card-body">
-              <div class="tab-content p-0">
-                <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;">
-                  <canvas id="revenue-chart-canvas" height="300" style="height: 300px;"></canvas>
-                </div>
-                <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;">
-                  <canvas id="sales-chart-canvas" height="300" style="height: 300px;"></canvas>
-                </div>
+              <div class="icon">
+                <i class="fas fa-chart-pie"></i>
               </div>
-            </div> -->
-            <!-- /.card-body -->
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('pembayaran/invoice') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
           </div>
-          <!-- /.card -->
 
-        </section>
-        <!-- /.Left col -->
-        <!-- right col (We are only adding the ID to make the widgets sortable)-->
-        <section class="col-lg-5 connectedSortable">
-
-          <!-- solid sales graph -->
-          <!-- <div class="card bg-gradient-info">
-              <div class="card-header border-0">
-                <h3 class="card-title">
-                  <i class="fas fa-th mr-1"></i>
-                  Sales Graph
-                </h3>
-
-                <div class="card-tools">
-                  <button type="button" class="btn bg-info btn-sm" data-card-widget="collapse">
-                    <i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn bg-info btn-sm" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
+          <!-- ## Penjualan Mingguan -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-blue">
+              <div class="inner">
+                <?php foreach ($penjualan_mingguan as $value) { ?>
+                  <h3><?= $value ?></h3>
+                <?php } ?>
+                <p>Total Penjualan Mingguan</p>
               </div>
-              <div class="card-body">
-                <canvas class="chart" id="line-chart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-              </div> -->
-          <!-- /.card-body -->
-          <!-- <div class="card-footer bg-transparent">
-                <div class="row">
-                  <div class="col-4 text-center">
-                    <input type="text" class="knob" data-readonly="true" value="20" data-width="60" data-height="60"
-                           data-fgColor="#39CCCC">
+              <div class="icon">
+                <i class="fa fa-chart-line"></i>
+              </div>
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('pembayaran/invoice') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
+          </div>
 
-                    <div class="text-white">Mail-Orders</div>
-                  </div> -->
-          <!-- ./col -->
-          <!-- <div class="col-4 text-center">
-                    <input type="text" class="knob" data-readonly="true" value="50" data-width="60" data-height="60"
-                           data-fgColor="#39CCCC">
+          <!-- ## Penjualan Bulanan -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-lightblue">
+              <div class="inner">
+                <?php foreach ($penjualan_bulanan as $value) { ?>
+                  <h3><?= $value ?></h3>
+                <?php } ?>
+                <p>Total Penjualan Bulanan</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-area"></i>
+              </div>
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('pembayaran/invoice') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
+          </div>
 
-                    <div class="text-white">Online</div>
-                  </div> -->
-          <!-- ./col -->
-          <!-- <div class="col-4 text-center">
-                    <input type="text" class="knob" data-readonly="true" value="30" data-width="60" data-height="60"
-                           data-fgColor="#39CCCC">
+          <!-- ## Penjualan -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-gradient-pink">
+              <div class="inner">
+                <h3><?= esc($penjualan) ?></h3>
+                <p>Total Penjualan</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('pembayaran/invoice') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
+          </div>
 
-                    <div class="text-white">In-Store</div>
-                  </div> -->
-          <!-- ./col -->
-          <!-- </div> -->
-          <!-- /.row -->
-          <!-- </div> -->
-          <!-- /.card-footer -->
-          <!-- </div> -->
-          <!-- /.card -->
-          <!-- /.card -->
-        </section>
-        <!-- right col -->
-      </div>
-      <!-- /.row (main row) -->
-    </div><!-- /.container-fluid -->
-  </section>
-  <!-- /.content -->
+        </div>
+
+        <div class="row">
+
+          <!-- ## Pendapatan Harian -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-lime">
+              <div class="inner">
+                <?php foreach ($pendapatan_harian as $value) { ?>
+                  <h3><?= $value ?></h3>
+                <?php } ?>
+
+                <p>Total Pendapatan Harian</p>
+              </div>
+              <div class="icon">
+                <i class="fa fa-cash-register"></i>
+              </div>
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('pembayaran/invoice') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
+          </div>
+
+          <!-- ## Pendapatan Mingguan -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-success">
+              <div class="inner">
+                <?php foreach ($pendapatan_mingguan as $value) { ?>
+                  <h3><?= $value ?></h3>
+                <?php } ?>
+
+                <p>Total Pendapatan Mingguan</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-money-bill-alt"></i>
+              </div>
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('pembayaran/invoice') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
+          </div>
+
+          <!-- ## Pendapatan Bulanan -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-teal">
+              <div class="inner">
+                <?php foreach ($pendapatan_bulanan as $value) { ?>
+                  <h3><?= $value ?></h3>
+                <?php } ?>
+
+                <p>Total Pendapatan Bulanan</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-money-check-alt"></i>
+              </div>
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('pembayaran/invoice') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
+          </div>
+
+          <!-- ## Sales -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-gradient-olive">
+              <div class="inner">
+                <?php foreach ($amount as $value) { ?>
+                  <h3><?= $value ?></h3>
+                <?php } ?>
+
+                <p>Total Sales</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-dollar-sign"></i>
+              </div>
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('pembayaran/invoice') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row">
+          <!-- ## User -->
+          <div class="col-lg-3 col-6">
+            <div class="small-box bg-gradient-orange">
+              <div class="inner">
+                <h3><?= esc($users) ?></h3>
+                <p>Total User Registrations</p>
+              </div>
+              <div class="icon">
+                <i class="fas fa-user-friends"></i>
+              </div>
+              <?php if (get_user('id_role') == 1 || get_user('id_role') == 2) { ?>
+                <a href="<?= base_url('users/index') ?>" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              <?php } ?>
+            </div>
+          </div>
+        </div>
+
+      <?php } ?>
+
+    </div>
+
+    <!-- Main row -->
+    <div class="row">
+      <section class="col-lg-5 connectedSortable">
+
+      </section>
+      
+    </div>
+
 </div>
-<!-- /.content-wrapper -->

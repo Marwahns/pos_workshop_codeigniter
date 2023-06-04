@@ -2,7 +2,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-        <img src="<?= base_url('adminLTE/dist/img/AdminLTELogo.png') ?>" alt="AdminLTELogo" height="60" width="60" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <!-- <img src="<?= base_url('adminLTE/dist/img/AdminLTELogo.png') ?>" alt="AdminLTELogo" height="60" width="60" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
+        <i class="fas fa-tools ml-3 mr-1"></i>
         <!-- <?php if (get_user('id_role') == 1) {
                     //     echo '<span class="brand-text font-weight-light">Super Admin</span>';
                     // } elseif(get_user('id_role')==2){
@@ -149,7 +150,7 @@
                 <?php endif ?>
                 <li class="nav-item">
                     <a href="<?= base_url('auth/logout') ?>" class="nav-link">
-                        <i class="nav-icon fa fa-globe"></i>
+                        <i class="nav-icon fa fa-sign-out-alt"></i>
                         <p>
                             Logout
                         </p>
