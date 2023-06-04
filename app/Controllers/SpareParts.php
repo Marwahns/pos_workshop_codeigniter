@@ -34,7 +34,7 @@ class SpareParts extends BaseController
     ######################################## Home Page ########################################
     public function index()
     {
-        $this->data['page_title'] =  "List Spare Parts";
+        $this->data['title'] =  "Bengkel ABC | List Spare Parts";
         $this->data['tb_spareparts'] =  $this->SpareParts_model->detailProduk();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
         $this->data['perPage'] =  10;
@@ -52,7 +52,7 @@ class SpareParts extends BaseController
     ######################################## Create Form Page ########################################
     public function createSpareParts()
     {
-        $this->data['page_title'] =  "Add New";
+        $this->data['title'] =  "Bengkel ABC | Add New Spare Parts";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['kategori_id'] =  $this->kategori_model->orderBy('id ASC')->select('*')->get()->getResult();
@@ -148,7 +148,7 @@ class SpareParts extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/spareparts/create');
         }
-        $this->data['page_title'] = "Edit SpareParts Details";
+        $this->data['title'] = "Bengkel ABC | Edit SpareParts Details";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['kategori_id'] =  $this->kategori_model->orderBy('id ASC')->select('*')->get()->getResult();
@@ -182,7 +182,7 @@ class SpareParts extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/spareparts/index');
         }
-        $this->data['page_title'] = "View Contact Details";
+        $this->data['title'] = "Bengkel ABC | View Spare Parts Details";
         $qry = $this->SpareParts_model->select('tb_spareparts.id, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_spareparts.supplier_id, tb_spareparts.kategori_id, tb_supplier.nama, tb_kategori.kategori')
         ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
         ->join('tb_supplier', 'tb_supplier.id = tb_spareparts.supplier_id')

@@ -32,7 +32,7 @@ class Users extends BaseController
     ######################################## Home Page ########################################
     public function index()
     {
-        $this->data['page_title'] =  "List Users";
+        $this->data['title'] =  "Bengkel ABC | List Users";
         // $this->data['tb_users'] =  $this->user_model->joinUser();
         $this->data['tb_users'] =  $this->user_model->detailUser();
         echo view('partial/header', $this->data);
@@ -45,7 +45,7 @@ class Users extends BaseController
     ######################################## Create Form Page ########################################
     public function createUsers()
     {
-        $this->data['page_title'] =  "Add New";
+        $this->data['title'] =  "Bengkel ABC | Add New User";
         $this->data['request'] =  $this->request;
         $this->data['id_role'] =  $this->role_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['id_status'] =  $this->statusRole_model->orderBy('id ASC')->select('*')->get()->getResult();
@@ -251,7 +251,7 @@ class Users extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/users/create');
         }
-        $this->data['page_title'] = "Edit Account Users Details";
+        $this->data['title'] = "Bengkel ABC | Edit Account Users Details";
         $this->data['request'] =  $this->request;
         $this->data['id_role'] =  $this->role_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['id_status'] =  $this->statusRole_model->orderBy('id ASC')->select('*')->get()->getResult();
@@ -285,7 +285,7 @@ class Users extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/users/index');
         }
-        $this->data['page_title'] = "View Contact Details";
+        $this->data['title'] = "Bengkel ABC | View User Details";
         $qry = $this->user_model->select('tb_users.id, tb_users.email, tb_users.username, tb_users.password, tb_users.nama, tb_users.alamat, tb_users.id_status, tb_users.id_role, tb_roles.role, tb_status_roles.status')
             ->join('tb_roles', 'tb_roles.id=tb_users.id_role')
             ->join('tb_status_roles', 'tb_status_roles.id=tb_users.id_status')
@@ -300,7 +300,7 @@ class Users extends BaseController
 
     public function profile()
     {
-        $this->data['page_title'] =  "Edit Profile";
+        $this->data['title'] =  "Bengkel ABC | Edit Profile";
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');

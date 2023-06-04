@@ -32,14 +32,14 @@ class Stok extends BaseController
         helper(['fungsi_helper']);
     }
 
-    ######################################## Home Page Stok Masuk ########################################
+    ######################################## Home Page Stock In ########################################
     public function index()
     {
-        $this->data['page_title'] =  "List Stock Masuk";
+        $this->data['title'] =  "Bengkel ABC | List Stock In";
         $this->data['tb_stok'] =  $this->stok_model->detailStokMasuk();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
         $this->data['perPage'] =  10;
-        $this->data['total'] =  $this->stok_model->countAllResults();
+        $this->data['total'] =  $this->stok_model->select('*')->where('tipe', 'masuk')->countAllResults();
         $this->data['stok_masuk'] = $this->stok_model->paginate($this->data['perPage']);
         $this->data['total_res'] = is_array($this->data['stok_masuk'])? count($this->data['stok_masuk']) : 0;
         $this->data['pager'] = $this->stok_model->pager;
@@ -50,14 +50,14 @@ class Stok extends BaseController
         echo view('partial/footer');
     }
 
-    ######################################## Home Page Stok Keluar ########################################
+    ######################################## Home Page Stock Out ########################################
     public function indexStokKeluar()
     {
-        $this->data['page_title'] =  "List Stock Keluar";
+        $this->data['title'] =  "Bengkel ABC | List Stock Out";
         $this->data['tb_stok'] =  $this->stok_model->detailStokKeluar();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
         $this->data['perPage'] =  10;
-        $this->data['total'] =  $this->stok_model->countAllResults();
+        $this->data['total'] =  $this->stok_model->select('*')->where('tipe', 'keluar')->countAllResults();
         $this->data['stok_keluar'] = $this->stok_model->paginate($this->data['perPage']);
         $this->data['total_res'] = is_array($this->data['stok_keluar'])? count($this->data['stok_keluar']) : 0;
         $this->data['pager'] = $this->stok_model->pager;
@@ -68,10 +68,10 @@ class Stok extends BaseController
         echo view('partial/footer');
     }
 
-    ######################################## Create Stok Masuk ########################################
+    ######################################## Create Stock In ########################################
     public function createStokMasuk()
     {
-        $this->data['page_title'] =  "Add New";
+        $this->data['title'] =  "Bengkel ABC | Add Stock In";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['spareparts_id'] =  $this->SpareParts_model->detailProduk();
@@ -82,10 +82,10 @@ class Stok extends BaseController
         echo view('partial/footer');
     }
 
-    ######################################## Create Stok Keluar ########################################
+    ######################################## Create Stock Out ########################################
     public function createStokKeluar()
     {
-        $this->data['page_title'] =  "Add New";
+        $this->data['title'] =  "Bengkel ABC | Add Stock Out";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
         $this->data['spareparts_id'] =  $this->SpareParts_model->detailProduk();
@@ -270,14 +270,14 @@ class Stok extends BaseController
         }
     }
 
-    ######################################## View Data Stok Masuk ########################################
+    ######################################## View Data Stock In ########################################
     public function view_detailStokMasuk($id = '')
     {
         if (empty($id)) {
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/stok/index');
         }
-        $this->data['page_title'] = "View Contact Details";
+        $this->data['title'] = "Bengkel ABC | View Stock In Details";
         $qry = $this->stok_model->select('tb_stok.id a, tb_stok.supplier_id, tb_stok.jumlah, tb_stok.keterangan, tb_stok.tipe, tb_stok.ip_address, tb_stok.spareparts_id, tb_stok.created_at, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_supplier.nama, tb_kategori.kategori')
         ->join('tb_spareparts', 'tb_spareparts.id = tb_stok.spareparts_id')
         ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
@@ -290,14 +290,14 @@ class Stok extends BaseController
         echo view('partial/footer');
     }
 
-    ######################################## View Data Stok Keluar ########################################
+    ######################################## View Data Stock Out ########################################
     public function view_detailStokKeluar($id = '')
     {
         if (empty($id)) {
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/stok/index');
         }
-        $this->data['page_title'] = "View Contact Details";
+        $this->data['title'] = "Bengkel ABC | View Stock Out Details";
         $qry = $this->stok_model->select('tb_stok.id a, tb_stok.supplier_id, tb_stok.jumlah, tb_stok.keterangan, tb_stok.tipe, tb_stok.ip_address, tb_stok.spareparts_id, tb_stok.created_at, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_supplier.nama, tb_kategori.kategori')
         ->join('tb_spareparts', 'tb_spareparts.id = tb_stok.spareparts_id')
         ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')

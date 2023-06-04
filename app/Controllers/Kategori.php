@@ -26,7 +26,7 @@ class Kategori extends BaseController
     ######################################## Home Page ########################################
     public function index()
     {
-        $this->data['page_title'] =  "List Kategori";
+        $this->data['title'] =  "Bengkel ABC | List Kategori";
         // $this->data['tb_kategori'] =  $this->kategori_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
         $this->data['tb_kategori'] =  $this->kategori_model->detailKategori();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
@@ -45,7 +45,7 @@ class Kategori extends BaseController
     ######################################## Create Form Page ########################################
     public function createKategori()
     {
-        $this->data['page_title'] =  "Add New";
+        $this->data['title'] =  "Bengkel ABC | Add New Category";
         $this->data['request'] =  $this->request;
         $this->data['kode_kategori'] = $this->kategori_model->generateKodeKategori();
         echo view('partial/header', $this->data);
@@ -107,7 +107,7 @@ class Kategori extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/kategori/edit');
         }
-        $this->data['page_title'] = "Edit Kategori Details";
+        $this->data['title'] = "Bengkel ABC | Edit Category Details";
         $this->data['request'] =  $this->request;
         $qry = $this->kategori_model->select('*')->where(['id' => $id]);
         $this->data['data'] = $qry->first();
@@ -141,7 +141,7 @@ class Kategori extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/supplier/index');
         }
-        $this->data['page_title'] = "View Kategori Details";
+        $this->data['title'] = "Bengkel ABC | View Category Details";
         $qry = $this->kategori_model->select('*')->where(['id' => $id]);
         $this->data['data'] = $qry->first();
         echo view('partial/header', $this->data);

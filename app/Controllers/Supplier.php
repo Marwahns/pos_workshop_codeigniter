@@ -28,7 +28,7 @@ class Supplier extends BaseController
     ######################################## Initialize Objects ########################################
     public function index()
     {
-        $this->data['page_title'] =  "List Supplier";
+        $this->data['title'] =  "Bengkel ABC | List Supplier";
         // $this->data['tb_supplier'] =  $this->supplier_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
         $this->data['tb_supplier'] =  $this->supplier_model->detailSupplier();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
@@ -47,7 +47,7 @@ class Supplier extends BaseController
     ######################################## Home Page ########################################
     public function createSupplier()
     {
-        $this->data['page_title'] =  "Add New";
+        $this->data['title'] =  "Bengkel ABC | Add New Supplier";
         $this->data['request'] =  $this->request;
         $this->data['kode_supplier'] = $this->supplier_model->generateKodeSupplier();
         // return view('supplier/create', $this->data);
@@ -183,7 +183,7 @@ class Supplier extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/supplier/create');
         }
-        $this->data['page_title'] = "Edit Contact Details";
+        $this->data['title'] = "Bengkel ABC | Edit Supplier Details";
         $this->data['request'] =  $this->request;
         $qry = $this->supplier_model->select('*')->where(['id' => $id]);
         $this->data['data'] = $qry->first();
@@ -215,7 +215,7 @@ class Supplier extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/supplier/index');
         }
-        $this->data['page_title'] = "View Contact Details";
+        $this->data['title'] = "Bengkel ABC | View Supplier Details";
         $qry = $this->supplier_model->select('*')->where(['id' => $id]);
         $this->data['data'] = $qry->first();
         echo view('partial/header', $this->data);

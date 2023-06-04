@@ -40,7 +40,7 @@ class Pembayaran extends BaseController
 
     public function index()
     {
-        $this->data['title'] =  'Input Penjualan';
+        $this->data['title'] =  'Bengkel ABC | Penjualan';
         $this->data['products'] =  $this->prod_model->findAll();
         $this->data['pelanggan'] = $this->pelanggan->detailPelanggan();
         $this->data['invoice'] = $this->tran_model->invoice();
@@ -49,14 +49,6 @@ class Pembayaran extends BaseController
         echo view('partial/side_menu');
         echo view('penjualan/index_ori');
         echo view('partial/footer');
-    }
-
-    public function pos()
-    {
-        $this->data['page_title'] = "New Transaction";
-        $this->data['products'] =  $this->prod_model->findAll();
-
-        return view('pos/add', $this->data);
     }
 
     public function save_transaction()
@@ -107,7 +99,7 @@ class Pembayaran extends BaseController
 
     public function invoice()
     {
-        $this->data['title'] =  'Daftar Penjualan';
+        $this->data['title'] =  'Bengkel ABC | Daftar Penjualan';
         $this->data['total'] =  $this->tran_model->countAllResults();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
         $this->data['perPage'] =  10;
@@ -128,7 +120,7 @@ class Pembayaran extends BaseController
 
     public function transactions()
     {
-        $this->data['page_title'] = "Transactions";
+        $this->data['title'] = "Bengkel ABC | Transactions";
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
         $this->data['perPage'] =  10;
         $this->data['total'] =  $this->tran_model->countAllResults();
@@ -159,7 +151,7 @@ class Pembayaran extends BaseController
             $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");
             return redirect()->to('pembayaran/transactions');
         }
-        $this->data['page_title'] = "Transactions";
+        $this->data['title'] = "Bengkel ABC | Transactions";
         $this->data['details'] = $this->tran_model->where('id', $id)->first();
         if (!$this->data['details']) {
             $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");
@@ -183,7 +175,7 @@ class Pembayaran extends BaseController
             $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");
             return redirect()->to('pembayaran/transactions');
         }
-        $this->data['page_title'] = "Transactions";
+        $this->data['title'] = "Bengkel ABC | Print Transactions";
         $this->data['details'] = $this->tran_model->where('id', $id)->first();
         if (!$this->data['details']) {
             $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");

@@ -5,19 +5,19 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>List of Stok Masuk</h1>
+                    <h1>List of Stock In</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="#">Transaksi</a></li>
-                        <li class="breadcrumb-item active">List of Stok Masuk</li>
+                        <li class="breadcrumb-item active">List of Stock In</li>
                     </ol>
                 </div>
             </div>
         </div><!-- /.container-fluid -->
     </section>
 
-    <a class="btn btn-success" href="<?= base_url('stok/createStokMasuk') ?>" style="margin-bottom: 10px; margin-left: 15px;"><i class="fa fa-plus mr-2"></i> Add New Stok Masuk</a>
+    <a class="btn btn-success" href="<?= base_url('stok/createStokMasuk') ?>" style="margin-bottom: 10px; margin-left: 15px;"><i class="fa fa-plus mr-2"></i> Add Stock In</a>
 
     <!-- Main content -->
     <section class="content">
@@ -28,14 +28,7 @@
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <colgroup>
-                                    <!-- <col width="10%">
-                                    <col width="20%">
-                                    <col width="20%">
-                                    <col width="15%">
-                                    <col width="15%">
-                                    <col width="20%"> -->
                                     <col width="10%">
-                                    <!-- <col width="20%"> -->
                                     <col width="30%">
                                     <col width="15%">
                                     <col width="25%">
@@ -90,23 +83,3 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
-<script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
-    });
-</script>
