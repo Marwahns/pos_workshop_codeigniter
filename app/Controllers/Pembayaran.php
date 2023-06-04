@@ -80,6 +80,7 @@ class Pembayaran extends BaseController
                 $data2['product_id'] = $v;
                 $data2['price'] = $price[$k];
                 $data2['quantity'] = $quantity[$k];
+                $data2['ip_address'] = $this->request->getIPAddress();
                 $this->tran_item_model->save($data2);
             }
             $this->data['penjualan'] = $this->productModel->set('stok', 'stok-' . $data2['quantity'], false)->where('id', $data2['product_id'])->update();

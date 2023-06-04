@@ -12,6 +12,7 @@ class Users extends BaseController
     protected $session;
     // Data
     protected $data;
+    protected $security;
     // Model
     protected $user_model;
     protected $role_model;
@@ -26,6 +27,7 @@ class Users extends BaseController
         $this->statusRole_model = new StatusRolesModel();
         $this->session = \Config\Services::session();
         $this->data['session'] = $this->session;
+        $this->security = \Config\Services::security();
         helper(['form', 'fungsi']);
     }
 
@@ -124,30 +126,26 @@ class Users extends BaseController
 
         $this->data['request'] = $this->request;
         $getpost = $this->request->getPost();
+        $password = $this->request->getVar('password');
         $post = [
-            'id_role' => $this->request->getPost('id_role'),
+            'id_role'   => $this->request->getPost('id_role'),
             'id_status' => $this->request->getPost('id_status'),
-            'email' => $this->request->getPost('email'),
-            'username' => $this->request->getPost('username'),
-            'password' => buat_password($getpost['password']),
-            'nama' => $this->request->getPost('nama'),
-            'alamat' => $this->request->getPost('alamat'),
+            'email'     => esc($this->request->getVar('email')),
+            'username'  => esc($this->request->getVar('username')),
+            'password'  => password_hash($password, PASSWORD_DEFAULT), 
+            'nama'      => esc($this->request->getVar('nama')),
+            'alamat'    => esc($this->request->getVar('alamat')),
+            'ip_address'=> $this->request->getIPAddress(),
+            'token'     => $this->security->getTokenName(),
         ];
-        if (!empty($this->request->getPost('id')))
-            $save = $this->user_model->where(['id' => $this->request->getPost('id')])->set($post)->update();
-        else
-            $save = $this->user_model->insert($post);
-        if ($save) {
-            if (!empty($this->request->getPost('id')))
-                $this->session->setFlashdata('success_message', 'Data has been updated successfully');
-            else
-                $this->session->setFlashdata('success_message', 'Data has been added successfully');
-            $id = !empty($this->request->getPost('id')) ? $this->request->getPost('id') : $save;
-            $this->user_model->save($post);
-            return redirect()->to('/users/view_detailUsers/' . $id);
-        } else {
-            return view('users/create', $this->data);
-        }
+
+        $id = $this->request->getPost('id');
+        $this->user_model->save($post);
+        
+        $this->session->setFlashdata('success_message', 'Data has been added successfully');
+    
+        return redirect()->to('/users/view_detailUsers/' . $id);
+
     }
 
     ######################################## Save Edit Account ########################################
@@ -223,6 +221,7 @@ class Users extends BaseController
             // 'password' => buat_password($getpost['password']),
             'nama' => $this->request->getPost('nama'),
             'alamat' => $this->request->getPost('alamat'),
+            'ip_address'   => $this->request->getIPAddress(),
         ];
         if (!empty($this->request->getPost('id'))){
 

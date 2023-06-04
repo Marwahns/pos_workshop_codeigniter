@@ -24,6 +24,7 @@ class UserModel extends Model
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     protected $rules = [
         'email'     => 'required|is_unique[users.email]',
@@ -89,10 +90,10 @@ class UserModel extends Model
         return $this->builder($this->table)->where('id', $kolom)->orWhere('username', $kolom)->orWhere('email', $kolom)->get(1)->getRow();
     }
 
-    // public function getToken(string $token)
-    // {
-    //     return $this->builder($this->table)->select('id, email, token')->where('token', $token)->get(1)->getRow();
-    // }
+    public function getToken(string $token)
+    {
+        return $this->builder($this->table)->select('id, email, token')->where('token', $token)->get(1)->getRow();
+    }
 
     public function getRole()
     {

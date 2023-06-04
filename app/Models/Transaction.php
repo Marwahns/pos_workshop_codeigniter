@@ -14,7 +14,14 @@ class Transaction extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['id', 'code', 'customer', 'total_amount', 'tendered'];
+    protected $allowedFields    = [
+        'id', 
+        'code', 
+        'customer', 
+        'total_amount', 
+        'tendered', 
+        'ip_address'
+    ];
 
     // Dates
     protected $useTimestamps = false;

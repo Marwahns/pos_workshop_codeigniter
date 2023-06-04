@@ -21,24 +21,12 @@
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="<?= base_url('adminLTE/dist/img/user1-128x128.jpg') ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                <img src="<?= base_url('adminLTE/dist/img/avatar.jpg') ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
             </div>
             <div class="info">
                 <a href="#" class="d-block"><?= get_user('username') ?></a>
             </div>
         </div>
-
-        <!-- SidebarSearch Form -->
-        <!-- <div class="form-inline">
-            <div class="input-group" data-widget="sidebar-search">
-                <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-sidebar">
-                        <i class="fas fa-search fa-fw"></i>
-                    </button>
-                </div>
-            </div>
-        </div> -->
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
@@ -78,7 +66,7 @@
                             <li class="nav-item">
                                 <a href="<?= base_url('kategori/index') ?>" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Kategori</p>
+                                    <p>Category</p>
                                 </a>
                             </li>
                             <li class="nav-item">
@@ -94,20 +82,18 @@
                     <a href="#" class="nav-link">
                         <i class="nav-icon fas fa-cart-plus"></i>
                         <p>
-                            Transaksi
+                            Transaction
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
                             <a href="<?= base_url('pembayaran/index') ?>" class="nav-link">
-                                <!-- <a href="<?= base_url('main/pos') ?>" class="nav-link"> -->
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Penjualan</p>
+                                <p>Sales</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <!-- <a href="<?= base_url('penjualan/invoice') ?>" class="nav-link"> -->
                             <a href="<?= base_url('pembayaran/invoice') ?>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Invoice</p>
@@ -117,13 +103,13 @@
                             <li class="nav-item">
                                 <a href="<?= base_url('stok/index') ?>" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Stok Masuk</p>
+                                    <p>Stock In</p>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <a href="<?= base_url('stok/indexStokKeluar') ?>" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p>Stok Keluar</p>
+                                    <p>Stock Out</p>
                                 </a>
                             </li>
                         <?php endif ?>
@@ -143,7 +129,7 @@
                         <a href="<?= base_url('users/index') ?>" class="nav-link">
                             <i class="nav-icon fa fa-users"></i>
                             <p>
-                                Pengguna
+                                Users
                             </p>
                         </a>
                     </li>

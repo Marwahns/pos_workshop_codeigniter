@@ -21,7 +21,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card card-primary">
-                <form action="<?= base_url('users/saveEditAccount') ?>" method="POST" id="edit-form" enctype="multipart/form-data">
+                <form action="<?= base_url('auth/do_update') ?>" method="POST" id="edit-form" enctype="multipart/form-data">
                     <div class="card-body">
                         <input type="hidden" name="id" value="<?= isset($data['id']) ? $data['id'] : '' ?>">
 
