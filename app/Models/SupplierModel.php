@@ -16,9 +16,11 @@ class SupplierModel extends Model{
         'no_telepon'
     ];
     protected $useTimestamps = true;
+    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     ######################################## Generate Barcode Supplier ########################################
     function generateKodeSupplier() {
@@ -63,7 +65,7 @@ class SupplierModel extends Model{
    ######################################## Detail Supplier ########################################
    public function detailSupplier($id = null)
    {
-       $builder = $this->builder($this->table)->select('*');
+       $builder = $this->builder($this->table)->select('*')->where('tb_supplier.deleted_at', null);
        if (empty($id)) {
            return $builder->get()->getResult(); // tampilkan semua data
        } else {

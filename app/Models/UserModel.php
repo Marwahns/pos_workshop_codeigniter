@@ -21,6 +21,7 @@ class UserModel extends Model
         'ip_address'
     ];
     protected $useTimestamps = true;
+    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
@@ -68,7 +69,8 @@ class UserModel extends Model
     {
         $builder = $this->builder($this->table)->select('tb_users.id, tb_users.email, tb_users.username, tb_users.password, tb_users.nama, tb_users.alamat, tb_users.id_status, tb_users.id_role, tb_roles.role, tb_status_roles.status')
             ->join('tb_roles', 'tb_roles.id=tb_users.id_role')
-            ->join('tb_status_roles', 'tb_status_roles.id=tb_users.id_status');
+            ->join('tb_status_roles', 'tb_status_roles.id=tb_users.id_status')
+            ->where('tb_users.deleted_at', null);
         if (empty($id)) {
             return $builder->get()->getResult(); // tampilkan semua data
         } else {

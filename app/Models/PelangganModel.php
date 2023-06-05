@@ -15,13 +15,15 @@ class PelangganModel extends Model
         'tipe'
     ];
     protected $useTimestamps = true;
+    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     public function detailPelanggan($id = null)
     {
-        $builder = $this->builder($this->table)->select('id, nama, no_telepon, tipe');
+        $builder = $this->builder($this->table)->select('id, nama, no_telepon, tipe')->where('tb_pelanggan.deleted_at', null);
         if (empty($id)) {
             return $builder->get()->getResult();
         } else {

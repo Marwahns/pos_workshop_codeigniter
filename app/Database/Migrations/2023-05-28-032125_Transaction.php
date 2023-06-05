@@ -33,8 +33,16 @@ class Transaction extends Migration
                 'constraint' => '12,2',
                 'default' => 0,
             ],
-            'created_at datetime default current_timestamp',
-            'updated_at datetime default current_timestamp on update current_timestamp'
+            'created_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+            'updated_at' => [
+                'type'              => 'datetime',
+                'null'              => true
+            ],
+            'deleted_at' => [
+                'type'              => 'datetime',
+                'null'              => true
+            ],
+            
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('transactions');

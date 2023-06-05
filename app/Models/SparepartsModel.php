@@ -19,9 +19,11 @@ class SparepartsModel extends Model
         'stok'
     ];
     protected $useTimestamps = true;
+    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     ######################################## Generate Barcode Spareparts ########################################
     function generateKodeSpareParts()
@@ -62,7 +64,8 @@ class SparepartsModel extends Model
     {
         $builder = $this->builder($this->table)->select('tb_spareparts.id, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_spareparts.supplier_id, tb_spareparts.kategori_id, tb_supplier.nama, tb_kategori.kategori')
             ->join('tb_supplier', 'tb_supplier.id=tb_spareparts.supplier_id')
-            ->join('tb_kategori', 'tb_kategori.id=tb_spareparts.kategori_id');
+            ->join('tb_kategori', 'tb_kategori.id=tb_spareparts.kategori_id')
+            ->where('tb_spareparts.deleted_at', null);
         if (empty($id)) {
             return $builder->get()->getResult(); // tampilkan semua data
         } else {

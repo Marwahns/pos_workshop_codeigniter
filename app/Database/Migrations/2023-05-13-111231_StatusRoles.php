@@ -20,10 +20,15 @@ class StatusRoles extends Migration
                 'constraint'        => 50
             ],
 			'created_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
-			'updated_at' => [
-                'type'              => 'datetime', 
+            'updated_at' => [
+                'type'              => 'datetime',
                 'null'              => true
             ],
+            'deleted_at' => [
+                'type'              => 'datetime',
+                'null'              => true
+            ],
+            
         ]);
 
 		$this->forge->addKey('id', true)
