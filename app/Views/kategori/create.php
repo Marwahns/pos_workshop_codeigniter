@@ -26,6 +26,7 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <form action="<?= base_url('kategori/saveKategori') ?>" method="POST" id="create-form" enctype="multipart/form-data">
+                    <?= csrf_field(); ?>
                     <div class="card-body">
                         <input type="hidden" name="id">
                         <div class="form-group">

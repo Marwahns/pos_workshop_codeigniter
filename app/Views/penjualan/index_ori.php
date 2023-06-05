@@ -21,6 +21,7 @@
     <section class="content">
         <div class="container-fluid">
             <form action="<?= base_url("pembayaran/save_transaction") ?>" id="transaction-form" method="POST" onkeydown="return event.key != 'Enter';">
+                <?= csrf_field(); ?>
                 <input type="hidden" name="total_amount" value="0">
                 <div class="row">
                     <!-- Card 1 -->

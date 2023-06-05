@@ -39,6 +39,7 @@
                 <div class="col-md-9">
                     <div class="card card-primary card-outline">
                         <?= form_open_multipart(base_url('/auth/do_update_profile'), ['csrf_id' => 'token']); ?>
+                            <?= csrf_field(); ?>
                             <div class="card-body">
 
                                 <div class="form-group row">

@@ -26,6 +26,7 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <form action="<?= base_url('stok/saveStokMasuk') ?>" method="POST" id="create-form" enctype="multipart/form-data">
+                    <?= csrf_field(); ?>
                     <div class="card-body">
                         <input type="hidden" name="id">
                         <!-- Date -->

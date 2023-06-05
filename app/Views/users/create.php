@@ -26,6 +26,7 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <form action="<?= base_url('auth/do_register') ?>" method="POST" id="create-form" enctype="multipart/form-data">
+                    <?= csrf_field(); ?>
                     <div class="card-body">
                         <input type="hidden" name="id">
                         
@@ -51,7 +52,7 @@
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Password</label>
-                            <input type="text" class="form-control" placeholder="Input Password" id="password" name="password" required="required" value="">
+                            <input type="password" class="form-control" placeholder="Input Password" id="password" name="password" required="required" value="">
                         </div>
                         
                         <div class="form-group">

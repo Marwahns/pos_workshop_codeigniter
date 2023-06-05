@@ -36,7 +36,7 @@ $routes->set404Override();
 $routes->get('/', 'Auth::index');
 
 $routes->get('/dashboard/(:any)', 'Dashboard::$1');
-$routes->post('/dashboard/(:any)', 'Dashboard::$1');
+// $routes->post('/dashboard/(:any)', 'Dashboard::$1');
 
 $routes->get('/auth/(:any)', 'Auth::$1');
 $routes->post('/auth/(:any)', 'Auth::$1');

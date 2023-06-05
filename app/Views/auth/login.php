@@ -31,6 +31,7 @@
         </div>
 
         <form class="p-3 mt-3" action="<?= base_url('auth/loginProcess') ?>" method="post">
+            <?= csrf_field(); ?>
             <div class="form-field d-flex align-items-center">
                 <span class="far fa-user"></span>
                 <input type="text" id="username" name="username" class="form-control" placeholder="username">
