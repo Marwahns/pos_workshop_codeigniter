@@ -24,7 +24,7 @@
                 <img src="<?= base_url('adminLTE/dist/img/avatar.jpg') ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
             </div>
             <div class="info">
-                <a href="#" class="d-block"><?= get_user('username') ?></a>
+                <a href="#" class="d-block"><?= get_user('nama') ?></a>
             </div>
         </div>
 
@@ -33,14 +33,17 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                <li class="nav-item">
-                    <a href="<?= base_url('dashboard/index') ?>" class="nav-link">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            Dashboard
-                        </p>
-                    </a>
-                </li>
+                <?php if (esc(get_user('id_role') == 1) || esc(get_user('id_role') == 2)) : ?>
+                    <li class="nav-item">
+                        <a href="<?= base_url('dashboard/index') ?>" class="nav-link">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                Dashboard
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
+
                 <li class="nav-header">FEATURES</li>
                 <?php if (esc(get_user('id_role') == 1) || esc(get_user('id_role') == 2)) : ?>
                     <li class="nav-item">
@@ -93,12 +96,16 @@
                                 <p>Sales</p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a href="<?= base_url('pembayaran/invoice') ?>" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Invoice</p>
-                            </a>
-                        </li>
+
+                        <?php if (esc(get_user('id_role') == 1) || esc(get_user('id_role') == 2)) : ?>
+                            <li class="nav-item">
+                                <a href="<?= base_url('pembayaran/invoice') ?>" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Invoice</p>
+                                </a>
+                            </li>
+                        <?php endif ?>
+
                         <?php if (esc(get_user('id_role') == 1) || esc(get_user('id_role') == 2)) : ?>
                             <li class="nav-item">
                                 <a href="<?= base_url('stok/index') ?>" class="nav-link">
