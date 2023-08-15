@@ -20,7 +20,7 @@
     <!-- icheck bootstrap -->
     <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
     <!-- Theme style -->
-    <link rel="stylesheet" href="<?= base_url('adminLTE/dist/css/adminlte.min.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('adminLTE/source/css/adminlte.min.css') ?>">
 
     <!-- Dashboard -->
     <!-- Ionicons -->
