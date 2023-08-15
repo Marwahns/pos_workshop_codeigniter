@@ -2,7 +2,7 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?= base_url('dashboard/index') ?>" class="brand-link">
-        <img src="<?= base_url('adminLTE/dist/img/AdminLTELogo.png') ?>" alt="AdminLTELogo" height="60" width="60" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <img src="<?= base_url('adminLTE/source/img/AdminLTELogo.png') ?>" alt="AdminLTELogo" height="60" width="60" class="brand-image img-circle elevation-3" style="opacity: .8">
         <!-- <?php if (get_user('id_role') == 1) {
                     //     echo '<span class="brand-text font-weight-light">Super Admin</span>';
                     // } elseif(get_user('id_role')==2){
@@ -20,7 +20,7 @@
         <!-- Sidebar user (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="<?= base_url('adminLTE/dist/img/user1-128x128.jpg') ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+                <img src="<?= base_url('adminLTE/source/img/user1-128x128.jpg') ?>" alt="User Avatar" class="img-size-50 mr-3 img-circle">
             </div>
             <div class="info">
                 <a href="<?= base_url('profile/index') ?>" class="d-block"><?= get_user('username') ?></a>

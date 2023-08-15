@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="<?= base_url('plugins/icheck-bootstrap/icheck-bootstrap.min.css') ?>">
 
     <!-- Theme style -->
-    <link rel="stylesheet" href="<?= base_url('adminLTE/dist/css/adminlte.min.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('adminLTE/source/css/adminlte.min.css') ?>">
 
 </head>
 
