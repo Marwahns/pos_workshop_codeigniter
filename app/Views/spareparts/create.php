@@ -53,9 +53,9 @@
                             <label for="regular-form-1" class="control-label">Supplier</label><br>
                             <select class="form-control" name="supplier_id" id="search_supplier" required>
                                 <option value="" selected disabled>Select a Supplier</option>
-                                <?php foreach ($supplier_id as $key => $value) { ?>
+                                <?php foreach ($supplier_id as $key => $value) : ?>
                                     <option <?= !empty($request->getPost('supplier_id')) && $request->getPost('supplier_id') == $value->id ? 'selected' : '' ?> value="<?= $value->id ?>"><?= $value->nama ?></option>
-                                <?php } ?>
+                                <<?php endforeach; ?>
                                 <small class="invalid-feedback"></small>
                             </select>
                         </div>
@@ -86,30 +86,13 @@
                             <small class="invalid-feedback"></small>
                         </div>
 
-                        <!-- Gambar -->
-                        <!-- <div class="form-group">
-                            <label for="exampleInputFile">File input</label>
-                            <div class="input-group">
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="exampleInputFile">
-                                    <label class="custom-file-label" for="exampleInputFile">Choose image</label>
-                                </div>
-                                <div class="input-group-append">
-                                    <span class="input-group-text">Upload</span>
-                                </div>
-                                <div class="invalid-feedback">
-                                    <?= $validation->getError('gambar'); ?>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="col-6">
                             <div class="form-group d-none">
                                 <img class="img-thumbnail" id="img-preview">
                             </div>
                         </div>
 
-                        <input type="hidden" name="gambarLama" id="gambarLama"> -->
+                        <input type="hidden" name="gambarLama" id="gambarLama">
 
                     </div>
                     <!-- /.card-body -->
@@ -127,26 +110,3 @@
     </section>
     <!-- /.content -->
 </div>
-<script type="text/javascript">
-    $('#search_supplier').autocomplete({
-        source: `${BASE_URL}/spareparts/barcode`,
-        autoFocus: true,
-        select: function(e, ui) {
-            $.ajax({
-                url: `${BASE_URL}/spareparts/detail`,
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    barcode: function(params) {
-                        return {
-                            searchTerms: params.terms
-                        }
-                    },
-                },
-                success: function(response) {
-
-                },
-            })
-        },
-    })
-</script>

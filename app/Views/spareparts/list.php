@@ -9,8 +9,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">List of Spare Parts</li>
+                        <li class="breadcrumb-item active">Master</li>
+                        <li class="breadcrumb-item"><a href="<?= base_url('spareparts/index') ?>">Spare Parts</a></li>
                     </ol>
                 </div>
             </div>
@@ -61,7 +61,7 @@
 
                                                         <a href="<?= base_url('spareparts/editSpareParts/' . $row->id) ?>" class="btn btn-primary rounded-0" title="Edit Spare Parts"><i class="fa fa-edit"></i></a>
 
-                                                        <a href="<?= base_url('spareparts/deleteSpareParts/' . $row->id) ?>" class="btn btn-danger rounded-0" title="Delete Spare Parts"><i class="fa fa-trash"></i></a>
+                                                        <a id="deleteData" href="<?= base_url('spareparts/deleteSpareParts/' . $row->id) ?>" data-href="<?= base_url('spareparts/deleteSpareParts/' . $row->id) ?>" class="btn btn-danger rounded-0" title="Delete Spare Parts" onclick="return confirmDelete(event)"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>

@@ -9,8 +9,8 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Kategori</a></li>
-                        <li class="breadcrumb-item active">List of Category</li>
+                        <li class="breadcrumb-item active">Master</li>
+                        <li class="breadcrumb-item"><a href="<?= base_url('kategori/index') ?>">Kategori</a></li>
                     </ol>
                 </div>
             </div>
@@ -56,7 +56,7 @@
 
                                                         <a href="<?= base_url('kategori/editKategori/' . $row->id) ?>" class="btn btn-primary rounded-0" title="Edit Kategori"><i class="fa fa-edit"></i></a>
 
-                                                        <a href="<?= base_url('kategori/deleteKategori/' . $row->id) ?>" class="btn btn-danger rounded-0" title="Delete Kategori"><i class="fa fa-trash"></i></a>
+                                                        <a id="deleteData" href="<?= base_url('kategori/deleteKategori/' . $row->id) ?>" data-href="<?= base_url('kategori/deleteKategori/' . $row->id) ?>" class="btn btn-danger rounded-0" title="Delete Kategori" onclick="return confirmDelete(event)"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -81,23 +81,3 @@
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
-
-<!-- <script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        $('#example2').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-        });
-    });
-</script> -->

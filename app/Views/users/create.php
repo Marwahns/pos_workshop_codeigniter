@@ -25,34 +25,33 @@
             <div class="card card-primary">
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form action="<?= base_url('auth/do_register') ?>" method="POST" id="create-form" enctype="multipart/form-data">
-                    <?= csrf_field(); ?>
+                <form action="<?= base_url('users/saveAccount') ?>" method="POST" id="create-form" enctype="multipart/form-data">
                     <div class="card-body">
                         <input type="hidden" name="id">
                         
                         <div class="form-group">
                             <label for="exampleInputEmail1">Nama</label>
-                            <input type="text" class="form-control" placeholder="Input Name" id="nama" name="nama" required="required" value="">
+                            <input type="text" class="form-control" placeholder="Input Name" id="nama" name="nama" required="required" value="<?= !empty($request->getPost('nama')) ? $request->getPost('nama') : '' ?>">
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Alamat</label>
-                            <input type="text" class="form-control" placeholder="Input Alamat" id="alamat" name="alamat" required="required" value="">
+                            <input type="text" class="form-control" placeholder="Input Alamat" id="alamat" name="alamat" required="required" value="<?= !empty($request->getPost('alamat')) ? $request->getPost('alamat') : '' ?>">
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Username</label>
-                            <input type="text" class="form-control" placeholder="Input Username" id="username" name="username" required="required" value="">
+                            <input type="text" class="form-control" placeholder="Input Username" id="username" name="username" required="required" value="<?= !empty($request->getPost('username')) ? $request->getPost('username') : '' ?>">
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Email</label>
-                            <input type="email" class="form-control" placeholder="Input Email" id="email" name="email" required="required" value="">
+                            <input type="email" class="form-control" placeholder="Input Email" id="email" name="email" required="required" value="<?= !empty($request->getPost('email')) ? $request->getPost('email') : '' ?>">
                         </div>
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Password</label>
-                            <input type="password" class="form-control" placeholder="Input Password" id="password" name="password" required="required" value="">
+                            <input type="text" class="form-control" placeholder="Input Password" id="password" name="password" required="required" value="<?= !empty($request->getPost('password')) ? $request->getPost('password') : '' ?>">
                         </div>
                         
                         <div class="form-group">

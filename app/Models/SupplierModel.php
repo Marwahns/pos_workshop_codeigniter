@@ -9,6 +9,7 @@ class SupplierModel extends Model{
     protected $table = 'tb_supplier';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
+    protected $useSoftDeletes = true;
     protected $allowedFields = [
         'kode_supplier', 
         'nama',
@@ -16,7 +17,6 @@ class SupplierModel extends Model{
         'no_telepon'
     ];
     protected $useTimestamps = true;
-    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
@@ -65,7 +65,7 @@ class SupplierModel extends Model{
    ######################################## Detail Supplier ########################################
    public function detailSupplier($id = null)
    {
-       $builder = $this->builder($this->table)->select('*')->where('tb_supplier.deleted_at', null);
+       $builder = $this->builder($this->table)->select('*')->where('deleted_at IS NULL');
        if (empty($id)) {
            return $builder->get()->getResult(); // tampilkan semua data
        } else {

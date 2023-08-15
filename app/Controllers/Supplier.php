@@ -20,16 +20,15 @@ class Supplier extends BaseController
     public function __construct()
     {
         $this->supplier_model = new SupplierModel();
-        // $this->user_model = new UserModel();
         $this->session = \Config\Services::session();
         $this->data['session'] = $this->session;
     }
 
-    ######################################## Initialize Objects ########################################
+    ######################################## Index ########################################
     public function index()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | List Supplier";
-        // $this->data['tb_supplier'] =  $this->supplier_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
         $this->data['tb_supplier'] =  $this->supplier_model->detailSupplier();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
         $this->data['perPage'] =  10;
@@ -44,13 +43,13 @@ class Supplier extends BaseController
         echo view('partial/footer');
     }
 
-    ######################################## Home Page ########################################
+    ######################################## Create ########################################
     public function createSupplier()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | Add New Supplier";
         $this->data['request'] =  $this->request;
         $this->data['kode_supplier'] = $this->supplier_model->generateKodeSupplier();
-        // return view('supplier/create', $this->data);
         echo view('partial/header', $this->data);
         echo view('partial/top_menu');
         echo view('partial/side_menu');
@@ -58,7 +57,7 @@ class Supplier extends BaseController
         echo view('partial/footer');
     }
 
-    ######################################## Edit Form Page ########################################
+    ######################################## Save ########################################
     public function saveSupplier()
     {
         // validasi input
@@ -118,7 +117,7 @@ class Supplier extends BaseController
         }
     }
 
-    ######################################## Edit Form Page ########################################
+    ######################################## Save Edit ########################################
     public function saveEditSupplier()
     {
         // validasi input
@@ -183,6 +182,7 @@ class Supplier extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/supplier/create');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | Edit Supplier Details";
         $this->data['request'] =  $this->request;
         $qry = $this->supplier_model->select('*')->where(['id' => $id]);
@@ -203,7 +203,7 @@ class Supplier extends BaseController
         }
         $delete = $this->supplier_model->delete($id);
         if ($delete) {
-            $this->session->setFlashdata('success_message', 'Contact Details has been deleted successfully.');
+            $this->session->setFlashdata('success_message', 'Data has been deleted successfully.');
             return redirect()->to('/supplier/index');
         }
     }
@@ -215,6 +215,7 @@ class Supplier extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/supplier/index');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | View Supplier Details";
         $qry = $this->supplier_model->select('*')->where(['id' => $id]);
         $this->data['data'] = $qry->first();

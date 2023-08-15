@@ -58,7 +58,8 @@
                     </div>
                 </div>
                 <div class="card-footer text-center">
-                    <a href="<?= base_url('stok/deleteStokMasuk/' . (isset($data['id']) ? $data['id'] : '')) ?>" class="btn btn btn-danger btn-sm rounded-0" onclick="if(confirm('Are you sure to delete this contact details?') === false) event.preventDefault()"><i class="fa fa-trash mr-2"></i> Delete</a>
+                    <a id="deleteData" href="<?= base_url('stok/deleteStokMasuk/' . (isset($data['id']) ? $data['id'] : '')) ?>" class="btn btn btn-danger btn-sm rounded-0" data-href="<?= base_url('stok/deleteStokMasuk/' . (isset($data['id']) ? $data['id'] : '')) ?>" title="Delete Stok Masuk" onclick="return confirmDelete(event)"><i class="fa fa-trash mr-2"></i> Delete</a>
+
                     <a href="<?= base_url('stok/index') ?>" class="btn btn btn-light bg-gradient-light border btn-sm rounded-0"><i class="fa fa-angle-left mr-2"></i> Back to List</a>
                 </div>
             </div>

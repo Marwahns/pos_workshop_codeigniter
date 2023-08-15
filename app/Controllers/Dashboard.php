@@ -34,6 +34,7 @@ class Dashboard extends BaseController
     public function index()
     {
         $data = [
+            'body_class'            => '',
             'title'                 => 'Dashboard',
             'spareParts'            => $this->spareParts_model->countAllResults(),
             'item'                  => $this->spareParts_model->selectSum('stok')->first(),

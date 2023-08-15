@@ -16,20 +16,9 @@ class Users extends Migration
                 'unsigned'          => true,
                 'auto_increment'    => true
             ],
-            'id_status' => [
-                'type'              => 'int',
-                'constraint'        => 11,
-                'unsigned'          => true,
-            ],
-            'id_role' => [
-                'type'              => 'int',
-                'constraint'        => 11,
-                'unsigned'          => true,
-            ],
             'email'    => [
                 'type'              => 'varchar',
-                'constraint'        => 255,
-                'null'              => true
+                'constraint'        => 255
             ],
             'username' => [
                 'type'              => 'varchar',
@@ -42,19 +31,23 @@ class Users extends Migration
             ],
             'nama' => [
                 'type'              => 'varchar',
-                'constraint'        => 255
+                'constraint'        => 255,
+                'null'              => true
             ],
             'alamat' => [
                 'type'              => 'varchar',
-                'constraint'        => 255
+                'constraint'        => 255,
+                'null'              => true
             ],
             'token'    => [
                 'type'              => 'varchar',
-                'constraint'        => 255
+                'constraint'        => 255,
+                'null'              => true
             ],
             'ip_address' => [
                 'type'              => 'varchar',
-                'constraint'        => 100
+                'constraint'        => 100,
+                'null'              => true
             ],
             'created_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
             'updated_at' => [
@@ -65,12 +58,9 @@ class Users extends Migration
                 'type'              => 'datetime',
                 'null'              => true
             ],
-            
         ]);
-
-        $this->forge->addPrimaryKey('id');
-        $this->forge->addForeignKey('id_status', 'tb_status_roles', 'id', 'cascade', 'cascade', 'fk_id_status');
-        $this->forge->addForeignKey('id_role', 'tb_roles', 'id', 'cascade', 'cascade', 'fk_id_role');
+        $this->forge->addKey('id', true);
+            // ->addUniqueKey(['email', 'username']);
         $this->forge->createTable('tb_users', true);
     }
 

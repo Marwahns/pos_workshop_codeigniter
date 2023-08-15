@@ -45,11 +45,6 @@ class SpareParts extends Migration
                 'constraint'        => 11,
                 'null'              => true
             ],
-            'gambar' => [
-                'type'              => 'varchar',
-                'constraint'        => 11,
-                'null'              => true
-            ],
             'created_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
             'updated_at' => [
                 'type'              => 'datetime',
@@ -59,7 +54,6 @@ class SpareParts extends Migration
                 'type'              => 'datetime',
                 'null'              => true
             ],
-            
         ]);
 
         $this->forge->addKey('id', true);

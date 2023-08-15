@@ -9,6 +9,7 @@ class StokModel extends Model
     protected $table      = 'tb_stok';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
+    protected $useSoftDeletes = true;
     protected $allowedFields = [
         'tipe',
         'spareparts_id',
@@ -18,7 +19,6 @@ class StokModel extends Model
         'ip_address'
     ];
     protected $useTimestamps = true;
-    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
@@ -31,8 +31,8 @@ class StokModel extends Model
             ->join('tb_spareparts', 'tb_spareparts.id = tb_stok.spareparts_id')
             ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
             ->join('tb_supplier', 'tb_supplier.id = tb_stok.supplier_id')
-            ->where('tb_stok.deleted_at', null)
-            ->where('tipe', 'masuk');
+            ->where('tipe', 'masuk')
+            ->where('tb_stok.deleted_at IS NULL'); // Menambahkan kondisi untuk deleted_at
         if (empty($id)) {
             return $builder->get()->getResult(); // tampilkan semua data
         } else {
@@ -48,8 +48,8 @@ class StokModel extends Model
             ->join('tb_spareparts', 'tb_spareparts.id = tb_stok.spareparts_id')
             ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
             ->join('tb_supplier', 'tb_supplier.id = tb_stok.supplier_id')
-            ->where('tb_stok.deleted_at', null)
-            ->where('tipe', 'keluar');
+            ->where('tipe', 'keluar')
+            ->where('tb_stok.deleted_at IS NULL'); 
         if (empty($id)) {
             return $builder->get()->getResult(); // tampilkan semua data
         } else {
@@ -83,7 +83,7 @@ class StokModel extends Model
     ######################################## Get All Stok ########################################
     function getAll()
     {
-        $builder = $this->db->table('tb_stok')->select('*')->where('tb_stok.deleted_at', null);
+        $builder = $this->db->table('tb_stok')->select('*')->where('tb_supplier.deleted_at IS NULL');
         $builder->join('tb_supplier', 'tb_supplier.id=tb_stok.supplier_id');
         $query = $builder->get();
         return $query->getResult();

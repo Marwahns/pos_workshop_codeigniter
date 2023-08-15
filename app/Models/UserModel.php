@@ -9,6 +9,7 @@ class UserModel extends Model
     protected $table      = 'tb_users';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
+    protected $useSoftDeletes   = true;
     protected $allowedFields = [
         'id_status',
         'id_role',
@@ -21,56 +22,18 @@ class UserModel extends Model
         'ip_address'
     ];
     protected $useTimestamps = true;
-    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
     protected $deletedField = 'deleted_at';
 
-    protected $rules = [
-        'email'     => 'required|is_unique[users.email]',
-        'username'  => 'required|min_length[2]|max_length[50]|alpha_numeric',
-        'password'  => 'required|min_length[2]|max_length[255]',
-        'nama'      => 'required|min_length[2]|max_length[50]|alpha_space',
-        'alamat'    => 'required|min_length[2]|max_length[255]'
-    ];
-
-    protected $rulesValidation = [
-        'email' => [
-            'required'  => 'Email harus terisi',
-            'is_unique' => 'Email telah terdaftar'
-        ],
-        'username' => [
-            'required'      => 'Username harus terisi',
-            'min_length'    => 'Username minimal terdiri dari 2 karakter',
-            'max_length'    => 'Username maksimal terdiri dari 50 karakter',
-            'alpha_numeric' => 'Username hanya boleh terdiri dari huruf dan angka'
-        ],
-        'password' => [
-            'required'      => 'Password harus terisi',
-            'min_length'    => 'Password minimal terdiri dari 2 karakter',
-            'max_length'    => 'Password maksimal terdiri dari 255 karakter'
-        ],
-        'nama' => [
-            'required'      => 'Nama harus terisi',
-            'min_length'    => 'Nama minimal terdiri dari 2 karakter',
-            'max_length'    => 'Nama maksimal terdiri dari 50 karakter',
-            'alpha_space'   => 'Nama hanya boleh terdiri dari huruf dan spasi'
-        ],
-        'alamat' => [
-            'required'      => 'Alamat harus terisi',
-            'min_length'    => 'Alamat minimal terdiri dari 2 karakter',
-            'max_length'    => 'Alamat maksimal terdiri dari 255 karakter'
-        ]
-    ];
-
     ######################################## Detail User ########################################
     public function detailUser($id = null)
     {
-        $builder = $this->builder($this->table)->select('tb_users.id, tb_users.email, tb_users.username, tb_users.password, tb_users.nama, tb_users.alamat, tb_users.id_status, tb_users.id_role, tb_roles.role, tb_status_roles.status')
+        $builder = $this->builder($this->table)->select('tb_users.*, tb_roles.role, tb_status_roles.status')
             ->join('tb_roles', 'tb_roles.id=tb_users.id_role')
             ->join('tb_status_roles', 'tb_status_roles.id=tb_users.id_status')
-            ->where('tb_users.deleted_at', null);
+            ->where('tb_users.deleted_at IS NULL');
         if (empty($id)) {
             return $builder->get()->getResult(); // tampilkan semua data
         } else {
@@ -92,10 +55,10 @@ class UserModel extends Model
         return $this->builder($this->table)->where('id', $kolom)->orWhere('username', $kolom)->orWhere('email', $kolom)->get(1)->getRow();
     }
 
-    public function getToken(string $token)
-    {
-        return $this->builder($this->table)->select('id, email, token')->where('token', $token)->get(1)->getRow();
-    }
+    // public function getToken(string $token)
+    // {
+    //     return $this->builder($this->table)->select('id, email, token')->where('token', $token)->get(1)->getRow();
+    // }
 
     public function getRole()
     {

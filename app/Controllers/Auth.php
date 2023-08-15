@@ -47,6 +47,7 @@ class Auth extends BaseController
                 ];
                 $this->data['join_role'] = $this->userModel->getJoinToRole();
                 session()->set($params);
+                $this->session->setFlashdata('signIn_message', 'Signed in successfully');
                 return redirect()->to('/dashboard/index/');
             } else {
                 return redirect()->back()->with('error', 'Password salah');

@@ -14,11 +14,9 @@ class KategoriModel extends Model{
         'kategori'
     ];
     protected $useTimestamps = true;
-    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
-    protected $deletedField = 'deleted_at';
 
     ######################################## Generate Barcode Kategori ########################################
     function generateKodeKategori() {
@@ -56,7 +54,7 @@ class KategoriModel extends Model{
    ######################################## Detail Kategori ########################################
    public function detailKategori($id = null)
    {
-       $builder = $this->builder($this->table)->select('*')->where('tb_kategori.deleted_at', null);
+       $builder = $this->builder($this->table)->select('*')->where('deleted_at IS NULL');;
        if (empty($id)) {
            return $builder->get()->getResult(); // tampilkan semua data
        } else {

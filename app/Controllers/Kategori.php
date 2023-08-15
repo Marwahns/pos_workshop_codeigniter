@@ -26,7 +26,8 @@ class Kategori extends BaseController
     ######################################## Home Page ########################################
     public function index()
     {
-        $this->data['title'] =  "Bengkel ABC | List Kategori";
+        $this->data['body_class'] = "";
+        $this->data['title'] = "Bengkel ABC | List Kategori";
         // $this->data['tb_kategori'] =  $this->kategori_model->orderBy('date(created_at)ASC')->select('*')->get()->getResult();
         $this->data['tb_kategori'] =  $this->kategori_model->detailKategori();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
@@ -45,6 +46,7 @@ class Kategori extends BaseController
     ######################################## Create Form Page ########################################
     public function createKategori()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | Add New Category";
         $this->data['request'] =  $this->request;
         $this->data['kode_kategori'] = $this->kategori_model->generateKodeKategori();
@@ -107,6 +109,7 @@ class Kategori extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/kategori/edit');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | Edit Category Details";
         $this->data['request'] =  $this->request;
         $qry = $this->kategori_model->select('*')->where(['id' => $id]);
@@ -127,7 +130,7 @@ class Kategori extends BaseController
         }
         $delete = $this->kategori_model->delete($id);
         if ($delete) {
-            $this->session->setFlashdata('success_message', 'Contact Details has been deleted successfully.');
+            $this->session->setFlashdata('success_message', 'Data has been deleted successfully.');
             return redirect()->to('/kategori/index');
         }
     }
@@ -141,6 +144,7 @@ class Kategori extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/supplier/index');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | View Category Details";
         $qry = $this->kategori_model->select('*')->where(['id' => $id]);
         $this->data['data'] = $qry->first();

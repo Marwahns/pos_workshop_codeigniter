@@ -77,13 +77,11 @@
             <table class="table">
                 <tr>
                     <td class="kiri"><?= date("d F Y H:i", strtotime(esc($items[0]['created_at']))) ?></td>
-                    <!-- <td class="kanan"> Kasir :</td> -->
-                    <!-- <td class="kanan"><?= esc($items[0]['kasir']); ?></td> -->
                 </tr>
                 <tr>
                     <td class="kiri"><?= esc($items[0]['code']); ?></td>
                     <td class="kanan">Pelanggan :</td>
-                    <td class="kanan"><?= esc($items[0]['customer']); ?></td>
+                    <td class="kanan"><?= esc($items[0]['name_customer']); ?></td>
                 </tr>
 
             </table>
@@ -92,16 +90,10 @@
             <table class="table">
                 <?php $diskon = 0; ?>
                 <?php foreach (esc($items) as $data) : ?>
-                    <!-- <?php $diskon = esc($data['diskon']); ?> -->
                     <tr>
                         <td class="kiri"><?= esc($data['spareparts']); ?></td>
                         <td class="kanan"><?= esc($data['quantity']); ?> x </td>
                         <td class="kanan"><?= rupiah(esc($data['price'])); ?></td>
-                        <?php if (esc($data['diskon_item']) != 0) : ?>
-                            <td class="kanan">Dis item <?= esc($data['diskon_item']); ?> %</td>
-                        <?php else : ?>
-                            <td class="kanan"></td>
-                        <?php endif; ?>
                         <td class="kanan"><?= rupiah(esc($data['price'] * $data['quantity'])); ?></td>
                     </tr>
                 <?php endforeach; ?>
@@ -109,22 +101,22 @@
                     <td colspan="5" style="border-bottom:1px solid; "></td>
                 </tr>
                 <tr>
-                    <!-- <td colspan="4" class="kanan">Sub Total</td>
-                    <td class="kanan"><?= rupiah(esc($items[0]['total_harga'])); ?></td> -->
+                    <td colspan="4" class="kanan">Sub Total</td>
+                    <td class="kanan"><?= rupiah(esc($items[0]['total_amount'])); ?></td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
                     <td colspan="3" style="border-bottom: 1px dashed;"></td>
                 </tr>
-                <?php if (esc($diskon) != 0) : ?>
+                <?php if (esc($data['discount']) != 0) : ?>
                     <tr>
                         <td colspan="4" class="kanan">Diskon Pembelian</td>
-                        <td class="kanan"><?= esc($diskon); ?> %</td>
+                        <td class="kanan"><?= esc($items[0]['discount']); ?> %</td>
                     </tr>
                 <?php endif; ?>
                 <tr>
                     <td colspan="4" class="kanan">Total Akhir</td>
-                    <td class="kanan"><?= rupiah(esc($items[0]['total_amount'])); ?></td>
+                    <td class="kanan"><?= rupiah(esc($items[0]['grand_total'])); ?></td>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
@@ -136,11 +128,10 @@
                 </tr>
                 <tr>
                     <td colspan="4" class="kanan">Kembalian</td>
-                    <td class="kanan"><?= rupiah(esc($items[0]['tendered'] - $items[0]['total_amount'])); ?></td>
+                    <td class="kanan"><?= rupiah(esc($items[0]['tendered'] - ($items[0]['grand_total']))); ?></td>
                 </tr>
                 <!-- <tr>
                     <td colspan="4" class="kanan">Catatan</td>
-                    <td class="kanan"><?= esc($items[0]['catatan']); ?></td>
                 </tr> -->
             </table>
         </div>

@@ -6,29 +6,22 @@ use CodeIgniter\Model;
 
 class Transaction extends Model
 {
-    // protected $DBGroup          = 'default';
+    protected $DBGroup          = 'default';
     protected $table            = 'transactions';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    // protected $insertID         = 0;
-    // protected $returnType       = 'array';
+    protected $insertID         = 0;
+    protected $returnType       = 'array';
     protected $useSoftDeletes   = true;
     protected $protectFields    = true;
-    protected $allowedFields    = [
-        'id', 
-        'code', 
-        'customer', 
-        'total_amount', 
-        'tendered', 
-        'ip_address'
-    ];
+    protected $allowedFields    = ['id', 'code', 'customer', 'total_amount', 'tendered', 'discount'];
 
     // Dates
-    protected $useTimestamps = true;
-    protected $dateFormat = 'datetime';
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
-    protected $deletedField = 'deleted_at';
+    protected $useTimestamps = false;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    protected $deletedField  = 'deleted_at';
 
     // Validation
     protected $validationRules      = [];
@@ -80,7 +73,11 @@ class Transaction extends Model
             $queryFirst->orderBy('code', "DESC");
             $queryFirst->limit(1);
             $queryFirst = $builder->get();
-            $invoice  = $queryFirst->id + 1;
+
+            // print_r($queryFirst);
+            // die();
+            // $invoice  = $queryFirst->id + 1;
+            $invoice = 1;
         }
 
         $lastKode = str_pad($invoice, 4, "0", STR_PAD_LEFT);

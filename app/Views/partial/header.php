@@ -48,6 +48,10 @@
     <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/dropzone/min/dropzone.min.css') ?>">
     <!-- fullCalendar -->
     <link rel="stylesheet" href="<?= base_url('adminLTE/plugins/fullcalendar/main.css') ?>">
+    <!-- Tautkan file CSS SweetAlert dari CDN -->
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.0.5/dist/sweetalert2.min.css"> -->
+    <!-- Sweet Alert -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.0.5/dist/sweetalert2.all.min.js"></script> -->
 </head>
 
 <body class="<?= $body_class ?>">

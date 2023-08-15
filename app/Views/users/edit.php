@@ -21,8 +21,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="card card-primary">
-                <form action="<?= base_url('auth/do_update') ?>" method="POST" id="edit-form" enctype="multipart/form-data">
-                    <?= csrf_field(); ?>
+                <form action="<?= base_url('users/saveEditAccount') ?>" method="POST" id="edit-form" enctype="multipart/form-data">
                     <div class="card-body">
                         <input type="hidden" name="id" value="<?= isset($data['id']) ? $data['id'] : '' ?>">
 
@@ -75,7 +74,7 @@
 
                     <div class="card-footer">
                         <a class="btn btn-primary w-24 mr-1" href="<?= base_url('users/index/') ?>">Cancel</a>
-                        <button type="submit" class="btn btn-success">Save</button>
+                        <button type="button" id="updateData" class="btn btn-success">Save</button>
                     </div>
 
                 </form>

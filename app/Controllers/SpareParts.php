@@ -34,6 +34,7 @@ class SpareParts extends BaseController
     ######################################## Home Page ########################################
     public function index()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | List Spare Parts";
         $this->data['tb_spareparts'] =  $this->SpareParts_model->detailProduk();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
@@ -52,6 +53,7 @@ class SpareParts extends BaseController
     ######################################## Create Form Page ########################################
     public function createSpareParts()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | Add New Spare Parts";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
@@ -148,6 +150,7 @@ class SpareParts extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/spareparts/create');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | Edit SpareParts Details";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
@@ -170,7 +173,7 @@ class SpareParts extends BaseController
         }
         $delete = $this->SpareParts_model->delete($id);
         if ($delete) {
-            $this->session->setFlashdata('success_message', 'Contact Details has been deleted successfully.');
+            $this->session->setFlashdata('success_message', 'Data has been deleted successfully.');
             return redirect()->to('/spareparts/index');
         }
     }
@@ -182,6 +185,7 @@ class SpareParts extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/spareparts/index');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | View Spare Parts Details";
         $qry = $this->SpareParts_model->select('tb_spareparts.id, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_spareparts.supplier_id, tb_spareparts.kategori_id, tb_supplier.nama, tb_kategori.kategori')
         ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
@@ -240,7 +244,7 @@ class SpareParts extends BaseController
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A1', 'No')
             ->setCellValue('B1', 'Barcode')
-            ->setCellValue('C1', 'Spare Parts')
+            ->setCellValue('C1', 'Product')
             ->setCellValue('D1', 'Kategori')
             ->setCellValue('E1', 'Harga')
             ->setCellValue('F1', 'Stok');
@@ -258,7 +262,7 @@ class SpareParts extends BaseController
         }
         // tulis dalam format .xlsx
         $writer   = new Xlsx($spreadsheet);
-        $namaFile = 'Daftar_Stok_Produk_' . date('d-m-Y');
+        $namaFile = 'Daftar_Produk_' . date('d-m-Y');
         // Redirect hasil generate xlsx ke web browser
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename=' . $namaFile . '.xlsx');

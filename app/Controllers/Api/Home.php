@@ -19,10 +19,15 @@ class Home extends ResourceController
     public function show($id = null)
     {
         $SpareParts_model = new SparepartsModel();
-        $Pelanggan_model = new PelangganModel();
-        $data = $SpareParts_model->detailProduk($id);
+        // $data = $SpareParts_model->find($id);
+        $data = $SpareParts_model
+            ->select('tb_spareparts.*, tb_supplier.nama as supplier, tb_kategori.kategori')
+            ->join('tb_supplier', 'tb_supplier.id=tb_spareparts.supplier_id')
+            ->join('tb_kategori', 'tb_kategori.id=tb_spareparts.kategori_id')
+            ->where(['tb_spareparts.id' => $id])
+            ->get()
+            ->getRow();
 
         return $this->respond($data);
     }
-
 }

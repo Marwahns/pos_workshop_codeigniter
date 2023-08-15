@@ -40,6 +40,7 @@ class Pembayaran extends BaseController
 
     public function index()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  'Bengkel ABC | Penjualan';
         $this->data['products'] =  $this->prod_model->findAll();
         $this->data['pelanggan'] = $this->pelanggan->detailPelanggan();
@@ -67,7 +68,11 @@ class Pembayaran extends BaseController
         }
 
         $data['code'] = $this->tran_model->invoice();
+        $data['customer'] = $this->request->getPost('nama_customer');
+        $data['discount'] = $this->request->getPost('diskon');
+        // print_r($this->request->getPost('total_akhir')); die();
         foreach ($this->request->getPost() as $k => $v) {
+            // print_r($this->request->getPost()); die();
             if (!is_array($this->request->getPost($k)) && !in_array($k, ['id'])) {
                 $data[$k] = htmlspecialchars($v);
             }
@@ -88,10 +93,15 @@ class Pembayaran extends BaseController
 
             $this->data['items'] = $this->tran_item_model
                 ->select('transaction_items.price, transaction_items.quantity, 
-                                transactions.code, transactions.customer, transactions.total_amount, transactions.tendered, transactions.created_at, 
-                                tb_spareparts.spareparts')
+                                transactions.*, 
+                                IF(transactions.discount > 0, 
+           (transactions.total_amount - transactions.total_amount * transactions.discount / 100),
+           transactions.total_amount) AS grand_total,
+                                tb_spareparts.spareparts,
+                                tb_pelanggan.nama AS name_customer')
                 ->join('tb_spareparts', " transaction_items.product_id = tb_spareparts.id ", 'inner')
                 ->join('transactions', 'transactions.id=transaction_items.transaction_id')
+                ->join('tb_pelanggan', 'transactions.customer = tb_pelanggan.id', 'inner')
                 ->where('transaction_id', $transaction_id)
                 ->findAll();
             return view('penjualan/cetak_termal', $this->data);
@@ -100,12 +110,17 @@ class Pembayaran extends BaseController
 
     public function invoice()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  'Bengkel ABC | Daftar Penjualan';
         $this->data['total'] =  $this->tran_model->countAllResults();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
         $this->data['perPage'] =  10;
         $this->data['transactions'] = $this->tran_model
-            ->select(" transactions.*, COALESCE((SELECT SUM(transaction_items.quantity) FROM transaction_items where transaction_id = transactions.id ), 0) as total_items")
+            ->select("transactions.*,
+        IF(transactions.discount > 0, 
+           (transactions.total_amount - transactions.total_amount * transactions.discount / 100),
+           transactions.total_amount) AS grand_total,
+        COALESCE((SELECT SUM(transaction_items.quantity) FROM transaction_items WHERE transaction_id = transactions.id), 0) as total_items")
             ->paginate($this->data['perPage']);
         $this->data['total_res'] = is_array($this->data['transactions']) ? count($this->data['transactions']) : 0;
         $this->data['products'] =  $this->prod_model->findAll();
@@ -152,8 +167,18 @@ class Pembayaran extends BaseController
             $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");
             return redirect()->to('pembayaran/transactions');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | Transactions";
-        $this->data['details'] = $this->tran_model->where('id', $id)->first();
+        // $this->data['details'] = $this->tran_model->where('id', $id)->first();
+        $this->data['details'] = $this->tran_model
+            ->select('transactions.*, 
+            IF(transactions.discount > 0, 
+            (transactions.total_amount - transactions.total_amount * transactions.discount / 100),
+            transactions.total_amount) AS grand_total, 
+            tb_pelanggan.nama AS name_customer')
+            ->join('tb_pelanggan', 'transactions.customer = tb_pelanggan.id', 'inner')
+            ->where('transactions.id', $id)
+            ->first();
         if (!$this->data['details']) {
             $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");
             return redirect()->to('pembayaran/transactions');
@@ -177,19 +202,33 @@ class Pembayaran extends BaseController
             return redirect()->to('pembayaran/transactions');
         }
         $this->data['title'] = "Bengkel ABC | Print Transactions";
-        $this->data['details'] = $this->tran_model->where('id', $id)->first();
+        // $this->data['details'] = $this->tran_model->where('id', $id)->first();
+        $this->data['details'] = $this->tran_model
+            ->select('transactions.*, 
+            IF(transactions.discount > 0, 
+            (transactions.total_amount - transactions.total_amount * transactions.discount / 100),
+            transactions.total_amount) AS grand_total,
+            tb_pelanggan.nama AS name_customer')
+            ->join('tb_pelanggan', 'transactions.customer = tb_pelanggan.id', 'inner')
+            ->where('transactions.id', $id)
+            ->first();
         if (!$this->data['details']) {
             $this->session->setFlashdata('main_error', "Transaction Details failed to load due to unknown ID.");
             return redirect()->to('pembayaran/transactions');
         }
         $this->data['items'] = $this->tran_item_model
             ->select('transaction_items.price, transaction_items.quantity, 
-                                transactions.code, transactions.customer, transactions.total_amount, transactions.tendered, transactions.created_at, 
-                                tb_spareparts.spareparts')
-            ->join('tb_spareparts', " transaction_items.product_id = tb_spareparts.id ", 'inner')
-            ->join('transactions', 'transactions.id=transaction_items.transaction_id')
+        transactions.*, 
+        IF(transactions.discount > 0, 
+           (transactions.total_amount - transactions.total_amount * transactions.discount / 100),
+           transactions.total_amount) AS grand_total,
+        tb_spareparts.spareparts, tb_pelanggan.nama AS name_customer')
+            ->join('tb_spareparts', 'transaction_items.product_id = tb_spareparts.id', 'inner')
+            ->join('transactions', 'transactions.id = transaction_items.transaction_id')
+            ->join('tb_pelanggan', 'transactions.customer = tb_pelanggan.id', 'inner')
             ->where('transaction_id', $id)
             ->findAll();
+
         echo view('penjualan/cetak_termal', $this->data);
     }
 
@@ -206,7 +245,7 @@ class Pembayaran extends BaseController
                 'vertical'   => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER,
             ],
         ];
-        $spreadsheet->getActiveSheet()->getStyle('A1:H1')->applyFromArray($style); // tambahkan style
+        $spreadsheet->getActiveSheet()->getStyle('A1:K1')->applyFromArray($style); // tambahkan style
         $spreadsheet->getActiveSheet()->getRowDimension(1)->setRowHeight(30); // setting tinggi baris
         // setting lebar kolom otomatis
         $spreadsheet->getActiveSheet()->getColumnDimension('A')->setAutoSize(true);
@@ -216,17 +255,23 @@ class Pembayaran extends BaseController
         $spreadsheet->getActiveSheet()->getColumnDimension('E')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('F')->setAutoSize(true);
         $spreadsheet->getActiveSheet()->getColumnDimension('G')->setAutoSize(true);
-        // $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('H')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('I')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('J')->setAutoSize(true);
+        $spreadsheet->getActiveSheet()->getColumnDimension('K')->setAutoSize(true);
         // set kolom head
         $spreadsheet->setActiveSheetIndex(0)
             ->setCellValue('A1', 'No')
             ->setCellValue('B1', 'Invoice')
             ->setCellValue('C1', 'Tanggal')
-            // ->setCellValue('D1', 'Spare Parts')
-            ->setCellValue('D1', 'Kasir')
-            ->setCellValue('E1', 'Qty')
-            ->setCellValue('F1', 'Total Belanja')
-            ->setCellValue('G1', 'Tunai');
+            ->setCellValue('D1', 'Spare Parts')
+            ->setCellValue('E1', 'Unit Price')
+            ->setCellValue('F1', 'Qty')
+            ->setCellValue('G1', 'Total Amount')
+            ->setCellValue('H1', 'Discount')
+            ->setCellValue('I1', 'Grand Total')
+            ->setCellValue('J1', 'Tunai')
+            ->setCellValue('K1', 'Customer');
         $row = 2;
         // looping data item
         foreach ($this->tran_item_model->detailTransaksi() as $key => $data) {
@@ -234,12 +279,14 @@ class Pembayaran extends BaseController
                 ->setCellValue('A' . $row, $key + 1)
                 ->setCellValue('B' . $row, $data->code)
                 ->setCellValue('C' . $row, $data->created_at)
-                ->setCellValue('B' . $row, $data->kode_spareparts . '-' . $data->spareparts)
-                // ->setCellValue('D' . $row, $data->customer)
-                ->setCellValue('D' . $row, $data->price)
-                ->setCellValue('E' . $row, $data->quantity)
-                ->setCellValue('F' . $row, $data->total_amount)
-                ->setCellValue('G' . $row, $data->tendered);
+                ->setCellValue('D' . $row, $data->kode_spareparts . '-' . $data->spareparts)
+                ->setCellValue('E' . $row, $data->price)
+                ->setCellValue('F' . $row, $data->quantity)
+                ->setCellValue('G' . $row, $data->total_amount)
+                ->setCellValue('H' . $row, $data->discount)
+                ->setCellValue('I' . $row, $data->grand_total)
+                ->setCellValue('J' . $row, $data->tendered)
+                ->setCellValue('K' . $row, $data->customer);
             $row++;
         }
         // tulis dalam format .xlsx

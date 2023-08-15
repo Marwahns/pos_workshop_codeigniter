@@ -29,7 +29,7 @@ class TransactionItem extends Migration
                 'constraint' => '30',
                 'default' => 0,
             ],
-            'created_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+            'created_at datetime default current_timestamp',
             'updated_at' => [
                 'type'              => 'datetime',
                 'null'              => true
@@ -38,7 +38,6 @@ class TransactionItem extends Migration
                 'type'              => 'datetime',
                 'null'              => true
             ],
-
         ]);
         $this->forge->addForeignKey('product_id', 'tb_spareparts', 'id','NO ACTION','CASCADE');
         $this->forge->addForeignKey('transaction_id', 'transactions', 'id','NO ACTION','CASCADE');

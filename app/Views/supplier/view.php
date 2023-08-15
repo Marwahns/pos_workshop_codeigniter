@@ -42,7 +42,9 @@
                 </div>
                 <div class="card-footer text-center">
                     <a href="<?= base_url('supplier/editSupplier/' . (isset($data['id']) ? $data['id'] : '')) ?>" class="btn btn btn-primary btn-sm rounded-0"><i class="fa fa-edit mr-2"></i> Edit</a>
-                    <a href="<?= base_url('supplier/deleteSupplier/' . (isset($data['id']) ? $data['id'] : '')) ?>" class="btn btn btn-danger btn-sm rounded-0" onclick="if(confirm('Are you sure to delete this contact details?') === false) event.preventDefault()"><i class="fa fa-trash mr-2"></i> Delete</a>
+
+                    <a href="<?= base_url('supplier/deleteSupplier/' . (isset($data['id']) ? $data['id'] : '')) ?>" class="btn btn btn-danger btn-sm rounded-0" id="deleteData" data-href="<?= base_url('supplier/deleteSupplier/' . (isset($data['id']) ? $data['id'] : '')) ?>" title="Delete Supplier" onclick="return confirmDelete(event)"><i class="fa fa-trash mr-2"></i> Delete</a>
+
                     <a href="<?= base_url('supplier/index') ?>" class="btn btn btn-light bg-gradient-light border btn-sm rounded-0"><i class="fa fa-angle-left mr-2"></i> Back to List</a>
                 </div>
             </div>

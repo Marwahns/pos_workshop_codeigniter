@@ -10,6 +10,7 @@ class SparepartsModel extends Model
     protected $table = 'tb_spareparts';
     protected $primaryKey = 'id';
     protected $useAutoIncrement = true;
+    protected $useSoftDeletes = true;
     protected $allowedFields = [
         'supplier_id', 
         'kategori_id', 
@@ -19,7 +20,6 @@ class SparepartsModel extends Model
         'stok'
     ];
     protected $useTimestamps = true;
-    protected $useSoftDeletes = true;
     protected $dateFormat = 'datetime';
     protected $createdField = 'created_at';
     protected $updatedField = 'updated_at';
@@ -65,7 +65,7 @@ class SparepartsModel extends Model
         $builder = $this->builder($this->table)->select('tb_spareparts.id, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_spareparts.supplier_id, tb_spareparts.kategori_id, tb_supplier.nama, tb_kategori.kategori')
             ->join('tb_supplier', 'tb_supplier.id=tb_spareparts.supplier_id')
             ->join('tb_kategori', 'tb_kategori.id=tb_spareparts.kategori_id')
-            ->where('tb_spareparts.deleted_at', null);
+            ->where('tb_spareparts.deleted_at IS NULL');
         if (empty($id)) {
             return $builder->get()->getResult(); // tampilkan semua data
         } else {
@@ -76,7 +76,7 @@ class SparepartsModel extends Model
 
     public function detailPelanggan($id = null)
     {
-        $builder = $this->builder($this->table)->select('*');
+        $builder = $this->builder($this->table)->select('*')->where('deleted_at IS NULL');;
         if (empty($id)) {
             return $builder->get()->getResult();
         } else {

@@ -35,6 +35,7 @@ class Stok extends BaseController
     ######################################## Home Page Stock In ########################################
     public function index()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | List Stock In";
         $this->data['tb_stok'] =  $this->stok_model->detailStokMasuk();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
@@ -53,6 +54,7 @@ class Stok extends BaseController
     ######################################## Home Page Stock Out ########################################
     public function indexStokKeluar()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | List Stock Out";
         $this->data['tb_stok'] =  $this->stok_model->detailStokKeluar();
         $this->data['page'] =  !empty($this->request->getVar('page')) ? $this->request->getVar('page') : 1;
@@ -71,6 +73,7 @@ class Stok extends BaseController
     ######################################## Create Stock In ########################################
     public function createStokMasuk()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | Add Stock In";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
@@ -85,6 +88,7 @@ class Stok extends BaseController
     ######################################## Create Stock Out ########################################
     public function createStokKeluar()
     {
+        $this->data['body_class'] = "";
         $this->data['title'] =  "Bengkel ABC | Add Stock Out";
         $this->data['request'] =  $this->request;
         $this->data['supplier_id'] =  $this->supplier_model->orderBy('id ASC')->select('*')->get()->getResult();
@@ -136,7 +140,7 @@ class Stok extends BaseController
             ];
             $validation = \Config\Services::validation();
             $this->data['validation'] = \Config\Services::validation();
-            return redirect()->to('/stok/createStokKeluar')->withInput()->with('validation', $validation);
+            return redirect()->to('/stok/createStokMasuk')->withInput()->with('validation', $validation);
             // return $this->response->setJSON($respon);
             // return redirect()->back()->with('error', $this->validator->getErrors());
         }
@@ -155,10 +159,10 @@ class Stok extends BaseController
             $save = $this->stok_model->insert($post);
         if ($save) {
             if (!empty($this->request->getPost('id')))
-                $this->session->setFlashdata('success_message', 'Data has been updated successfully');
+                $this->session->setFlashdata('success_message', 'Stok has been updated successfully');
             else{
                 $this->stok_model->stok_bertambah($post);
-                $data['hasil']=$this->session->setFlashdata('success_message', 'Data has been added successfully');
+                $data['hasil']=$this->session->setFlashdata('success_message', 'Stok has been added successfully');
             }
             $id = !empty($this->request->getPost('id')) ? $this->request->getPost('id') : $save;
 
@@ -228,10 +232,10 @@ class Stok extends BaseController
             $save = $this->stok_model->insert($post);
         if ($save) {
             if (!empty($this->request->getPost('id')))
-                $this->session->setFlashdata('success_message', 'Data has been updated successfully');
+                $this->session->setFlashdata('success_message', 'Stok has been updated successfully');
             else{
                 $this->stok_model->stok_berkurang($post);
-                $data['hasil']=$this->session->setFlashdata('success_message', 'Data has been added successfully');
+                $data['hasil']=$this->session->setFlashdata('success_message', 'Stok has been added successfully');
             }
             $id = !empty($this->request->getPost('id')) ? $this->request->getPost('id') : $save;
 
@@ -251,7 +255,7 @@ class Stok extends BaseController
         }
         $delete = $this->stok_model->delete($id);
         if ($delete) {
-            $this->session->setFlashdata('success_message', 'Contact Details has been deleted successfully.');
+            $this->session->setFlashdata('success_message', 'Stok has been deleted successfully.');
             return redirect()->to('/stok/index');
         }
     }
@@ -265,7 +269,7 @@ class Stok extends BaseController
         }
         $delete = $this->stok_model->delete($id);
         if ($delete) {
-            $this->session->setFlashdata('success_message', 'Contact Details has been deleted successfully.');
+            $this->session->setFlashdata('success_message', 'Stok has been deleted successfully.');
             return redirect()->to('/stok/indexStokKeluar');
         }
     }
@@ -277,8 +281,9 @@ class Stok extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/stok/index');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | View Stock In Details";
-        $qry = $this->stok_model->select('tb_stok.id a, tb_stok.supplier_id, tb_stok.jumlah, tb_stok.keterangan, tb_stok.tipe, tb_stok.ip_address, tb_stok.spareparts_id, tb_stok.created_at, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_supplier.nama, tb_kategori.kategori')
+        $qry = $this->stok_model->select('tb_stok.id, tb_stok.supplier_id, tb_stok.jumlah, tb_stok.keterangan, tb_stok.tipe, tb_stok.ip_address, tb_stok.spareparts_id, tb_stok.created_at, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_supplier.nama, tb_kategori.kategori')
         ->join('tb_spareparts', 'tb_spareparts.id = tb_stok.spareparts_id')
         ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
         ->join('tb_supplier', 'tb_supplier.id = tb_stok.supplier_id')->where(['tb_stok.id' => $id]);
@@ -297,8 +302,9 @@ class Stok extends BaseController
             $this->session->setFlashdata('error_message', 'Unknown Data ID.');
             return redirect()->to('/stok/index');
         }
+        $this->data['body_class'] = "";
         $this->data['title'] = "Bengkel ABC | View Stock Out Details";
-        $qry = $this->stok_model->select('tb_stok.id a, tb_stok.supplier_id, tb_stok.jumlah, tb_stok.keterangan, tb_stok.tipe, tb_stok.ip_address, tb_stok.spareparts_id, tb_stok.created_at, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_supplier.nama, tb_kategori.kategori')
+        $qry = $this->stok_model->select('tb_stok.id, tb_stok.supplier_id, tb_stok.jumlah, tb_stok.keterangan, tb_stok.tipe, tb_stok.ip_address, tb_stok.spareparts_id, tb_stok.created_at, tb_spareparts.kode_spareparts, tb_spareparts.spareparts, tb_spareparts.harga, tb_spareparts.stok, tb_supplier.nama, tb_kategori.kategori')
         ->join('tb_spareparts', 'tb_spareparts.id = tb_stok.spareparts_id')
         ->join('tb_kategori', 'tb_kategori.id = tb_spareparts.kategori_id')
         ->join('tb_supplier', 'tb_supplier.id = tb_stok.supplier_id')->where(['tb_stok.id' => $id]);

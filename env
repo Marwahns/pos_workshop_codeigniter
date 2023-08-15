@@ -15,6 +15,7 @@
 #--------------------------------------------------------------------
 
 # CI_ENVIRONMENT = production
+CI_ENVIRONMENT = development
 
 #--------------------------------------------------------------------
 # APP
@@ -31,7 +32,7 @@
 #--------------------------------------------------------------------
 
 # database.default.hostname = localhost
-# database.default.database = ci4
+# database.default.database = pos_bengkel
 # database.default.username = root
 # database.default.password = root
 # database.default.DBDriver = MySQLi
@@ -108,15 +109,15 @@
 # SECURITY
 #--------------------------------------------------------------------
 
-security.csrfProtection = 'cookie'
-security.tokenRandomize = false
-security.tokenName = 'csrf_token_name'
-security.headerName = 'X-CSRF-TOKEN'
-security.cookieName = 'csrf_cookie_name'
-security.expires = 7200
-security.regenerate = true
-security.redirect = false
-security.samesite = 'Lax'
+# security.csrfProtection = 'cookie'
+# security.tokenRandomize = false
+# security.tokenName = 'csrf_token_name'
+# security.headerName = 'X-CSRF-TOKEN'
+# security.cookieName = 'csrf_cookie_name'
+# security.expires = 7200
+# security.regenerate = true
+# security.redirect = false
+# security.samesite = 'Lax'
 
 #--------------------------------------------------------------------
 # SESSION

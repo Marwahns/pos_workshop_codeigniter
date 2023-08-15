@@ -48,16 +48,17 @@
                                 <div class="form-group row">
                                     <label for="pelanggan" class="col-sm-3 col-form-label">Pelanggan</label>
                                     <div class="col-sm-9">
-                                        <select id="select2_pelanggan_id" name="pelanggan_id" class="form-control"> 
+                                        <select id="select2_pelanggan_id" name="pelanggan_id" class="form-control">
                                             <option value="" disabled selected>Select Type Customer</option>
                                             <?php foreach ($pelanggan as $key => $value) { ?>
-                                                <option <?= !empty($request->getPost('pelanggan')) && $request->getPost('pelanggan') == $value->id ? 'selected' : '' ?> value="<?= $value->id ?>"><?= $value->nama ?></option>
+                                                <option <?= !empty($request->getPost('customer')) && $request->getPost('customer') == $value->id ? 'selected' : '' ?> value="<?= $value->id ?>"><?= $value->nama ?></option>
                                             <?php } ?>
                                         </select>
                                     </div>
 
                                     <!-- Nama Customer -->
-                                    <input type="hidden" class="form-control" id="nama_customer" name="nama_customer" disabled value="">
+                                    <!-- <input type="text" class="form-control" id="nama_customer" name="nama_customer" disabled value="<?= date('Y-m-d') ?>"> -->
+                                    <input type="hidden" name="nama_customer" id="nama_customer" class="form-control" readonly>
                                 </div>
 
                             </div>
@@ -81,7 +82,8 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label for="product" class="control-label">Choose Product</label>
-                                    <select id="product" class="form-control select2" onchange="getSelectValue();">
+                                    <!-- <select id="product" class="form-control select2"> -->
+                                    <select id="product" class="form-control">
                                         <option value="" disabled selected></option>
                                         <?php
                                         foreach ($products as $row) :
@@ -91,7 +93,7 @@
                                     </select>
 
                                     <!-- Stok -->
-                                    <p class="mt-2"><span>Stok: </span><span id="show_stok"> -</span></p>
+                                    <p id="lblStok" class="mt-2"><span>Stok: </span><span id="show_stok"> -</span></p>
                                 </div>
 
                                 <div class="form-group text-right">
@@ -158,36 +160,10 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- <div>
-                    <table class="table table-bordered">
-                        <colgroup>
-                            <col width="5%">
-                            <col width="15%">
-                            <col width="30%">
-                            <col width="20%">
-                            <col width="20%">
-                        </colgroup>
-                        <tfoot>
-                            <tr class="bg-warning bg-gradient bg-opacity-25 text-dark">
-                                <th class="p-1 text-center" colspan="4">Total Amount</th>
-                                <th class="p-1 text-end h4 mb-0" id="gtotal">0.00</th>
-                            </tr>
-                        </tfoot>
-                    </table> -->
         </div>
         <div class="clearfix py-1"></div>
         <div class="row">
-            <!-- <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        <label for="customer" class="control-label">Customer name</label>
-                        <input type="text" class="form-control rounded-0" id="customer" name="customer" required="required">
-                    </div> -->
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                <!-- <div class="mb-3">
-                            <label for="tendered" class="control-label">Tendered Amount</label>
-                            <input type="number" step="any" class="form-control rounded-0" id="tendered" name="tendered" required="required">
-                        </div> -->
-                <!-- <div class="h4 mb-0 fw-bolder text-end"><span class="text-muted">Change:</span> <span class="ms-2" id="change">0.00</span></div> -->
             </div>
         </div>
         <!-- ##### -->
@@ -200,7 +176,7 @@
                         <div class="form-group row">
                             <label for="sub_total" class="col-sm-5 col-form-label">Sub Total</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control text-right" name="sub_total" id="sub_total" value="0" disabled>
+                                <input type="text" class="form-control text-right" name="sub_total" id="sub_total" value="0" readonly>
                             </div>
                         </div>
 
@@ -208,7 +184,7 @@
                         <div class="form-group row">
                             <label for="diskon" class="col-sm-5 col-form-label">Discount Total (%)</label>
                             <div class="col-sm-7">
-                                <input type="number" class="form-control text-right" name="diskon" id="diskon" min="0" placeholder="0" autocomplete="off" disabled>
+                                <input type="number" class="form-control text-right" name="diskon" id="diskon" min="0" placeholder="0">
                             </div>
                         </div>
 
@@ -216,7 +192,7 @@
                         <div class="form-group row">
                             <label for="total_akhir" class="col-sm-5 col-form-label">Grand Total</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control text-right" name="total_akhir" id="gtotal" min="0" placeholder="0" disabled>
+                                <input type="text" class="form-control text-right" name="total_akhir" id="gtotal" min="0" placeholder="0" readonly>
                             </div>
                         </div>
                     </div>
@@ -230,7 +206,7 @@
                         <div class="form-group row">
                             <label for="tunai" class="col-sm-5 col-form-label">Cash</label>
                             <div class="col-sm-7">
-                                <input type="number" class="form-control text-right" name="tendered" id="tendered" min="0" placeholder="0" disabled>
+                                <input type="number" class="form-control text-right" name="tendered" id="tendered" min="0" placeholder="0" readonly>
                             </div>
                         </div>
 
@@ -238,7 +214,7 @@
                         <div class=" form-group row">
                             <label for="kembalian" class="col-sm-5 col-form-label">Change</label>
                             <div class="col-sm-7">
-                                <input type="text" class="form-control text-right" name="kembalian" id="change" placeholder="0" disabled>
+                                <input type="text" class="form-control text-right" name="kembalian" id="change" placeholder="0" readonly>
                             </div>
                         </div>
                     </div>
@@ -262,7 +238,7 @@
                     <div class="card-body">
                         <!-- ## class="btn btn-warning disabled" -->
                         <p><a href="<?= base_url('pembayaran/index') ?>" class="btn btn-warning" id="cancel_payment"><i class="fa fa-refresh"></i> Cancel</a></p>
-                        <p><button class="btn btn-success" id="save_transaction" disabled><i class="fa fa-paper-plane"></i> Process Payment</button></p>
+                        <p><button type="button" class="btn btn-success" id="save_transaction" disabled><i class="fa fa-paper-plane"></i> Process Payment</button></p>
                     </div>
                 </div>
             </div>
@@ -292,39 +268,3 @@
         <td class="py-1 px-2 align-middle total_price text-end">0.00</td>
     </tr>
 </noscript>
-
-<script type="text/javascript">
-    function getSelectValue() {
-        var selectedValue = document.getElementById("product").value;
-        if (selectedValue > 0) {
-            $('#add_item').prop('disabled', false);
-        }
-
-        if (selectedValue < 1) {
-            $('#add_item').prop('disabled', true);
-        }
-    }
-
-    function getChange() {
-        var changeValue = document.getElementById("change").value;
-        if (changeValue == 0 || changeValue > 0) {
-            $('#save_transaction').prop('disabled', false)
-        }
-        // alert(changeValue);
-    }
-
-    function getCustomer() {
-        var customer = document.getElementById("nama_customer").value;
-        if (customer == "") {
-            $('#add_item').prop('disabled', true)
-            alert("Please select type customer")
-        }
-    }
-
-    // function getTotalDiskon(){
-    //     let diskon_akhir = ($('#diskon').val() / 100) * ($('#gtotal'));
-    //     let total_akhir = ($('#gtotal')) - diskon_akhir
-    // }
-
-    // getSelectValue();
-</script>

@@ -32,7 +32,7 @@
                                     <th>Invoice</th>
                                     <th>Tanggal</th>
                                     <!-- <th>Customer</th> -->
-                                    <th>Total Amount</th>
+                                    <th>Grand Total</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -44,15 +44,12 @@
                                             <th><?= $i++; ?></th>
                                             <td><?= $row['code'] ?></td>
                                             <td><?= date("Y-m-d h:i A", strtotime($row['created_at'])) ?></td>
-                                            <!-- <td><?= $row['customer'] ?></td> -->
-                                            <td><?= number_format($row['total_amount'], 2) ?></td>
-                                            <!-- <td><?= $row->invoice ?></td>
-                                            <td><?= $row->tanggal ?></td> -->
+                                            <td><?= number_format($row['grand_total'], 2) ?></td>
                                             <td>
                                                 <div class="btn-group btn-group-sm">
                                                     <a href="<?= base_url('pembayaran/transaction_view/' . $row['id']) ?>" class="btn btn-default bg-gradient-light border text-dark rounded-0" title="Print"><i class="fa fa-eye"></i></a>
                                                     <a href="<?= base_url('pembayaran/cetak/' . $row['id']) ?>" class="btn btn-default bg-gradient-light border text-dark rounded-0" title="Print"><i class="fas fa-print"></i></a>
-                                                    <!-- <a href="<?= base_url('pembayaran/generate/') . $row->id ?>" class="btn btn-primary rounded" title="Print Receipt"><i class="fa-solid fa-print"></i> Print Receipt</a> -->
+                                                    <!-- <a href="<?= base_url('pembayaran/generate/') . $row['id'] ?>" class="btn btn-primary rounded" title="Print Receipt"><i class="fa-solid fa-print"></i> Print Receipt</a> -->
                                                 </div>
                                             </td>
                                         </tr>

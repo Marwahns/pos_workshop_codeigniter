@@ -9,7 +9,7 @@
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Pengguna</a></li>
+                        <li class="breadcrumb-item"><a href="<?= base_url('users/index') ?>">Pengguna</a></li>
                         <li class="breadcrumb-item active">List of Account Users</li>
                     </ol>
                 </div>
@@ -60,7 +60,7 @@
 
                                                         <a href="<?= base_url('users/editUsers/' . $row->id) ?>" class="btn btn-primary rounded-0" title="Edit Spare Parts"><i class="fa fa-edit"></i></a>
 
-                                                        <a href="<?= base_url('users/deleteUsers/' . $row->id) ?>" class="btn btn-danger rounded-0" title="Delete Spare Parts"><i class="fa fa-trash"></i></a>
+                                                        <a id="deleteData" href="<?= base_url('users/deleteUsers/' . $row->id) ?>" data-href="<?= base_url('users/deleteUsers/' . $row->id) ?>" class="btn btn-danger rounded-0" title="Delete User" onclick="return confirmDelete(event)"><i class="fa fa-trash"></i></a>
                                                     </div>
                                                 </td>
                                             </tr>

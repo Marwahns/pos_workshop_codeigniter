@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Add Stok Keluar Spare Parts</h1>
+                    <h1>Add New Stok Keluar Spare Parts</h1>
                 </div>
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -28,7 +28,6 @@
                 <!-- /.card-header -->
                 <!-- form start -->
                 <form action="<?= base_url('stok/saveStokKeluar') ?>" method="POST" id="create-form" enctype="multipart/form-data">
-                    <?= csrf_field(); ?>
                     <div class="card-body">
                         <input type="hidden" name="id">
                         <!-- Date -->
@@ -43,43 +42,44 @@
                             <input type="hidden" id="spareparts_id" name="spareparts_id">
                             <input type="hidden" name="tipe" value="keluar">
                             <label for="regular-form-1" class="control-label">Barcode</label><br>
-                            <select class="form-control select2" name="spareparts_id" id="select2_spareparts_id" data-placeholder="Select a Produk" required>
-                                <option></option>
-                                <!-- <option value="" selected disabled>Cari produk</option> -->
-                                <?php foreach ($spareparts_id as $key => $value) { ?>
+
+                            <select id="select2_spareparts_id" class="form-control" name="spareparts_id">
+                                <option value="" disabled selected></option>
+                                <?php
+                                foreach ($spareparts_id as $key => $value) :
+                                ?>
                                     <option <?= !empty($request->getPost('spareparts_id')) && $request->getPost('spareparts_id') == $value->id ? 'selected' : '' ?> value="<?= $value->id ?>"><?= $value->kode_spareparts . ' - ' . $value->spareparts ?></option>
-                                <?php } ?>
+                                <?php endforeach; ?>
                             </select>
                         </div>
 
                         <!-- Spare Parts -->
                         <div class="form-group">
                             <label for="spareparts">Spare Parts</label>
-                            <input type="text" name="spareparts" id="spareparts" class="form-control" readonly required>
+                            <input type="text" name="spareparts" id="spareparts" class="form-control" placeholder="-" readonly required>
                         </div>
 
                         <!-- Kategori dan Stok -->
                         <div class="form-group">
                             <label for="unit" class="regular-form-1">Kategori</label>
-                            <input type="text" class="form-control" id="kategori_id" name="kategori_id" disabled value="-">
+                            <input type="hidden" class="form-control" id="stok_kategori_id" name="kategori_id" readonly required>
+                            <input type="text" class="form-control" id="txtKategori" name="txtKategori" placeholder="-" readonly required>
+
                             <label for="stok" class="regular-form-1">Stok</label>
-                            <input type="text" class="form-control" id="stokKeluar" name="stokKeluar" disabled value="-">
+                            <input type="text" class="form-control" id="stok" name="stok" placeholder="-" readonly required>
                         </div>
 
                         <!-- Supplier -->
                         <div class="form-group">
                             <label for="exampleInputEmail1">Supplier</label>
-                            <!-- Memasukkan supplier_id -->
-                            <input name="supplier_id" id="supplier_id" type="hidden" class="form-control" readonly required value="<?= !empty($request->getPost('supplier_id')) ? $request->getPost('supplier_id') : '' ?>">
-
-                            <!-- Menampilkan nama supplier -->
-                            <input type="text" class="form-control" id="nama_supplier_stok_keluar" name="nama_supplier_stok_keluar" disabled value="-">
+                            <input type="hidden" name="supplier_id" id="stok_supplier_id" class="form-control" readonly required value="<?= !empty($request->getPost('supplier_id')) ? $request->getPost('supplier_id') : '' ?>">
+                            <input type="text" class="form-control" id="txtSupplier" name="txtSupplier" placeholder="-" readonly required>
                         </div>
 
                         <!-- Jumlah -->
                         <div class="form-group">
                             <label for="exampleInputPassword1">Jumlah</label>
-                            <input type="number" class="form-control" id="jumlah" name="jumlah" required="required" min="1" value="<?= !empty($request->getPost('jumlah')) ? $request->getPost('jumlah') : '' ?>">
+                            <input type="number" class="form-control" id="jumlah" name="jumlah" required min="0" placeholder="0" value="<?= !empty($request->getPost('jumlah')) ? $request->getPost('jumlah') : '' ?>">
                         </div>
 
                         <!-- Keterangan -->
@@ -94,7 +94,7 @@
                     <div class="card-footer">
                         <button type="reset" form="create-form" class="btn btn-danger w-24">Reset</button>
                         <a class="btn btn-primary w-24 mr-1" href="<?= base_url('stok/indexStokKeluar/') ?>">Cancel</a>
-                        <button type="submit" class="btn btn-success" id="btn_stok_keluar" disabled>Save</button>
+                        <button type="submit" class="btn btn-success">Save</button>
                     </div>
                 </form>
             </div>
@@ -103,15 +103,4 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
-
-    <!-- <script type="text/javascript">
-        function getJumlah() {
-            var stok = $('#stokKeluar').val()
-            var jumlah = $('#jumlah').val()
-            if (jumlah > stok) {
-                $('#btn_stok_keluar').prop('disabled', true)
-
-            }
-        }
-    </script> -->
 </div>

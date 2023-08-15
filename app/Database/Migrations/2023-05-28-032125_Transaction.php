@@ -16,24 +16,31 @@ class Transaction extends Migration
                 'auto_increment' => true,
             ],
             'code' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '100',
+                'type'           => 'VARCHAR',
+                'constraint'     => '100',
             ],
             'customer' => [
-                'type'       => 'VARCHAR',
-                'constraint' => '250',
+                'type'           => 'INT',
+                'constraint'     => '11',
+                'unsigned'       => true
+            ],
+            'discount' => [
+                'type'           => 'INT',
+                'constraint'     => '2',
+                'default'        => 0,
+                'null'           => true
             ],
             'total_amount' => [
-                'type'       => 'FLOAT',
-                'constraint' => '12,2',
-                'default' => 0,
+                'type'           => 'FLOAT',
+                'constraint'     => '12,2',
+                'default'        => 0,
             ],
             'tendered' => [
-                'type'       => 'FLOAT',
-                'constraint' => '12,2',
-                'default' => 0,
+                'type'           => 'FLOAT',
+                'constraint'     => '12,2',
+                'default'        => 0,
             ],
-            'created_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP',
+            'created_at datetime default current_timestamp',
             'updated_at' => [
                 'type'              => 'datetime',
                 'null'              => true
@@ -42,7 +49,6 @@ class Transaction extends Migration
                 'type'              => 'datetime',
                 'null'              => true
             ],
-            
         ]);
         $this->forge->addKey('id', true);
         $this->forge->createTable('transactions');

@@ -8,6 +8,8 @@ class PenjualanModel extends Model
 {
     protected $table      = 'tb_penjualan';
     protected $primaryKey = 'id';
+    protected $useAutoIncrement = true;
+    protected $useSoftDeletes = true;
     protected $allowedFields = [
         'user_id', 
         'pelanggan_id', 
@@ -21,7 +23,11 @@ class PenjualanModel extends Model
         'tanggal',
     ];
 
-    // protected $useTimestamps = true;
+    protected $useTimestamps = true;
+    protected $dateFormat = 'datetime';
+    protected $createdField = 'created_at';
+    protected $updatedField = 'updated_at';
+    protected $deletedField = 'deleted_at';
 
     public function invoice()
     {
