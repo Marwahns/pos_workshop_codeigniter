@@ -2,7 +2,7 @@
   <div class="float-right d-none d-sm-block">
     <b>Version</b> 3.2.0
   </div>
-  <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">Marwah Nur Shafira & AdminLTE.io</a>.</strong> All rights reserved.
+  <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">Martz & AdminLTE.io</a>.</strong> All rights reserved.
 </footer>
 
 <!-- Control Sidebar -->
