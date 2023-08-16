@@ -1,5 +1,7 @@
 # CodeIgniter 4 Application Starter
 
+<img alt="php" src="https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white"> <img alt="bootstrap" src="https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white"> <img alt="jquery" src="https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white"> <img alt="codeigniter" src="https://img.shields.io/badge/Codeigniter-EF4223?style=for-the-badge&logo=codeigniter&logoColor=white"> <img alt="css" src="https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white"> <img alt="javascript" src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E"> 
+
 ## What is CodeIgniter?
 
 CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
@@ -14,40 +16,6 @@ More information about the plans for version 4 can be found in [CodeIgniter 4](h
 The user guide corresponding to the latest version of the framework can be found
 [here](https://codeigniter4.github.io/userguide/).
 
-## Installation & updates
-
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
-
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
-
-## Setup
-
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
-
-## Important Change with index.php
-
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
-
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
 ## Server Requirements
 
 PHP version 7.4 or higher is required, with the following extensions installed:
@@ -60,3 +28,35 @@ Additionally, make sure that the following extensions are enabled in your PHP:
 - json (enabled by default - don't turn it off)
 - [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
 - [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+
+## Installation
+
+- Open the `xampp/htdocs` folder and clone this repository to your local machine `git clone https://github.com/Marwahns/pos_workshop_codeigniter.git` command
+- Open the `pos_workshop_codeigniter` folder in your code editor, then rename the `env` file to `.env`
+- Create a database in mysql, you can use phpmyadmin. Next open the `pos_workshop_codeigniter folder` and open the `env` file then look at the `database.default.database = pos_bengkel` section, change `pos_bengkel` to the name of the database you just created
+- Next, open the `database.php` file, adjust the database name to the database name that was previously created
+- Open a localhost web server such as (XAMPP, MAMP, LAMPP, etc), then activate Apache and MySQL
+- Open terminal/cmd, navigate to the `pos_workshop_codeigniter` folder. Run the `composer install` command. After that, run the following commands incrementally
+  ```
+  php spark migrate
+  php spark db:seed DatabaseSeeder
+  php spark serve
+  ```
+- If there is no problem, then please access the page `http://localhost:8081/` then the login page should appear
+
+## User and Permission
+
+1. Login as Super Admin
+
+- username : superadmin
+- password : superadmin
+
+2. Login as Admin
+
+- username : admin
+- password : admin
+
+3. Login as Kasir
+
+- username : kasir
+- password : kasir
